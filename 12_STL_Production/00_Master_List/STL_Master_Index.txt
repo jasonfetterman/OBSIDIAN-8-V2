@@ -1,0 +1,30 @@
+==============================================
+OBSIDIAN-8 BOSS
+STL MASTER INDEX
+==============================================
+
+Naming Convention:
+OB8_BOSS_<Subsystem>_<PartName>_REV_A.stl
+
+Revision Rules:
+- Increment REV letter for geometry change
+- Never overwrite without revision bump
+- Move old revisions to 10_Archive\Old_Revisions
+
+----------------------------------------------
+PART TRACKING TABLE
+----------------------------------------------
+
+Part Name:
+Subsystem:
+Quantity:
+Material: (CF Nylon / TPU)
+Layer Height:
+Infill %:
+Print Orientation:
+Hardware Inserts:
+Status: (Draft / Tested / Locked)
+
+----------------------------------------------
+END OF FILE
+----------------------------------------------
