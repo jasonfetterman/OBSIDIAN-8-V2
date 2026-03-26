@@ -1,0 +1,77 @@
+OBSIDIAN-8 V3
+
+02_Electrical/Watchdog_Kill_Line_Design.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the design, integration, and operation of the Watchdog Kill Line for OBSIDIAN-8 V3.
+
+Provides hardware-level safety override for all subsystems
+Ensures deterministic shutdown in case of software, communication, or power faults
+Integrates with reactive safety, control authority, and FMEA
+2. SYSTEM OVERVIEW
+
+The Watchdog Kill Line is a hardware supervisory path that can immediately cut power or disable motion commands:
+
+Monitors Mission Compute, actuator controllers, and BMS signals
+Directly connected to actuator power enable lines and main bus relays
+Independent of software control to ensure fail-safe operation
+3. HARDWARE DESIGN
+Circuit Components:
+Solid-state relay (SSR) or mechanical relay rated for actuator bus current
+Redundant watchdog timer ICs for fault tolerance
+Status LEDs for visual confirmation
+Pull-up / pull-down resistors for stable logic states
+Connectivity:
+Watchdog output connected to:
+Servo bank power enable lines
+Main power relay for critical systems
+Input monitoring lines from:
+Mission Compute heartbeat
+BMS critical alerts
+Remote kill-line trigger
+Fail-Safe Configuration:
+Default state = power cutoff
+Only asserted when all monitored systems healthy
+4. SIGNAL MONITORING
+Heartbeat Inputs:
+Mission Compute emits periodic pulse
+Watchdog timer resets with each valid pulse
+Fault Detection:
+Missing heartbeat → trigger kill line
+Critical BMS alert → trigger kill line
+Manual remote kill → trigger kill line
+Timing Parameters:
+Watchdog timeout: configurable, e.g., 200 ms–500 ms
+Pulse validation window ensures no false triggers
+5. CONTROL AUTHORITY INTEGRATION
+Overrides all software commands:
+Hardware asserts kill → actuators enter safe-stop
+Cannot be overridden by Mission Compute or Reactive Controller
+Integrates with Reactive Safety Layer and Control Authority Model
+Field modifications or bypassing hardware kill line are strictly prohibited
+6. REDUNDANCY AND RELIABILITY
+Dual watchdog timers for redundancy
+Separate physical path for critical actuator banks
+Verification:
+Pull high/low line tests
+Simulation of software failure
+Thermal and vibration testing
+Mean Time Between Failures (MTBF) designed to exceed operational lifespan
+7. TESTING AND VALIDATION
+Functional tests:
+Simulate missing heartbeat → kill line assertion
+Simulate BMS critical fault → kill line assertion
+Manual activation → verify all actuators stop
+Environmental testing:
+Thermal cycling
+Vibration and shock testing
+Voltage fluctuations
+Documentation retained per Configuration Management Plan
+8. DESIGN INTENT
+Ensure deterministic, hardware-enforced shutdown for all motion and power-critical functions
+Protect against software failures, communication faults, and electrical anomalies
+Maintain safety-first hierarchy over all other control functions
+Fully integrate with FMEA, Main Power System, Servo Bank Architecture, and BMS
