@@ -1,0 +1,61 @@
+OBSIDIAN-8 V3
+
+04_Autonomy/Performance_Mode_Manager.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Performance Mode Manager (PMM) for OBSIDIAN-8 V3.
+
+Dynamically selects operating mode based on energy, thermal, and mission conditions
+Balances speed, power consumption, and safety priorities
+Integrates with Mission Compute, Reactive Controller, BMS, and Thermal Management Model
+Ensures predictable, safe performance across all scenarios
+2. PERFORMANCE MODES
+Mode	Description	Priority	Key Parameters
+Max Performance	Full speed and torque for high-priority tasks	Low	High power consumption, aggressive gait
+Balanced	Optimized trade-off between speed, torque, and energy	Medium	Moderate power use, standard gait
+Energy Saver	Minimal power consumption for long-duration missions	High	Reduced speed, limited torque, energy-aware gait
+Thermal Guard	Prevent overheating during extended operation	High	Speed reduction, torque limiting, duty cycling
+Mode selection is deterministic and follows escalation rules in case of conflicts
+3. INPUT PARAMETERS FOR MODE DECISION
+SOC / Battery Voltage: from Smart BMS
+Thermal Status: from Thermal Management Model
+Actuator Load: from Servo Bank Architecture
+Mission Priority: from Mission Compute
+Operator Input: optional override within safe bounds
+All inputs continuously monitored and used to update mode selection every control cycle
+4. MODE SELECTION LOGIC
+Thermal Guard Check:
+If any critical component exceeds temperature threshold → Thermal Guard mode
+Energy Check:
+SOC below configurable threshold → Energy Saver mode
+Mission Priority Check:
+High-priority tasks override energy or balanced preferences unless safety is threatened
+Default Mode:
+Balanced if no constraints are active
+Modes are mutually exclusive; only one active at a time
+5. CONTROL INTEGRATION
+Mission Compute: applies selected mode to trajectory planning and actuator commands
+Reactive Controller: can override mode for safety-critical events
+BMS / Energy Model: informs SOC-based mode adjustments
+Thermal Management Model: triggers Thermal Guard when limits approached
+Watchdog / Kill Line: ensures safety overrides cannot be bypassed
+6. FAILSAFE AND ESCALATION BEHAVIORS
+Mode manager cannot prevent hardware kill-line assertion
+Escalation hierarchy:
+Hardware Kill → Reactive Safety → Thermal Guard → Energy Saver → Balanced → Max Performance
+Logs all mode transitions for audit and validation
+7. VALIDATION AND TESTING
+Simulate energy depletion and ensure Energy Saver mode triggers appropriately
+Thermal overrun simulation → verify Thermal Guard engagement
+Mission priority tasks override lower-priority modes safely
+Mode transition latency verified to be within control cycle
+Logging and audit trail verified
+8. DESIGN INTENT
+Ensure safe, predictable operation across varying mission, energy, and thermal conditions
+Maximize operational efficiency while preserving safety hierarchy
+Enable autonomous adaptation without operator intervention unless authorized
+Fully integrate with BMS, Thermal Management, Authority Escalation Model, and Mission Compute
+Maintain deterministic behavior and full auditability
