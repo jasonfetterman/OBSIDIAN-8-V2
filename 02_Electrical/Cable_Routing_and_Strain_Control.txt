@@ -1,0 +1,51 @@
+OBSIDIAN-8 V3
+
+02_Electrical/Cable_Routing_and_Strain_Control.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define cable routing, strain relief, and electrical harness management for OBSIDIAN-8 V3.
+
+Ensures safe operation of actuators, sensors, and power distribution.
+Prevents mechanical wear, shorts, or signal interference.
+Provides reference for assembly, maintenance, and CM documentation.
+2. GENERAL GUIDELINES
+All cables must follow predefined routing paths within the frame to avoid moving joints.
+Maintain minimum bend radius per cable specification.
+Use strain relief brackets and clamps at high-stress points.
+Color-code cables for power, signal, and communication lines.
+Avoid routing along edges or sharp corners.
+Secure harnesses to maintain clearance from heat sources, actuators, and sensors.
+3. POWER DISTRIBUTION CABLES
+Cable Type	Routing Path	Strain Relief	Notes
+Main battery bus	Chassis backbone, protected channels	Clamp every 0.25 m	High-current, shielded
+Servo power lines	Embedded limb channels, away from moving joints	Cable loops at pivot points	Minimize torque stress
+Sensor power lines	Side channels, routed along support panels	Velcro/tie mounts	Avoid EMI from power lines
+4. SIGNAL AND COMMUNICATION CABLES
+Cable Type	Routing Path	Strain Relief	Notes
+ROS2 communication	Along frame edges, within conduits	Cable glands	Maintain signal integrity
+Swarm network lines	Routed along central backbone, isolated from high-current lines	Tie mounts	Prevent interference
+Maintenance/SSH lines	Accessible panels, short length	Loops with slack	Allow service without stress
+5. STRAIN RELIEF METHODS
+Cable Loops: Provide slack at joints to accommodate motion.
+Grommets: Protect cables passing through panels.
+Cable Clips/Brackets: Fixed at 0.25–0.3 m intervals.
+Spiral Wrap / Braided Sleeving: Protect against abrasion.
+Strain Relief at Connectors: Prevent pull on solder joints or connectors.
+6. DYNAMIC AND ENVIRONMENTAL CONSIDERATIONS
+Cables must tolerate continuous articulation of limbs and torso.
+Maintain flexibility under -20°C to 60°C operational range.
+Shielded cables used in high EMI zones (motors, power electronics).
+Routing avoids water ingress, dust accumulation, and pinch points.
+7. MAINTENANCE AND VERIFICATION
+Visual inspection of harness integrity at scheduled maintenance intervals.
+Verify strain relief attachment and bend radius compliance.
+Confirm correct routing after any module replacement or repair.
+Update Configuration Management records for any rerouted harness.
+8. DESIGN INTENT
+Ensure electrical reliability throughout lifecycle.
+Protect actuators, sensors, and communication from mechanical and electrical stress.
+Enable safe field maintenance without unintended damage.
+Fully integrated with Frame Architecture, Actuated Limbs, and Deployment Profiles.
