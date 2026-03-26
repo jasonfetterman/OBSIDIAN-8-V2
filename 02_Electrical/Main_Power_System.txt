@@ -1,0 +1,104 @@
+OBSIDIAN-8 V3
+
+02_Electrical/Main_Power_System.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the main power architecture for OBSIDIAN-8 V3, including energy sources, distribution, protection, and system interfaces.
+
+Ensures reliable and safe power delivery to all subsystems
+Integrates with Energy Models (LiFePO4 / LiPo), FMEA, and Control Authority
+Provides traceable configuration for deployment and CM records
+2. SYSTEM OVERVIEW
+
+The main power system consists of:
+
+Battery modules (LiFePO4 or LiPo)
+Battery Management System (BMS)
+Power Distribution Network (PDN)
+Voltage regulation stages
+Protection and isolation mechanisms
+
+Power flow:
+Battery → BMS → Main Bus → Regulators → Subsystems
+
+3. POWER SOURCES
+Primary Source:
+LiFePO4 (default, safety-focused deployments)
+LiPo (high-performance deployments)
+Configuration:
+Single or parallel battery modules depending on mission profile
+Hot-swappable modules supported
+Selection Criteria:
+LiFePO4 → long endurance, thermal stability
+LiPo → high current burst capability
+4. BATTERY MANAGEMENT SYSTEM (BMS)
+Monitors:
+Voltage (per cell and pack)
+Current (charge/discharge)
+Temperature
+Functions:
+Overcharge protection
+Over-discharge protection
+Overcurrent protection
+Cell balancing
+Interfaces with:
+Mission Compute (telemetry)
+Reactive Safety Layer (shutdown triggers)
+5. POWER DISTRIBUTION NETWORK (PDN)
+Main Bus Voltage:
+12–14.6 V depending on battery type
+Distribution Segments:
+Segment	Voltage	Description
+Actuator Bus	12V	High-current servo supply
+Logic Bus	5V	Compute, controllers, sensors
+Auxiliary Bus	3.3V	Low-power electronics
+Routing:
+Central backbone channels (per Frame Architecture)
+Segregation of high-current and signal lines
+6. VOLTAGE REGULATION
+DC-DC converters used for:
+12V → 5V (logic systems)
+5V → 3.3V (low-power electronics)
+Requirements:
+Efficiency ≥ 90%
+Thermal protection
+Noise filtering for sensitive electronics
+7. PROTECTION AND SAFETY
+Hardware Protections:
+Inline fuses or resettable breakers on main bus
+Reverse polarity protection
+Short-circuit protection
+System Protections:
+BMS-triggered shutdown on fault
+Watchdog-triggered kill-line activation
+Power isolation for faulty subsystems
+Safety Priority Rule:
+Power system must not interfere with kill-line or reactive safety functions
+8. CONTROL INTEGRATION
+Mission Compute:
+Monitors power telemetry
+Adjusts actuator load based on available energy
+Reactive Safety Layer:
+Triggers safe-stop under undervoltage or overcurrent conditions
+System Control Authority Model:
+Hardware power cutoff overrides all software commands
+Ensures deterministic shutdown behavior
+9. MAINTENANCE AND VERIFICATION
+Pre-deployment checks:
+Battery voltage and SOC
+BMS status
+Regulator output verification
+Routine maintenance:
+Inspect connectors and cables
+Verify fuse integrity
+Check thermal performance under load
+All changes logged per Configuration Management Plan
+10. DESIGN INTENT
+Provide stable, efficient, and safe power delivery across all subsystems
+Support both endurance and high-performance mission profiles
+Ensure compatibility with energy models, FMEA, and deployment profiles
+Maintain safety-first architecture with deterministic failure handling
+Enable modular upgrades and traceable configuration changes
