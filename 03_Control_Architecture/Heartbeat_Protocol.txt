@@ -1,0 +1,65 @@
+OBSIDIAN-8 V3
+
+03_Control_Architecture/Heartbeat_Protocol.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Heartbeat Protocol for OBSIDIAN-8 V3.
+
+Monitors health and activity of compute and actuator subsystems
+Enables deterministic authority escalation in case of faults
+Ensures timely detection of communication failures
+Integrates with Watchdog Kill Line, Reactive Controller, and Mission Compute
+2. HEARTBEAT PARTICIPANTS
+Participant	Heartbeat Role	Interval	Notes
+Mission Compute	Primary operational heartbeat	100 ms	Sent to Watchdog and Reactive Controller
+Reactive Controller	Safety and override confirmation	100 ms	Bidirectional with Mission Compute
+BMS Microcontroller	Energy health heartbeat	200 ms	Monitored by Mission Compute
+Servo Bank Controllers	Local actuator activity confirmation	200 ms	Aggregated by Mission Compute
+Remote Interface MCU	Operator command acknowledgment	500 ms	Monitored for stale commands
+3. HEARTBEAT MESSAGE FORMAT
+Standard Fields:
+Sender_ID (unique for each participant)
+Timestamp (UTC or system uptime)
+Status_Code (OK / WARNING / CRITICAL)
+Checksum or CRC for integrity
+Optional Fields:
+SOC, temperature, actuator load, error counters
+Messages transmitted over:
+ROS2 topics for compute units
+CAN/UART for BMS and servo controllers
+Direct hardware line for watchdog
+4. MONITORING AND TIMEOUTS
+Watchdog monitors all critical heartbeat signals
+If heartbeat not received within timeout window:
+Mission Compute: 200–500 ms → triggers local safe mode
+Watchdog: 500 ms → asserts hardware kill-line
+Reactive Controller: 300 ms → halts motion of affected subsystems
+Timeout windows are configurable for deployment profile and load conditions
+5. ESCALATION AND RESPONSE
+Trigger Condition	Escalation Action	Authority Layer
+Missed Mission Compute heartbeat	Kill-line assertion	Watchdog
+Missed Reactive Controller heartbeat	Stop affected actuators	Reactive
+BMS critical status reported	Safe shutdown, disable power rail	BMS / Reactive
+Stale Remote Operator heartbeat	Reject commands, log alert	Mission Compute
+All escalations logged and timestamped for audit
+6. INTEGRATION WITH SYSTEM COMPONENTS
+Watchdog Kill Line: receives mission-critical heartbeat inputs
+Reactive Safety Layer: monitors local heartbeat for motion override
+Mission Compute: aggregates and verifies subordinate heartbeats
+BMS / Energy Model: heartbeat provides live SOC and thermal status
+Deployment Profile: heartbeat parameters and timeout thresholds recorded
+7. VALIDATION AND TESTING
+Simulated heartbeat loss scenarios
+End-to-end latency and jitter measurement
+Failover testing with multiple participant failure
+Hardware kill assertion timing verification
+Logging and audit trace validation
+8. DESIGN INTENT
+Ensure deterministic detection of subsystem failures
+Provide a clear escalation path to maintain safety-first operation
+Support modular, scalable architecture for all compute and actuator participants
+Integrate with Watchdog, Reactive Controller, BMS, and Authority Escalation Model
+Maintain complete auditability and system transparency
