@@ -1,0 +1,77 @@
+OBSIDIAN-8 V3
+
+03_Control_Architecture/Compute_Role_Definition.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the roles and responsibilities of all compute units in OBSIDIAN-8 V3.
+
+Ensures clear separation of tasks and authority
+Supports real-time control, safety enforcement, and telemetry
+Integrates with Authority Escalation Model, BMS, and Reactive Safety Layer
+Provides traceable configuration for deployment and auditing
+2. COMPUTE UNITS OVERVIEW
+Compute Unit	Primary Role	Interfaces / Notes
+Mission Compute	High-level task planning and trajectory execution	ROS2, actuator commands, BMS telemetry
+Reactive Controller	Safety enforcement, collision avoidance, fallback motion	Sensors, actuators, watchdog
+BMS Microcontroller	Battery monitoring and protection	Energy models, main bus, telemetry
+Watchdog Timer Unit	Hardware supervision and kill-line	Servo power lines, Mission Compute heartbeat
+Remote Interface MCU	Operator command validation	Authenticated control, telemetry feed
+3. RESPONSIBILITIES
+
+Mission Compute:
+
+Plans and executes mission trajectories
+Coordinates actuator banks based on energy and thermal status
+Interfaces with Reactive Controller for override handling
+Monitors deployment profile compliance
+
+Reactive Controller:
+
+Monitors sensor inputs for unsafe conditions
+Performs emergency motion stops or safe retraction
+Executes hardware overrides per Authority Escalation Model
+Logs all safety interventions
+
+BMS Microcontroller:
+
+Monitors battery voltage, current, temperature, SOC/SOH
+Provides alerts to Mission Compute and Reactive Controller
+Triggers hardware shutdown under critical conditions
+
+Watchdog Timer Unit:
+
+Monitors heartbeat from Mission Compute
+Directly asserts kill-line on timeout or detected fault
+Provides redundant hardware-level safety
+
+Remote Interface MCU:
+
+Validates and authenticates remote operator commands
+Rejects unauthorized inputs
+Escalates alerts to higher authority layers
+4. INTER-COMPUTE COMMUNICATION
+ROS2 Network: Mission Compute ↔ Reactive Controller ↔ Sensors
+CAN / UART: BMS ↔ Mission Compute / Reactive Controller
+Direct Hardware Lines: Watchdog ↔ Servo Bank Power, Main Kill Relay
+Telemetry Aggregation: Remote Interface MCU ↔ Mission Compute for logging
+5. FAILSAFE AND ESCALATION BEHAVIORS
+Loss of Mission Compute heartbeat → Watchdog asserts kill
+Battery critical fault → BMS triggers safe shutdown
+Sensor anomaly → Reactive Controller halts motion
+Unauthorized remote command → rejected, logged, optionally escalated
+All escalations follow Authority Escalation Model hierarchy
+6. VALIDATION AND TESTING
+Compute unit functionality verified under simulated mission loads
+Communication failure simulations
+Emergency stop and authority escalation tests
+BMS and watchdog integration tests
+Logging and audit trail verification
+7. DESIGN INTENT
+Clearly separate compute roles to reduce single-point failures
+Maintain safety-first operation with deterministic responses
+Provide redundant monitoring and escalation pathways
+Enable maintainable, auditable, and scalable system architecture
+Integrate fully with control authority, FMEA, energy models, and deployment profiles
