@@ -1,0 +1,81 @@
+OBSIDIAN-8 V3
+
+03_Control_Architecture/Authority_Escalation_Model.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Authority Escalation Model (AEM) for OBSIDIAN-8 V3.
+
+Establishes hierarchy of control commands and overrides
+Ensures safety-first operation under all conditions
+Integrates Mission Compute, Reactive Controller, BMS, Watchdog, and manual interventions
+Supports deterministic response to faults, threats, and operator actions
+2. CONTROL LAYERS
+Hardware Kill / Watchdog Layer
+Highest authority
+Direct hardware path to disable all actuators
+Overrides all software commands
+Reactive Safety Layer
+Immediate safety intervention based on sensor inputs
+Can stop motion, prevent collisions, enforce kill-line if required
+Independent of mission compute commands
+Mission Compute Layer
+Standard operational control
+Executes planned trajectories, task logic, and high-level decisions
+Subject to escalation rules from above layers
+Remote Operator / Swarm Coordination Layer
+Lowest authority for individual command inputs
+Subject to verification and authentication
+Can be overridden in emergencies
+3. ESCALATION RULES
+Event / Trigger	Escalation Action	Authority Level
+Watchdog timeout / hardware fault	Immediate power cutoff	Kill Layer
+Reactive safety threshold exceeded	Stop affected actuators	Reactive Layer
+Mission Compute conflict / error	Suspend commands, revert to safe mode	Reactive Layer
+Unauthorized swarm / remote command	Reject and log	Reactive / Kill Layer
+Manual kill-line activation	Immediate shutdown	Kill Layer
+All escalations are deterministic and logged in deployment records.
+4. AUTHORITY INTERFACES
+Hardware Kill Layer:
+Connected directly to actuator enable lines and main bus
+Monitors Watchdog signals
+Reactive Safety Layer:
+Monitors sensors, IMU, energy state, and environment
+Interfaces with Mission Compute via ROS2 feedback
+Mission Compute:
+Receives telemetry from BMS, energy models, actuator states
+Adjusts motion commands based on available authority
+Remote Operator:
+Commands validated against authentication and authorization
+Can be overridden or escalated by higher layers
+5. FAILSAFE BEHAVIORS
+Loss of communication → triggers safe-stop in Reactive Layer
+Critical undervoltage or overcurrent → hardware kill asserted
+Sensor anomalies → reactive safety stops affected subsystems
+Swarm spoofing detected → mission compute commands ignored
+All escalations cannot be bypassed by lower authority commands
+6. INTEGRATION WITH OTHER SYSTEMS
+BMS / Energy Models:
+SOC thresholds escalate authority to Reactive Layer
+Watchdog Kill Line:
+Hardware enforcement ensures deterministic shutdown
+Servo Bank Architecture:
+Escalation commands transmitted to relevant actuator banks
+FMEA References:
+FM-003 (battery undervoltage)
+FM-004 (servo overheating)
+FM-009 (power distribution fault)
+7. VALIDATION AND TESTING
+Simulated multi-layer conflicts
+Emergency and fault injection testing
+Authority logging verification
+Compliance with safety-first hierarchy
+Deployment-ready scenarios recorded per Configuration Management Plan
+8. DESIGN INTENT
+Enforce deterministic, safety-prioritized control hierarchy
+Protect against software faults, operator errors, and power anomalies
+Ensure predictable escalation and fault containment
+Fully integrate with FMEA, BMS, watchdog, and deployment profiles
+Maintain operational transparency and audit readiness
