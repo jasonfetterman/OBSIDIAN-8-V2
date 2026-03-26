@@ -1,0 +1,121 @@
+OBSIDIAN-8 V3
+STRUCTURAL LOAD ASSUMPTIONS v1
+Based on: V3_LARGE_FORMAT_BASELINE
+Status: DESIGN LOAD DEFINITION
+Units: Metric
+
+---------------------------------------
+PURPOSE
+---------------------------------------
+
+Define conservative structural load assumptions
+for frame sizing and stiffness validation.
+
+These are not operational limits.
+They are structural design baselines.
+
+---------------------------------------
+ASSUMED TOTAL SYSTEM MASS
+---------------------------------------
+
+Target Estimated All-Up Mass (AUM):
+40–55 kg (including propulsion, electronics, payload)
+
+Design Mass Used for Calculations:
+60 kg (conservative margin)
+
+Gravitational Force (60 kg):
+≈ 588 N
+
+---------------------------------------
+STATIC LOAD CASES
+---------------------------------------
+
+Load Case 1 — Static Ground Support
+Total vertical load:
+600 N distributed through ring
+
+Load Case 2 — Uneven Ground Support
+100% system mass assumed supported
+by 50% of ring perimeter
+
+Equivalent localized load:
+≈ 600 N applied over half structure
+
+---------------------------------------
+DYNAMIC LOAD CASES
+---------------------------------------
+
+Load Case 3 — Vertical Shock (Landing / Impact)
+
+Design Factor:
+2.5 g vertical impulse
+
+Equivalent load:
+60 kg × 2.5 g
+≈ 1470 N
+
+This load assumed:
+- Distributed across radial bracing
+- Transferred through primary ring
+
+Load Case 4 — Torsional Twist
+
+Assume 300 N lateral force
+applied at top of vertical posts.
+
+Creates torsional moment
+around center axis.
+
+Frame must:
+- Deflect elastically
+- Return to neutral
+- Show no permanent deformation
+
+---------------------------------------
+PRINTED PART LIMITATIONS
+---------------------------------------
+
+Printed CF nylon components:
+- Not rated for primary axial compression
+- Not rated for sustained tensile loads
+- Rated for shear stabilization only
+
+All major compression paths:
+Must pass aluminum-to-aluminum.
+
+---------------------------------------
+DEFLECTION TARGETS
+---------------------------------------
+
+Primary ring vertical deflection under 2.5 g load:
+< 3 mm
+
+Torsional twist under 300 N lateral:
+< 2 degrees
+
+Vertical post lean:
+< 1 mm deviation at top
+
+---------------------------------------
+SAFETY FACTOR TARGET
+---------------------------------------
+
+Minimum safety factor:
+2.0 on aluminum members
+
+Printed parts:
+3.0 recommended due to anisotropy
+
+---------------------------------------
+VALIDATION METHODS
+---------------------------------------
+
+- Manual torsion test
+- Static load test with sandbags
+- Dial indicator measurement
+- Post-load inspection for micro-cracking
+
+---------------------------------------
+END OF FILE
+---------------------------------------

@@ -1,0 +1,65 @@
+OBSIDIAN-8 V3
+FRAME CUT LIST v1
+Based on: V3_LARGE_FORMAT_BASELINE
+Status: PRELIMINARY FABRICATION LENGTHS
+Units: Millimeters
+
+---------------------------------------
+PRIMARY STRUCTURE — 3030 ALUMINUM
+---------------------------------------
+
+PRIMARY RING SEGMENTS
+Quantity: 12
+Length: 288.3 mm each
+End Cuts: 15° miter both ends
+Profile: 3030
+
+VERTICAL POSTS
+Quantity: 8
+Length: 900 mm each
+End Cuts: Square
+Profile: 3030
+
+---------------------------------------
+SECONDARY STRUCTURE — 2020 ALUMINUM
+---------------------------------------
+
+RADIAL BRACES (BOTTOM PLANE)
+Quantity: 6
+Length: 556.5 mm (cut to fit after node confirmation)
+End Cuts: Square (final trim in assembly)
+Profile: 2020
+
+UPPER BRACE RING SEGMENTS
+Configuration: 12-sided polygon
+Radius: 520 mm
+Estimated Segment Length: 269.3 mm
+Quantity: 12
+End Cuts: 15° miter both ends
+Profile: 2020
+
+CROSS BRACING (VERTICAL POSTS)
+Quantity: 8–16 (dependent on final pattern)
+Length: Field measure after vertical post install
+Profile: 2020
+
+---------------------------------------
+NOTES
+---------------------------------------
+
+- All lengths are nominal.
+- Verify center radius before final cutting.
+- Dry assemble primary ring before committing secondary cuts.
+- Printed interface blocks must be test-fitted prior to final torque.
+- Do not preload printed parts in tension.
+
+---------------------------------------
+ESTIMATED TOTAL MATERIAL
+---------------------------------------
+
+3030 Total Length ≈ 10.7 meters
+2020 Total Length ≈ 6–8 meters (variable with cross brace density)
+
+---------------------------------------
+END OF FILE
+---------------------------------------

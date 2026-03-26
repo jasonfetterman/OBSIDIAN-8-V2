@@ -1,0 +1,168 @@
+OBSIDIAN-8 V3
+LANDING INTERFACE GEOMETRY v1
+Based on: V3_LARGE_FORMAT_BASELINE
+Status: BASE CONTACT STRUCTURE DEFINITION
+Units: Millimeters
+
+---------------------------------------
+PURPOSE
+---------------------------------------
+
+Define landing contact geometry,
+load distribution paths,
+and ground interface protection.
+
+Landing system must:
+- Absorb vertical impulse
+- Prevent ring damage
+- Maintain frame alignment
+
+---------------------------------------
+LANDING STRATEGY
+---------------------------------------
+
+Primary contact points:
+8 landing nodes
+Aligned with vertical posts
+
+No direct ground contact
+with primary 3030 ring segments.
+
+---------------------------------------
+LANDING NODE LOCATION
+---------------------------------------
+
+Landing points positioned:
+Directly below POST_01 through POST_08
+
+Radial position:
+Aligned with PRIMARY_RING_CENTER_RADIUS (556.5 mm)
+
+Angular spacing:
+Every other ring node (45° spacing)
+
+---------------------------------------
+LANDING FOOT GEOMETRY
+---------------------------------------
+
+Option A — Fixed Foot Pads
+Diameter: 80–120 mm
+Material: TPU, UHMW, or rubber composite
+Mount: Bolted to reinforced foot block
+
+Option B — Skid Ring (Continuous)
+Secondary circular skid
+Radius: 540 mm
+Material: TPU-wrapped 2020 or composite rail
+
+---------------------------------------
+VERTICAL LOAD PATH
+---------------------------------------
+
+Ground Contact
+→ Landing Foot
+→ Printed Foot Block (shear only)
+→ Vertical 3030 Post
+→ Primary Ring Node
+→ Radial Bracing
+
+Printed material must not carry
+primary axial compression alone.
+
+---------------------------------------
+SHOCK DESIGN LOAD
+---------------------------------------
+
+Design vertical impulse:
+2.5 g at 60 kg
+≈ 1470 N total
+
+Distributed across 8 landing nodes:
+
+≈ 185 N per node (ideal case)
+
+Uneven landing case:
+Assume 50% load on 4 nodes
+≈ 370 N per loaded node
+
+Landing interface must tolerate:
+≥ 500 N per node (design margin)
+
+---------------------------------------
+FOOT BLOCK DESIGN RULES
+---------------------------------------
+
+Minimum wall thickness:
+10–12 mm at bolt interface
+
+Add internal ribbing.
+
+Insert spacing:
+Minimum 3 mm from outer edge.
+
+Compression faces must align
+directly under aluminum post.
+
+---------------------------------------
+GROUND CLEARANCE
+---------------------------------------
+
+Minimum ground clearance:
+100 mm from base ring to ground
+
+Landing foot height must:
+Maintain level stance.
+
+Tolerance:
+±2 mm max difference between feet.
+
+---------------------------------------
+STABILITY CONDITION
+---------------------------------------
+
+Under 10° tilt:
+
+Projected CG must remain
+within landing footprint.
+
+No tipping allowed.
+
+---------------------------------------
+OPTIONAL SHOCK MITIGATION
+---------------------------------------
+
+If additional damping required:
+
+- TPU compression pads
+- Rubber isolation puck
+- Spring-damper insert system
+- Energy-absorbing foam layer
+
+Avoid overly soft feet:
+Excessive compliance reduces stability.
+
+---------------------------------------
+INSPECTION REQUIREMENTS
+---------------------------------------
+
+After first landing test:
+
+- Inspect printed foot blocks
+- Check insert retention
+- Verify post vertical alignment
+- Re-measure ring diameter
+
+---------------------------------------
+FAILURE CONDITIONS
+---------------------------------------
+
+Redesign required if:
+
+- Post base shifts relative to ring
+- Printed block cracks
+- Foot compression permanent
+- Ring deforms after impact
+
+---------------------------------------
+END OF FILE
+---------------------------------------

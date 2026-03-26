@@ -1,0 +1,123 @@
+OBSIDIAN-8 V3
+FABRICATION TOLERANCE SPECIFICATION v1
+Based on: V3_LARGE_FORMAT_BASELINE
+Status: MANUFACTURING CONTROL STANDARD
+Units: Millimeters
+
+---------------------------------------
+PURPOSE
+---------------------------------------
+
+Define dimensional tolerances for aluminum members,
+printed components, and assembly alignment.
+
+Prevent cumulative tolerance drift in 45-inch frame.
+
+---------------------------------------
+ALUMINUM CUT TOLERANCES
+---------------------------------------
+
+3030 / 2020 Linear Cuts:
+±0.5 mm maximum
+
+Miter Cuts (15°):
+Angle tolerance ±0.5°
+Length tolerance ±0.5 mm
+
+Post Height (900 mm):
+±0.5 mm across all posts
+
+Segments must be matched sets.
+Do not mix unmatched tolerances.
+
+---------------------------------------
+RING DIAMETER TOLERANCE
+---------------------------------------
+
+Primary Ring Outer Diameter:
+1143 mm ±1.0 mm
+
+Measured across 3 different diameters.
+
+Out-of-round condition:
+Maximum deviation 2 mm total.
+
+---------------------------------------
+VERTICAL ALIGNMENT
+---------------------------------------
+
+Post vertical deviation:
+< 0.5° from true vertical
+
+Post height variation:
+< 1 mm across all posts
+
+Upper ring concentricity:
+±2 mm relative to primary ring center
+
+---------------------------------------
+2020 BRACING TOLERANCES
+---------------------------------------
+
+Radial brace length:
+Field trim recommended
+Final installed tolerance ±1 mm
+
+Cross braces:
+Cut after primary structure confirmed square.
+
+---------------------------------------
+PRINTED PART TOLERANCES
+---------------------------------------
+
+General dimensional tolerance:
+±0.3 mm after shrink compensation
+
+Bolt hole oversize:
++0.2 mm over nominal
+
+Insert seating depth:
+±0.2 mm
+
+Critical mating surfaces:
+Test-fit required prior to final assembly.
+
+---------------------------------------
+FASTENER FITMENT
+---------------------------------------
+
+No forced alignment using bolts.
+
+If hole misalignment > 0.5 mm:
+Disassemble and correct root geometry.
+
+---------------------------------------
+CUMULATIVE ERROR CONTROL
+---------------------------------------
+
+Do not:
+- Fully torque structure before confirming symmetry.
+- Install upper ring before verifying primary ring flatness.
+- Install cross bracing before vertical alignment confirmed.
+
+Build must progress in validation stages.
+
+---------------------------------------
+INSPECTION CHECKPOINTS
+---------------------------------------
+
+Checkpoint 1:
+Primary ring diameter & flatness verified.
+
+Checkpoint 2:
+Vertical posts aligned and equal height.
+
+Checkpoint 3:
+Upper ring concentric and level.
+
+Checkpoint 4:
+Full torque inspection complete.
+
+---------------------------------------
+END OF FILE
+---------------------------------------

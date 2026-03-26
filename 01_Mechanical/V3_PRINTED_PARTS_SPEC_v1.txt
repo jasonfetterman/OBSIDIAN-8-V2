@@ -1,0 +1,122 @@
+OBSIDIAN-8 V3
+PRINTED PARTS SPECIFICATION v1
+Based on: V3_LARGE_FORMAT_BASELINE
+Status: STRUCTURAL INTERFACE DEFINITION
+Material: Carbon Fiber Reinforced Nylon
+Units: Millimeters
+
+---------------------------------------
+GENERAL PRINT PARAMETERS
+---------------------------------------
+
+Material: CF Nylon (structural grade)
+Shrink Compensation Scale: 1.002 – 1.005
+Layer Height: 0.2–0.3 mm
+Infill: 50–70% Gyroid or Cubic
+Perimeters: Minimum 5 walls
+Top/Bottom Layers: Minimum 6
+
+Minimum Structural Wall Thickness: 6 mm
+Reinforced Load Zones: 10–12 mm
+Insert Clearance: +0.2 mm bolt hole oversize
+
+All structural fasteners must use heat-set threaded inserts.
+No direct threading into nylon permitted.
+
+---------------------------------------
+PART GROUP A — PRIMARY RING CORNER BLOCK
+---------------------------------------
+
+Quantity: 12
+
+Function:
+Connect 3030 ring segments at 15° miter joints.
+
+Interface:
+- Accepts two 3030 ends
+- M8 fastener channels
+- Steel T-nut engagement
+
+Design Rules:
+- Compression transfer into aluminum faces
+- Printed part only handles shear stabilization
+- Internal ribbing required
+- Minimum 12 mm material around bolt channels
+
+---------------------------------------
+PART GROUP B — VERTICAL POST FOOT BLOCK
+---------------------------------------
+
+Quantity: 8
+
+Function:
+Mount vertical 3030 posts to ring node.
+
+Interface:
+- Base saddle for ring segment
+- Vertical receiver for 3030 post
+- M8 structural fasteners
+
+Design Rules:
+- Direct aluminum-to-aluminum compression alignment
+- Printed block must not carry axial compression load alone
+- Add internal gussets at 45° angles
+
+---------------------------------------
+PART GROUP C — RADIAL 2020 CLAMP
+---------------------------------------
+
+Quantity: 6
+
+Function:
+Attach 2020 radial brace to 3030 primary ring.
+
+Interface:
+- 3030 slot engagement
+- 2020 perpendicular capture
+- M6 fasteners
+
+Design Rules:
+- Clamp geometry distributes shear
+- Avoid thin arms under bending load
+- Minimum 8 mm wall at junctions
+
+---------------------------------------
+PART GROUP D — CROSS BRACE GUSSET
+---------------------------------------
+
+Quantity: 16 (variable)
+
+Function:
+Stabilize 2020 cross bracing between vertical posts.
+
+Interface:
+- Dual 2020 capture channels
+- M6 insert locations
+
+Design Rules:
+- Triangular geometry preferred
+- Prevent torsional twist
+- Maintain 6 mm minimum edge margin from inserts
+
+---------------------------------------
+PRINT ORIENTATION RULES
+---------------------------------------
+
+- Layer lines must not align with primary tensile force.
+- Orient parts so compression loads are vertical relative to layers.
+- Avoid printing large structural faces flat if bending stress is expected.
+- Add fillets (minimum 3 mm radius) to all internal corners.
+
+---------------------------------------
+FAILURE PREVENTION RULES
+---------------------------------------
+
+- No printed part carries primary compression path.
+- No cantilevered thin arms under dynamic load.
+- No unsupported insert closer than 3 mm to edge.
+- Test-fit every interface before final assembly.
+
+---------------------------------------
+END OF FILE
+---------------------------------------

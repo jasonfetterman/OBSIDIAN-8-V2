@@ -1,0 +1,146 @@
+OBSIDIAN-8 V3
+VIBRATION & HARMONICS CONTROL SPEC v1
+Based on: V3_LARGE_FORMAT_BASELINE
+Status: STRUCTURAL DYNAMIC STABILITY DEFINITION
+Units: Metric
+
+---------------------------------------
+PURPOSE
+---------------------------------------
+
+Define vibration control targets
+for structural integrity, electronics protection,
+and long-term fatigue prevention.
+
+---------------------------------------
+PRIMARY SOURCES OF VIBRATION
+---------------------------------------
+
+- Propulsion system imbalance
+- Motor harmonics
+- Structural resonance
+- Landing impulse loads
+- Cross-brace coupling modes
+
+---------------------------------------
+DESIGN OBJECTIVES
+---------------------------------------
+
+1. Avoid structural resonance within propulsion RPM band.
+2. Prevent amplification at vertical posts.
+3. Prevent ring “drum mode” flex.
+4. Isolate electronics from high-frequency vibration.
+
+---------------------------------------
+TARGET FREQUENCY BEHAVIOR
+---------------------------------------
+
+Primary structural natural frequency:
+> 20 Hz minimum (preferred > 30 Hz)
+
+Reason:
+Avoid coupling with propulsion harmonic band.
+
+No large flexible spans without bracing.
+
+---------------------------------------
+RING STIFFNESS RULE
+---------------------------------------
+
+Primary 3030 ring must behave
+as a closed rigid loop.
+
+No hinge-like corner behavior allowed.
+
+Corner blocks must:
+- Transfer shear effectively
+- Prevent rotational slip
+
+---------------------------------------
+VERTICAL POST CONTROL
+---------------------------------------
+
+Posts must not behave as tuning forks.
+
+Mitigation methods:
+- Cross bracing between posts
+- Upper ring stabilization
+- Avoid long unsupported spans
+
+---------------------------------------
+RADIAL BRACE FUNCTION
+---------------------------------------
+
+Radial 2020 braces must:
+- Reduce ring torsional flex
+- Prevent ovalization under dynamic load
+- Tie central mass to outer structure
+
+---------------------------------------
+ELECTRONICS ISOLATION
+---------------------------------------
+
+Electronics deck must:
+
+- Mount to secondary structure (2020)
+- Use vibration damping standoffs if required
+- Avoid rigid coupling to propulsion mount nodes
+
+Preferred isolation:
+Rubber or TPU isolators (moderate stiffness)
+
+---------------------------------------
+FASTENER CONTROL
+---------------------------------------
+
+All structural fasteners:
+- Medium-strength threadlocker
+- Re-torque after first dynamic test
+
+Loose fasteners amplify vibration modes.
+
+---------------------------------------
+PRINTED PART LIMITS
+---------------------------------------
+
+CF Nylon components:
+- Inspect after first dynamic run
+- No creep under sustained vibration
+- Replace if stress whitening observed
+
+---------------------------------------
+VALIDATION METHOD
+---------------------------------------
+
+1. Assemble full frame.
+2. Simulate vibration manually (tap test).
+3. Listen for ringing resonance.
+4. Perform controlled dynamic run.
+5. Monitor for:
+   - Excess flex
+   - Harmonic amplification
+   - Audible resonance peaks
+
+---------------------------------------
+FATIGUE PREVENTION RULES
+---------------------------------------
+
+- No sharp internal corners (minimum 3 mm fillet)
+- Avoid thin cantilevered printed arms
+- Distribute loads across multiple fasteners
+- Avoid stress concentration at ring joints
+
+---------------------------------------
+FAILURE CONDITIONS
+---------------------------------------
+
+Redesign required if:
+
+- Persistent resonance detected
+- Structural oscillation visible at idle
+- Printed components creep or crack
+- Ring exhibits measurable cyclic distortion
+
+---------------------------------------
+END OF FILE
+---------------------------------------

@@ -1,0 +1,128 @@
+OBSIDIAN-8 V3
+TORSIONAL STIFFNESS SPECIFICATION v1
+Based on: V3_LARGE_FORMAT_BASELINE
+Status: FRAME RIGIDITY TARGET DEFINITION
+Units: Metric
+
+---------------------------------------
+PURPOSE
+---------------------------------------
+
+Define measurable torsional rigidity targets
+for the 45-inch primary frame structure.
+
+Ensure structural integrity under dynamic loading.
+
+---------------------------------------
+TEST CONFIGURATION
+---------------------------------------
+
+Frame assembled fully:
+- Primary ring
+- Vertical posts
+- Radial braces
+- Upper ring
+- Cross bracing
+
+Frame secured at base ring
+to flat rigid surface.
+
+Force applied at top of one vertical post.
+
+---------------------------------------
+LOAD CONDITION
+---------------------------------------
+
+Applied lateral force:
+300 N at 900 mm height
+
+Equivalent torque:
+T = Force × Height
+T = 300 N × 0.9 m
+T = 270 N·m
+
+---------------------------------------
+PERFORMANCE TARGETS
+---------------------------------------
+
+Maximum angular deflection:
+< 2.0 degrees under 270 N·m
+
+Elastic return required:
+Frame must return to zero twist
+after load removal.
+
+No permanent deformation allowed.
+
+---------------------------------------
+SECONDARY TARGET
+---------------------------------------
+
+Under moderate manual twist (~100 N force):
+Deflection should feel rigid and controlled.
+No visible ring distortion.
+
+---------------------------------------
+RING DISTORTION LIMIT
+---------------------------------------
+
+During torsion test:
+
+Primary ring diameter change:
+< 2 mm total deviation
+
+No localized buckling allowed.
+
+---------------------------------------
+PRINTED PART INSPECTION
+---------------------------------------
+
+After torsion test:
+
+- No cracking
+- No layer separation
+- No insert pullout
+- No whitening stress marks
+
+If any defect observed:
+Redesign required before operational use.
+
+---------------------------------------
+OPTIONAL INSTRUMENTED TEST
+---------------------------------------
+
+Mount dial indicator at opposite post.
+
+Measure deflection displacement
+at known torque.
+
+Calculate angular displacement:
+
+θ (radians) = displacement / radius
+
+---------------------------------------
+STIFFNESS GOAL (REFERENCE)
+---------------------------------------
+
+Target torsional stiffness:
+> 135 N·m per degree
+
+Derived from:
+270 N·m ÷ 2° maximum twist
+
+Higher stiffness preferred.
+
+---------------------------------------
+FAILURE CONDITIONS
+---------------------------------------
+
+Frame fails torsional spec if:
+
+- Twist > 2°
+- Permanent deformation observed
+- Printed parts crack
+- Aluminum members visibly bow
+
+---------------------------------------
+END OF FILE
+---------------------------------------

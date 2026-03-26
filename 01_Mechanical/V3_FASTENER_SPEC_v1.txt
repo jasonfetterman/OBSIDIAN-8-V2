@@ -1,0 +1,83 @@
+OBSIDIAN-8 V3
+FASTENER SPECIFICATION v1
+Based on: V3_LARGE_FORMAT_BASELINE
+Status: STRUCTURAL HARDWARE DEFINITION
+Units: Metric
+
+---------------------------------------
+PRIMARY STRUCTURE — 3030 CONNECTIONS
+---------------------------------------
+
+Primary Ring Joints (3030 to 3030)
+Fastener Type: M8 Socket Head Cap Screw
+Grade: 10.9 minimum
+Length: 20–25 mm (verify with corner block depth)
+Washer: M8 hardened washer
+Thread Interface: Steel T-nut or threaded insert block
+Torque Spec: 22–25 Nm
+
+Vertical Post to Ring Node
+Fastener Type: M8 Socket Head Cap Screw
+Grade: 10.9 minimum
+Length: 25–30 mm
+Thread Interface: Steel T-nut
+Torque Spec: 22–25 Nm
+
+---------------------------------------
+SECONDARY STRUCTURE — 2020 CONNECTIONS
+---------------------------------------
+
+2020 to 3030 Interfaces
+Fastener Type: M6 Socket Head Cap Screw
+Grade: 10.9 minimum
+Length: 16–20 mm
+Thread Interface: Steel T-nut (slot compatible)
+Torque Spec: 9–11 Nm
+
+2020 Cross Bracing
+Fastener Type: M6 Socket Head Cap Screw
+Grade: 10.9 minimum
+Length: 16–20 mm
+Torque Spec: 9–11 Nm
+
+---------------------------------------
+PRINTED CF NYLON COMPONENT INTERFACES
+---------------------------------------
+
+Heat-Set Inserts:
+Type: Brass heat-set threaded insert
+Size: M6 and M8 as required
+Install Method: Controlled temperature insertion
+Minimum Wall Thickness Around Insert: 3 mm radial
+
+Bolt Hole Oversize:
++0.2 mm over nominal diameter
+
+Printed Part Rule:
+- No direct threading into nylon
+- All structural fasteners use inserts
+- Avoid tensile loading of printed material
+
+---------------------------------------
+VIBRATION CONTROL
+---------------------------------------
+
+Threadlocker:
+Type: Medium strength (Blue)
+Applied to all structural fasteners
+
+Optional:
+Nord-Lock washers for primary ring joints (recommended)
+
+---------------------------------------
+GENERAL HARDWARE RULES
+---------------------------------------
+
+- Do not mix imperial hardware
+- Do not use low-grade (8.8 or below) for primary load paths
+- Re-torque after first structural load test
+- Inspect printed interfaces after first 10 operational hours
+
+---------------------------------------
+END OF FILE
+---------------------------------------

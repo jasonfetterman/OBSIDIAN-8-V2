@@ -1,0 +1,48 @@
+OBSIDIAN-8 V3
+FRAME GEOMETRY BASELINE
+Based on: V3_LARGE_FORMAT_BASELINE
+Status: LOCKED GEOMETRY DEFINITION
+
+---------------------------------------
+GLOBAL PARAMETERS
+---------------------------------------
+
+FOOTPRINT_DIAMETER = 1143 mm
+FOOTPRINT_RADIUS = 571.5 mm
+
+PRIMARY_PROFILE = 3030
+SECONDARY_PROFILE = 2020
+
+PRIMARY_RING_SEGMENTS = 12
+PRIMARY_RING_CENTER_RADIUS = 556.5 mm
+PRIMARY_SEGMENT_LENGTH = 288.3 mm
+SEGMENT_MITER_ANGLE = 15 degrees per side
+
+FRAME_HEIGHT = 900 mm
+
+MATERIAL_STRUCTURAL = 3030 Aluminum
+MATERIAL_BRACING = 2020 Aluminum
+MATERIAL_PRINTED = CF Nylon
+
+---------------------------------------
+PRIMARY RING DEFINITION
+---------------------------------------
+
+CONFIGURATION = 12-sided polygon
+SEGMENT_COUNT = 12
+
+PRIMARY_RING_OUTER_DIAMETER = 1143 mm
+PRIMARY_RING_CENTER_RADIUS = 556.5 mm
+
+CONSTRUCTION_METHOD = Segmented (No extrusion bending)
+
+LOAD_PATH_RULES:
+- All joints occur at structural node points
+- Vertical posts align directly with ring nodes
+- Compression paths terminate into aluminum members
+- Printed CF nylon components are interface/shear only
+- No primary load path relies solely on printed material in tension
+
+---------------------------------------
+END OF FILE
+---------------------------------------

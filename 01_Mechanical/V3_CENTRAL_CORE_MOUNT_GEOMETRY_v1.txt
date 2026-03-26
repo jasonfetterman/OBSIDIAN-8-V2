@@ -1,0 +1,155 @@
+OBSIDIAN-8 V3
+CENTRAL CORE MOUNT GEOMETRY v1
+Based on: V3_LARGE_FORMAT_BASELINE
+Status: CORE STRUCTURAL INTERFACE DEFINITION
+Units: Millimeters
+
+---------------------------------------
+PURPOSE
+---------------------------------------
+
+Define central structural mounting zone
+for propulsion spine, avionics core,
+power system, and mission payload stack.
+
+Core must:
+- Remain within reserved clearance zone
+- Tie into radial structure
+- Avoid loading printed parts in tension
+
+---------------------------------------
+RESERVED CORE VOLUME
+---------------------------------------
+
+Central Clearance Cylinder:
+Diameter: 300 mm
+Height: Full FRAME_HEIGHT (900 mm)
+
+No permanent structure allowed
+outside this boundary
+without documented update.
+
+---------------------------------------
+CORE SUPPORT STRATEGY
+---------------------------------------
+
+Primary support via:
+6 radial 2020 braces (bottom plane)
+
+Optional secondary support via:
+Upper radial tie-ins at 60% height.
+
+Core must not:
+Hang solely from upper ring.
+
+---------------------------------------
+LOWER CORE PLATE
+---------------------------------------
+
+Mount Type:
+Circular or hexagonal plate
+
+Recommended Diameter:
+220–260 mm
+
+Material:
+Aluminum plate (6–8 mm thick)
+or composite equivalent
+
+Mounting:
+Bolted to radial 2020 braces
+using M6 fasteners.
+
+---------------------------------------
+UPPER CORE STABILIZER
+---------------------------------------
+
+Optional upper stabilizer ring
+attached to vertical posts
+at 540 mm height.
+
+Purpose:
+Prevent lateral oscillation
+of central stack.
+
+---------------------------------------
+LOAD PATH
+---------------------------------------
+
+Core Mass
+→ Core Plate
+→ Radial 2020 Braces
+→ Ring Nodes
+→ Vertical Posts
+
+No single radial brace
+should carry majority of load.
+
+Mass distribution must remain symmetrical.
+
+---------------------------------------
+MASS LIMITS
+---------------------------------------
+
+Maximum recommended central core mass:
+25 kg
+
+If exceeding:
+Add secondary reinforcement ring.
+
+---------------------------------------
+FASTENER RULES
+---------------------------------------
+
+Core-to-brace interface:
+M6 Grade 10.9 minimum
+
+Bolt spacing:
+≥ 40 mm apart
+
+No single-bolt cantilever mounts allowed.
+
+---------------------------------------
+VIBRATION CONTROL
+---------------------------------------
+
+Core plate may use:
+Moderate vibration isolators
+between electronics and plate.
+
+Do not isolate entire core mass
+from frame structure.
+
+---------------------------------------
+CENTER OF GRAVITY CONTROL
+---------------------------------------
+
+Heavy components (batteries):
+Mount below 50% frame height.
+
+Avoid tall, narrow mass stacks.
+
+---------------------------------------
+ALIGNMENT REQUIREMENTS
+---------------------------------------
+
+Core plate center must align
+within ±2 mm of geometric origin.
+
+Vertical alignment tolerance:
+< 1° deviation.
+
+---------------------------------------
+FAILURE CONDITIONS
+---------------------------------------
+
+Redesign required if:
+
+- Core oscillates visibly under torsion test
+- Radial braces deflect > 3 mm under static load
+- Mount bolts loosen after dynamic test
+- Printed clamps show creep
+
+---------------------------------------
+END OF FILE
+---------------------------------------
