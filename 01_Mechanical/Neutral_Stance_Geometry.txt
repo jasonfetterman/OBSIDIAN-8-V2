@@ -1,0 +1,56 @@
+OBSIDIAN-8 V3
+
+01_Mechanical/Neutral_Stance_Geometry.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the neutral stance geometry for OBSIDIAN-8 V3.
+This stance is the baseline posture used for:
+
+Calibration and sensor alignment
+Actuator range verification
+Center of gravity determination
+Simulation and control authority testing
+Deployment and maintenance reference
+2. REFERENCE FRAME
+Origin: Center of main chassis at base plate (0,0,0)
+Axes:
+X: Forward
+Y: Lateral (right positive)
+Z: Upward
+Units: Meters (m) and degrees (°)
+3. LIMB POSITIONS AND ANGLES
+Limb / Joint	Position XYZ (m)	Rotation (deg)	Notes
+Front Left Leg (FL) – Hip	0.35, 0.25, 0.45	0	Neutral hip orientation
+Front Left Leg – Knee	0.35, 0.25, 0.25	30	Slight bend for weight support
+Front Left Leg – Ankle	0.35, 0.25, 0.05	0	Foot flat on ground
+Front Right Leg (FR) – Hip	0.35, -0.25, 0.45	0	Symmetric to FL
+Front Right Leg – Knee	0.35, -0.25, 0.25	30	
+Front Right Leg – Ankle	0.35, -0.25, 0.05	0	
+Rear Left Leg (RL) – Hip	-0.35, 0.25, 0.45	0	
+Rear Left Leg – Knee	-0.35, 0.25, 0.25	30	
+Rear Left Leg – Ankle	-0.35, 0.25, 0.05	0	
+Rear Right Leg (RR) – Hip	-0.35, -0.25, 0.45	0	
+Rear Right Leg – Knee	-0.35, -0.25, 0.25	30	
+Rear Right Leg – Ankle	-0.35, -0.25, 0.05	0	
+
+Notes: Knee bend angles chosen for static stability; foot flat on ground for CG alignment.
+
+4. TORSO AND PAYLOAD ALIGNMENT
+Torso base plate level with horizontal plane (Z = 0.45 m).
+Mission compute and battery modules centered along X-axis (longitudinal) and Y = 0 (lateral).
+Sensor mounts oriented parallel to chassis top plane.
+Armor panels installed in neutral stance for clearance verification.
+5. CENTER OF GRAVITY ALIGNMENT
+Neutral stance aligns CG directly above the midpoint of the base footprint:
+CG X: 0.0 m
+CG Y: 0.0 m
+CG Z: 0.45 m
+Ensures minimum tipping moment during static calibration and initial actuation.
+6. DESIGN INTENT
+Provides baseline posture for calibration, simulation, and motion planning.
+Ensures symmetry across all limbs for stability and accurate CG computation.
+Supports integration with Mass_and_CG_Model, Actuation Systems, and Control Authority Model.
+Reference for FMEA testing and neutral load verification.
