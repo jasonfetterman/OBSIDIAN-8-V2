@@ -1,0 +1,56 @@
+OBSIDIAN-8 V3
+
+01_Mechanical/Frame_Architecture.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the mechanical frame architecture of OBSIDIAN-8 V3, including structural design, load distribution, material selection, and modularity for actuators, sensors, and armor systems.
+
+This document ensures:
+
+Predictable mechanical behavior under operational loads
+Compatibility with actuation and armor subsystems
+Modularity for maintenance and upgrades
+Traceable design decisions linked to CM records
+2. FRAME STRUCTURE OVERVIEW
+Main Chassis: Central backbone connecting all subsystems. Material: High-strength aluminum alloy or carbon-fiber composite.
+Leg Attachments: Modular connection points for articulated limbs (Leg_MK1_Obsidian, Leg_MK2_Obsidian).
+Torso Modules: Houses Mission Compute, Battery System, Sensors.
+Armor Mounting Points: Standardized slots for Covers_armor components.
+Payload Bays: Modular compartments for mission-specific equipment.
+Maintenance Access: Removable panels for internal inspections without disassembly.
+3. MATERIAL SELECTION AND PROPERTIES
+Component	Material	Notes / Reasoning
+Main Chassis	7075 Aluminum Alloy	High strength-to-weight ratio
+Limb Joints	Titanium Alloy	Fatigue-resistant, corrosion-proof
+Armor Covers	Polycarbonate + Kevlar	Lightweight impact protection
+Internal Panels	ABS Plastic	Easy to remove, low cost
+Fasteners	Stainless Steel	Corrosion resistance, reliability
+4. LOAD AND STRESS CONSIDERATIONS
+Frame designed for dynamic motion loads under full articulation.
+Safety factor ≥ 2.0 for all structural elements.
+Stress distribution analyzed via FEA (Finite Element Analysis) on:
+Chassis backbone
+Limb mounting points
+Armor attachment interfaces
+Vibration damping integrated at actuator mounts to protect electronics.
+5. MODULARITY AND INTERFACES
+Actuator Interfaces: Standardized mounting holes, torque limits documented.
+Sensor Mounts: Adjustable brackets with orientation locking.
+Armor Panels: Quick-release mechanism, keyed alignment to frame.
+Power & Data Channels: Embedded routing paths within frame for wiring harnesses.
+6. COMPATIBILITY WITH CM / DEPLOYMENT
+Frame revision recorded in Configuration Management Plan.
+Each unit linked to its deployment_profile specifying hardware revision.
+Structural changes require Change Request (CR) approval, per CM guidelines.
+7. DESIGN INTENT
+
+The frame architecture ensures:
+
+High structural integrity while maintaining weight efficiency
+Modular and upgradeable mechanical layout
+Integration compatibility with actuation, sensor, and armor subsystems
+Predictable performance across all operational scenarios
+Traceable and auditable design evolution
