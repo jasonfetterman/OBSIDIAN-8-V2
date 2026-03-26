@@ -1,0 +1,53 @@
+OBSIDIAN-8 V3
+
+01_Mechanical/Tripod_Gait_Kinematics.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the kinematic behavior and control parameters for tripod gait locomotion in OBSIDIAN-8 V3.
+
+Ensures stability and efficiency during flat terrain locomotion.
+Integrates with reactive safety, control authority, and neutral stance geometry.
+Provides a baseline for actuator motion planning and CG stability.
+2. GAIT DEFINITION
+Tripod gait: Alternating movement of two sets of three limbs to maintain at least 3 points of contact.
+Limb Sets:
+Set A: Front Left (FL), Rear Right (RR), Middle/optional limb if present
+Set B: Front Right (FR), Rear Left (RL), Middle/optional limb if present
+Cycle: Set A lifts → moves forward → set A sets down → Set B lifts → moves forward → set B sets down.
+3. STEP PARAMETERS
+Parameter	Nominal Value	Notes
+Step Length (X-axis)	0.25 m	Max safe without overextension
+Step Height (Z-axis)	0.05 m	Neutral terrain clearance
+Swing Duration	0.5 s	Time limb is in air
+Stance Duration	0.5 s	Time limb is in contact
+Duty Factor	0.5	Ratio stance/swing for stability
+Step parameters are adjustable per mission profile and payload weight.
+Dynamic CG tracking ensures balance throughout gait cycle.
+4. LIMB KINEMATICS
+Joint	Neutral Angle (°)	Swing Adjustment (°)	Notes
+Hip	0	±15	Forward/back swing
+Knee	30	±20	Lift for clearance
+Ankle	0	±10	Foot orientation
+Coordination between limb sets ensures continuous tripod support polygon.
+CG projection always remains within support polygon for dynamic stability.
+5. STABILITY CONSIDERATIONS
+Minimum of 3 points of ground contact at all times.
+CG adjusted dynamically along X and Y axes to prevent tipping.
+Torque limits enforced to protect actuators during forward motion.
+Sensor feedback (IMU, force sensors) used to detect slippage or imbalance.
+6. CONTROL INTEGRATION
+Tripod gait managed by Mission Compute Layer, preempted by Reactive Safety Layer if collisions or instability detected.
+Hardware kill-line and watchdog override all gait commands if emergency occurs.
+Swarm or remote commands cannot interrupt tripod gait mid-step unless safe-stop triggered.
+7. VALIDATION AND TESTING
+Flat terrain, inclined terrain, and variable payload tests.
+Metrics recorded: step length accuracy, CG deviation, torque utilization, actuator temperature.
+FMEA references: FM-003 (battery undervoltage), FM-004 (servo overheating), FM-008 (IMU drift).
+8. DESIGN INTENT
+Provides predictable, repeatable tripod gait for OBSIDIAN-8 V3.
+Ensures continuous stability and safety during locomotion.
+Supports integration with neutral stance, mass/CG model, stair-mode mechanics, and control authority.
+Enables simulation, calibration, and field deployment of stable gait patterns.
