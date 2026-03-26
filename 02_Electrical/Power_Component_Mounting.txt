@@ -1,0 +1,95 @@
+OBSIDIAN-8 V3
+
+02_Electrical/Power_Component_Mounting.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define mounting, placement, and mechanical integration of power system components for OBSIDIAN-8 V3.
+
+Ensures secure installation of batteries, BMS, regulators, and distribution hardware
+Prevents vibration damage, thermal issues, and electrical faults
+Supports maintenance access and modular replacement
+Aligns with Frame Architecture and Cable Routing standards
+2. COMPONENT OVERVIEW
+
+Power-related components include:
+
+Battery modules (LiFePO4 / LiPo)
+Battery Management System (BMS)
+Power Distribution Board (PDB)
+DC-DC regulators
+Main disconnect / fuse assemblies
+
+All components must be mounted within designated chassis zones.
+
+3. MOUNTING LOCATIONS
+Component	Location	Notes
+Battery Modules	Central lower chassis	Low CG priority
+BMS	Adjacent to battery	Minimize wiring length
+Power Distribution Board	Central backbone panel	Equal access to all subsystems
+DC-DC Regulators	Ventilated side panels	Heat dissipation required
+Main Fuse / Disconnect	Accessible exterior panel	Emergency access
+Layout must preserve center of gravity alignment per Mass_and_CG_Model.
+4. MOUNTING METHODS
+Fasteners:
+Stainless steel bolts with locking nuts or thread-lock
+Minimum 2-point mounting per component (4-point for batteries)
+Vibration Isolation:
+Rubber dampers or isolation mounts for battery and regulators
+Foam padding for shock-sensitive components
+Mounting Plates:
+Aluminum or composite plates tied to chassis structure
+Pre-drilled standardized hole patterns
+5. THERMAL MANAGEMENT
+Components must maintain safe operating temperatures:
+Batteries: < 60°C
+Regulators: < 80°C
+Cooling strategies:
+Passive airflow via vented panels
+Thermal spacing between components (≥10 mm gap)
+Heat sinks on regulators where required
+Avoid mounting near high-heat sources (motors, power resistors).
+6. ELECTRICAL ISOLATION
+Non-conductive standoffs used where required
+Insulation barriers between high-current components and chassis
+Grounding points defined and consistent across system
+No exposed terminals allowed in accessible areas
+7. ACCESSIBILITY AND MAINTENANCE
+Battery modules must be:
+Removable without full disassembly
+Accessible within ≤5 minutes
+BMS and PDB must be:
+Visible for inspection
+Reachable for diagnostics
+Main disconnect must be:
+Clearly labeled
+Accessible without tools
+8. INTEGRATION WITH OTHER SYSTEMS
+Cable Routing:
+Direct routing paths from components to PDN
+Strain relief applied at all connection points
+Frame Architecture:
+Mounting points aligned with structural load-bearing members
+Deployment Profile:
+Records exact component placement and configuration
+FMEA References:
+FM-003 (battery undervoltage)
+FM-009 (power distribution fault)
+9. VERIFICATION AND TESTING
+Mechanical inspection:
+Fastener torque verification
+Mount stability under vibration
+Thermal testing:
+Full-load operation temperature checks
+Electrical validation:
+Continuity and isolation testing
+Load distribution verification
+All results documented per Configuration Management Plan
+10. DESIGN INTENT
+Ensure secure, stable, and safe mounting of all power components
+Maintain optimal center of gravity and thermal performance
+Enable rapid maintenance and modular upgrades
+Prevent electrical faults due to vibration, heat, or poor isolation
+Fully integrate with CM, FMEA, and deployment documentation
