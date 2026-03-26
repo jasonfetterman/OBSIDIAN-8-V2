@@ -1,0 +1,201 @@
+OBSIDIAN-8 V3
+Maintenance_Procedure_Manual.txt
+Revision: V3.2
+Status: Authoritative
+
+------------------------------------------------------------
+1. PURPOSE
+------------------------------------------------------------
+
+Define standardized maintenance procedures for OBSIDIAN-8 V3
+to ensure continued operational safety, reliability,
+and compliance with lifecycle requirements.
+
+Maintenance is mandatory for continued deployment authorization.
+
+------------------------------------------------------------
+2. MAINTENANCE CLASSIFICATIONS
+------------------------------------------------------------
+
+Level 1 – Routine Inspection  
+Level 2 – Preventive Maintenance  
+Level 3 – Corrective Maintenance  
+Level 4 – Major Component Replacement  
+
+Only qualified personnel may perform Level 3 and 4.
+
+------------------------------------------------------------
+3. MAINTENANCE INTERVALS
+------------------------------------------------------------
+
+Every Deployment (Pre-Mission):
+
+- Visual frame inspection
+- Check harness routing
+- Verify battery charge state
+- Confirm firmware version
+- Confirm kill-line functionality
+
+------------------------------------------------------------
+
+Every 10 Operating Hours:
+
+- Inspect fastener torque
+- Inspect servo mounts
+- Inspect connectors
+- Review fault logs
+
+------------------------------------------------------------
+
+Every 50 Operating Hours:
+
+- Recalibrate IMU
+- Recalibrate joint zero positions
+- Inspect battery health metrics
+- Inspect servo temperature logs
+
+------------------------------------------------------------
+
+Every 100 Operating Hours:
+
+- Full structural inspection
+- Harness continuity test
+- Power distribution inspection
+- Replace worn connectors if necessary
+
+------------------------------------------------------------
+4. ROUTINE INSPECTION PROCEDURE
+------------------------------------------------------------
+
+Step 1:
+Power system off.
+
+Step 2:
+Inspect frame for cracks or deformation.
+
+Step 3:
+Inspect harness for abrasion or pinch points.
+
+Step 4:
+Check servo mounting security.
+
+Step 5:
+Verify kill-line test:
+
+- Activate hardware E-stop
+- Confirm servo rail de-energizes
+
+No mission permitted if failure detected.
+
+------------------------------------------------------------
+5. BATTERY MAINTENANCE
+------------------------------------------------------------
+
+- Inspect for swelling
+- Check BMS logs
+- Verify cycle count
+- Confirm charge voltage within spec
+
+Battery must be replaced if:
+
+- Capacity degraded below defined threshold
+- Abnormal thermal behavior observed
+- Physical damage present
+
+------------------------------------------------------------
+6. SERVO MAINTENANCE
+------------------------------------------------------------
+
+- Check for excessive noise
+- Check for abnormal heat
+- Verify joint angle limits
+- Inspect torque performance
+
+Replace servo if:
+
+- Repeated fault codes logged
+- Thermal threshold exceeded
+- Position deviation beyond tolerance
+
+------------------------------------------------------------
+7. SOFTWARE MAINTENANCE
+------------------------------------------------------------
+
+Before updating firmware or software:
+
+- Backup logs
+- Record current version
+- Validate release tag
+- Perform post-update validation test
+
+No field updates without configuration record update.
+
+------------------------------------------------------------
+8. CORRECTIVE MAINTENANCE
+------------------------------------------------------------
+
+If fault detected:
+
+- Identify subsystem
+- Consult FMEA and Risk Register
+- Document root cause
+- Replace or repair component
+- Re-run Operational Test Plan subset
+
+------------------------------------------------------------
+9. RECORD KEEPING
+------------------------------------------------------------
+
+Each maintenance action must log:
+
+- Date
+- Technician name
+- Serial number
+- Operating hours
+- Work performed
+- Observed anomalies
+
+Records retained in lifecycle database.
+
+------------------------------------------------------------
+10. SAFETY REQUIREMENTS
+------------------------------------------------------------
+
+During maintenance:
+
+- Servo rail must remain disabled
+- Battery must be electrically isolated
+- ESD precautions required for electronics
+- No maintenance under active mission state
+
+------------------------------------------------------------
+11. RETURN TO SERVICE PROCEDURE
+------------------------------------------------------------
+
+After maintenance:
+
+- Perform power-on test
+- Run motion validation
+- Verify energy status
+- Verify watchdog heartbeat
+- Clear logged faults
+
+Only after passing checks may unit be redeployed.
+
+------------------------------------------------------------
+12. DESIGN INTENT
+------------------------------------------------------------
+
+Maintenance procedures ensure:
+
+- Continued structural integrity
+- Electrical reliability
+- Safe operation
+- Compliance with lifecycle governance
+- Preservation of safety architecture
+
+Maintenance discipline prevents failure escalation.
+
+------------------------------------------------------------
+END OF FILE
+------------------------------------------------------------
