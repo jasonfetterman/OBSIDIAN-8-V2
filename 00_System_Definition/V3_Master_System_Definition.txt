@@ -1,0 +1,69 @@
+OBSIDIAN-8 V3
+
+V3_Master_System_Definition.txt
+Revision: V3.2
+Status: Authoritative
+
+TABLE OF CONTENTS
+Configuration Management Plan
+Cybersecurity Threat Model
+Deployment Profile
+Failure Modes and Effects Analysis (FMEA)
+Design Philosophy
+System Control Authority Model
+1. CONFIGURATION MANAGEMENT PLAN
+
+Reference: Configuration_Management_Plan.txt
+
+Defines baselines (System, Hardware, Software, Production)
+Versioning: V[Major].[Minor].[Revision]
+Change Control: CR process, Class A/B/C classification, approval hierarchy
+Configuration Records: serials, hardware/software versions, calibration, deployment profile
+Software and Document Control, Audits, Field Change Management, End-of-Life procedures
+Design Intent: predictable evolution, safety preservation, traceable engineering changes
+2. CYBERSECURITY THREAT MODEL
+
+Reference: Cybersecurity_Threat_Model.txt
+
+Threat Categories T1–T8 (Remote Command Injection, Credential Compromise, etc.)
+Attack Surfaces: Remote channels, ROS2 topics, wireless stack, SSH, firmware path, swarm, local storage
+Mitigations and Verification Methods for each threat
+Security Requirements SEC-001 to SEC-007
+Safety Priority Rule: security never overrides hardware kill or reactive dominance
+Validation Requirements: penetration testing, authentication simulation, firmware audits, swarm validation
+3. DEPLOYMENT PROFILE
+
+Reference: Deployment_Profile.txt
+
+Unit Identification: Serial, model, deployment date, operator, mission type
+Hardware Configuration: actuators, battery, BMS, sensors, optional add-ons
+Software Configuration: ROS2 packages, firmware, launch configs, security patches
+Calibration & Testing: pre-deployment tests, safety override status
+Network & Communication: primary network, encryption, swarm channels
+Security & Authorization: credential profiles, access control, firmware verification
+Deployment Status: readiness, restrictions, authorized sign-off
+4. FAILURE MODES AND EFFECTS ANALYSIS (FMEA)
+
+Reference: Failure_Modes_and_Effects_Analysis.txt
+
+Failure ID FM-001 to FM-012 across subsystems: Reactive Controller, Mission Compute, Battery, Actuators, Frame, Watchdog, Communication, Sensors, Power Distribution, Docking, Authority, Energy Model
+Includes Failure Mode, Cause, Effect, Severity, Occurrence, Detection, RPN, Mitigation
+RPN interpretation: ≥25 → review, 15–24 → acceptable with monitoring, <15 → controlled
+Review Policy: before Phase 2 exit, after Class A changes, after critical incidents, annual
+Design Intent: structured evaluation, prioritized mitigation, proactive discipline
+5. DESIGN PHILOSOPHY
+
+Reference: Design_Philosophy.txt
+
+Guiding principles: Safety-first, modularity, deterministic control, integrated security, reliability, traceability, human-centered interaction
+Engineering mindset: anticipate failure, validate continuously, maintain discipline, iterate responsibly, respect operational context
+Design Intent: predictable evolution, preserved authority and safety hierarchy, contained failures, traceable software/hardware/network interactions, security subordinate to safety
+6. SYSTEM CONTROL AUTHORITY MODEL
+
+Reference: System_Control_Authority_Model.txt
+
+Authority Hierarchy: Hardware-level > Reactive Controller > Mission Compute > Local Operator > Swarm > Automated Failsafe
+Control Decision Flow: input → verification → reactive check → hardware kill → execution → logging
+Conflict Resolution: Hardware > Software, Reactive > Mission, Local > Remote, Swarm ≤ Local Safety
+Authority Validation and Testing: penetration testing, forced conflict simulations, logging/audit review
+Design Intent: safety preserved, deterministic, auditable, operator authority clear, swarm enhances mission without violating safety
