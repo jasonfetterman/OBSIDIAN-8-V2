@@ -1,0 +1,72 @@
+OBSIDIAN-8 V3
+
+10_Lifecycle/Upgrade_Path.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Upgrade Path (UP) for OBSIDIAN-8 V3.
+
+Ensure structured system upgrades across mechanical, electrical, software, and control subsystems
+Maintain compatibility, safety, and configuration integrity
+Provide traceable versioning and deployment procedures
+2. OBJECTIVES
+Standardize upgrade procedures for fleet-wide deployment
+Ensure backward compatibility with existing hardware and deployment profiles
+Maintain audit-ready records of all applied upgrades
+Reduce operational disruption during upgrade cycles
+Enable incremental adoption of new features or patches
+3. UPGRADE TYPES
+
+3.1 Software Upgrades:
+
+ROS2 nodes, message definitions, interfaces, and firmware
+Minor updates: bug fixes, performance improvements
+Major updates: new features or changes impacting system behavior
+Deployment via controlled build and verified release tags
+
+3.2 Hardware Upgrades:
+
+Replacement of actuators, sensors, or frame modules
+Integration of enhanced power systems or thermal management components
+Modifications approved through Change Request (CR) process
+Tested for compatibility with current software baseline
+
+3.3 Deployment Profile Updates:
+
+Adjustments to operational modes, energy-aware parameters, or gait profiles
+Ensure all units receive verified configuration files
+Validate via acceptance and endurance testing before active deployment
+4. UPGRADE PROCEDURE
+Planning:
+Define scope, subsystems impacted, and deployment profile
+Risk assessment and regression test planning
+Obtain approval from System Architect, Safety Reviewer, and Production Manager
+Testing:
+Apply upgrade in test environment
+Execute relevant protocols: movement, endurance, docking, and failure injection tests
+Record all metrics and verify baseline compliance
+Deployment:
+Stage upgrades on field units using verified media or deployment pipelines
+Maintain logs of applied upgrades, including serial numbers and versions
+Confirm post-upgrade operational readiness via automated or manual checks
+Audit & Validation:
+Verify configuration record updates for each unit
+Confirm all safety, reactive control, and watchdog mechanisms function correctly
+Retain upgrade logs for ≥5 years
+5. COMPATIBILITY AND VERSION CONTROL
+All upgrades must comply with baseline configurations and version identifiers
+Software versions follow V[Major].[Minor].[Revision] scheme
+Hardware upgrades must match approved revision and mechanical/electrical specifications
+Cross-check deployment profiles to prevent incompatibility between units in the fleet
+6. FAILSAFE AND ROLLBACK
+All upgrades must include rollback procedures to prior version if failures occur
+Safety and reactive control remain operational during upgrade
+Logging captures all upgrade attempts, errors, and rollback actions
+Rollback verified through functional tests before returning to operational status
+7. DESIGN INTENT
+Enable incremental, auditable, and safe upgrades to OBSIDIAN-8 fleet
+Preserve system integrity, safety, and operational readiness
+Maintain traceable configuration records and baseline compliance
+Minimize downtime while maximizing feature adoption and performance improvements
