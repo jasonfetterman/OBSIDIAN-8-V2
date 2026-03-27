@@ -1,0 +1,61 @@
+OBSIDIAN-8 V3
+
+06_Navigation/Persistent_Mapping_Model.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Persistent Mapping Model (PMM) for OBSIDIAN-8 V3.
+
+Generates, maintains, and stores a long-term 3D map of the environment
+Supports global path planning, obstacle avoidance, and mission analysis
+Integrates data from perception sensors, IMU, and odometry
+Ensures deterministic, redundant, and auditable map construction
+2. INPUT PARAMETERS
+Parameter	Source / Notes
+Fused 3D Point Cloud	Depth Fusion Model
+Camera Imagery	Object & Terrain Classification Models
+IMU / Odometry	Pose estimation and drift correction
+GPS / External Localization	Optional
+Mission Waypoints	Mission Compute
+3. MAPPING ALGORITHM
+Voxel-Based Occupancy Mapping:
+Convert point clouds into occupancy voxels for efficient storage
+Maintain dynamic and static distinction
+Pose Correction & Drift Mitigation:
+Integrate IMU, odometry, and optional GPS
+Perform loop closure using SLAM techniques to reduce accumulated error
+Map Fusion:
+Merge new sensor data into existing map
+Update confidence levels for each voxel based on observation frequency
+Handle dynamic objects by marking transient voxels separately
+Persistence & Versioning:
+Maps stored in deployment-profile-specific repository
+Each map version linked to ROS2 timestamp and system revision
+Supports rollback to previous map states for audit or mission replay
+4. FAILSAFE AND REDUNDANCY
+If sensors fail, last known map used for safe navigation
+Multi-sensor fusion ensures redundancy (stereo, LiDAR, IMU)
+Dynamic obstacles detected in real-time bypass persistent map to prevent collisions
+All map updates logged and versioned for audit
+5. INTERFACES
+Mission Compute: reads global map for path planning
+Reactive Controller: uses real-time perception to modify local navigation
+Path Planning Model: global map provides cost grid and terrain constraints
+ROS2 topics:
+navigation/persistent_map
+navigation/map_updates
+navigation/map_status
+6. VALIDATION AND TESTING
+Build maps in controlled test environments
+Verify alignment with ground-truth measurements
+Test loop closure and drift correction performance
+Simulate sensor dropouts and ensure map continuity
+Audit map version history and update logs
+7. DESIGN INTENT
+Maintain accurate, auditable, and persistent environmental maps
+Support safe and energy-efficient autonomous navigation
+Enable deterministic mission planning and replayability
+Provide redundancy and fault tolerance in mapping operations
+Integrate seamlessly with perception, path planning, and trajectory execution
