@@ -1,0 +1,104 @@
+OBSIDIAN-8 V3
+
+08_Software/Message_Definitions.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define Message Definitions for OBSIDIAN-8 V3.
+
+Standardizes all ROS2 message types for deterministic inter-module communication
+Ensures type safety, version traceability, and compatibility across deployments
+Supports control, perception, navigation, swarm, and software subsystems
+2. MESSAGE NAMING CONVENTION
+<subsystem>/<message_name>
+Includes version identifier: V[Major]_[Minor]_[Revision] for backward compatibility
+All fields must include units and data type in documentation
+
+Example:
+
+control/JointCommand_V3_2
+  float64[] positions      # radians
+  float64[] velocities     # radians/sec
+  float64[] torques        # Nm
+  uint64 timestamp         # microseconds since epoch
+3. CORE MESSAGE DEFINITIONS
+
+3.1 Control
+
+control/JointState_V3_2
+  float64[] positions
+  float64[] velocities
+  float64[] torques
+  uint64 timestamp
+control/TrajectoryCommand_V3_2
+  float64[][] joint_positions
+  float64[][] joint_velocities
+  float64[][] joint_accelerations
+  uint64 start_time
+  uint64 duration
+
+3.2 Perception
+
+perception/PointCloud_V3_2
+  float32[][] points     # [x, y, z] in meters
+  uint16[][] intensity
+  uint64 timestamp
+perception/TerrainClassification_V3_2
+  string[] class_labels
+  float32[] confidence
+  uint64 timestamp
+
+3.3 Navigation
+
+navigation/PathPlan_V3_2
+  float64[][] waypoints  # [x, y, z] in meters
+  float32[] cost         # normalized [0.0-1.0]
+  uint64 timestamp
+navigation/SLAMPose_V3_2
+  float64 x, y, z
+  float64 roll, pitch, yaw
+  float64 covariance[6][6]
+  uint64 timestamp
+
+3.4 Swarm & Network
+
+swarm/Heartbeat_V3_2
+  string node_id
+  uint64 timestamp
+  float32 battery_level
+  bool status_ok
+swarm/TaskAssignment_V3_2
+  string task_id
+  string[] assigned_nodes
+  string task_parameters
+  uint64 start_time
+  uint64 deadline
+
+3.5 Software Deployment & Monitoring
+
+software/DeploymentStatus_V3_2
+  string profile_name
+  string software_version
+  string firmware_version
+  bool configuration_verified
+  uint64 timestamp
+software/RuntimeParameter_V3_2
+  string parameter_name
+  string value
+  uint64 timestamp
+4. VERSIONING AND COMPATIBILITY
+All messages must include version (V[Major]_[Minor]_[Revision])
+New fields appended only to maintain backward compatibility
+Deprecated messages maintained for legacy deployments until full phase-out
+5. VALIDATION AND TESTING
+ROS2 message build verification for all defined types
+Serialization/deserialization tests to prevent runtime errors
+Inter-subsystem message exchange simulation in lab and field conditions
+Logging and audit of all messages in live deployments
+6. DESIGN INTENT
+Provide consistent, traceable, and auditable message definitions across OBSIDIAN-8
+Enable safe, deterministic communication between control, perception, navigation, and swarm layers
+Maintain backward compatibility and deployment traceability
+Integrate seamlessly with ROS2 nodes, deployment profiles, and audit logs
