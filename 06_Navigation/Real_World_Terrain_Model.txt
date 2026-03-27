@@ -1,0 +1,56 @@
+OBSIDIAN-8 V3
+
+06_Navigation/Real_World_Terrain_Model.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Real-World Terrain Model (RWTM) for OBSIDIAN-8 V3.
+
+Provides continuous representation of terrain for navigation, gait selection, and energy-aware planning
+Integrates sensor data to model slopes, obstacles, and surface properties
+Supports deterministic, safe path planning across diverse environments
+Ensures integration with perception, autonomy, and energy models
+2. INPUT PARAMETERS
+Parameter	Source / Notes
+3D Point Cloud	Depth Fusion Model
+Terrain Classification	Terrain Classification Model
+IMU / Orientation	Sensor Suite
+Odometry	Mission Compute / Sensor Suite
+Camera Imagery	RGB Cameras
+Optional LiDAR	Top-mounted or side LiDAR
+3. TERRAIN REPRESENTATION
+Voxel Grid Model: discretizes terrain into 3D cells for navigation and energy estimation
+Slope & Elevation Maps: compute gradients and step heights for gait selection
+Surface Roughness Index: derived from point cloud density and variance
+Dynamic vs Static: classify moving obstacles separately to avoid persistent map contamination
+4. REAL-TIME UPDATES
+Integrate depth, camera, and IMU data every control cycle
+Adjust terrain estimates based on new sensor readings
+Weight new data according to sensor confidence and time decay to handle dynamic changes
+Update energy-aware navigation model and gait selection in real-time
+5. FAILSAFE AND REDUNDANCY
+Sensor dropout → fallback to last known terrain estimate
+Multiple sensors ensure redundancy: stereo cameras + LiDAR + IMU
+Classification confidence below threshold triggers conservative gait and speed
+Log all terrain data for audit and post-mission validation
+6. INTERFACES
+Mission Compute: provides updated terrain for path and gait planning
+Energy-Aware Navigation Model: uses terrain model to adjust speed and energy allocation
+Reactive Controller: overrides planned path in case of unsafe terrain detection
+ROS2 topics:
+navigation/terrain_model
+navigation/terrain_status
+7. VALIDATION AND TESTING
+Test in varied real-world terrain: flat surfaces, rough terrain, stairs, slopes, and obstacles
+Compare terrain representation with ground-truth survey data
+Verify latency and accuracy for real-time control
+Simulate partial sensor failure to validate redundancy and failsafe logic
+Log updates and confidence scores for audit
+8. DESIGN INTENT
+Provide accurate, redundant, and real-time terrain representation
+Support safe, energy-aware, and adaptive autonomous navigation
+Integrate seamlessly with perception, path planning, gait selection, and energy models
+Maintain deterministic behavior and fully auditable system logs
+Ensure fallback and failsafe mechanisms in case of sensor degradation or failure
