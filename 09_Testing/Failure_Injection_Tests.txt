@@ -1,0 +1,72 @@
+OBSIDIAN-8 V3
+
+09_Testing/Failure_Injection_Tests.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define Failure Injection Tests (FIT) for OBSIDIAN-8 V3.
+
+Validates system robustness and resilience under controlled fault conditions
+Ensures reactive control, safety, and watchdog mechanisms respond predictably
+Supports auditability and reproducibility of fault-handling behavior
+2. TEST OBJECTIVES
+Simulate hardware and software faults to validate safety systems
+Verify watchdog and kill-line respond correctly
+Test authority escalation and reactive safety mechanisms
+Confirm system logs all events and maintains operational integrity
+Evaluate subsystem fault tolerance and recovery procedures
+3. TEST SETUP
+Environment: lab-controlled test bench or isolated outdoor area
+Deployment Profile: FIELD_STANDARD or ENERGY_SAVER as required
+Monitoring: ROS2 topics, actuator telemetry, energy system, watchdog logs
+Safety Precautions: emergency stop ready, redundant kill-line engaged
+4. FAILURE INJECTION PROCEDURE
+
+Step 1 – Initialization:
+
+Power up system and confirm all subsystems nominal
+Activate logging and telemetry capture
+Verify watchdog and kill-line operational
+
+Step 2 – Inject Software Faults:
+
+ROS2 node crash: terminate a mission-critical node and observe recovery
+Message drop: block select ROS2 topics to simulate network loss
+Authority override: attempt invalid remote command and verify rejection
+
+Step 3 – Inject Hardware Faults:
+
+Battery undervoltage: simulate low SOC and verify energy-aware halt
+Actuator stall or overcurrent: trigger via controlled load and monitor response
+Sensor failure: disable or misreport IMU/LiDAR readings and verify safe behavior
+
+Step 4 – Observe and Record:
+
+Confirm watchdog triggers kill-line if critical fault occurs
+Reactive controller enforces safe state
+All subsystem telemetry, logs, and fault reports captured
+
+Step 5 – Recovery Testing:
+
+Reset failed nodes or restore hardware function
+Validate smooth resumption of normal operations
+Ensure no persistent unsafe states remain
+5. ACCEPTANCE CRITERIA
+Watchdog triggers kill-line within 50 ms of critical fault
+Reactive control maintains safe posture or halts motion
+Authority model prevents unsafe remote command execution
+System logs all fault events with timestamps and subsystem identification
+Recovery occurs without residual errors or safety violations
+6. FAILSAFE AND MONITORING
+Redundant kill-line ensures immediate halt during critical failure
+Safety overrides operate independently of ROS2 or main compute
+Continuous monitoring of actuators, sensors, and energy system
+All events automatically logged for post-test audit
+7. DESIGN INTENT
+Ensure predictable, safe, and auditable response to all simulated faults
+Validate integration of mechanical, electrical, software, and control subsystems
+Maintain fleet readiness and mission assurance
+Provide repeatable failure injection tests for development and QA cycles
+Enable continuous improvement of resilience and safety mechanisms
