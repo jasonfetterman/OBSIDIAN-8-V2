@@ -1,0 +1,80 @@
+OBSIDIAN-8 V3
+
+10_Lifecycle/Reliability_and_Maintenance_Model.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Reliability and Maintenance Model (RMM) for OBSIDIAN-8 V3.
+
+Ensure long-term operational reliability across mechanical, electrical, and software subsystems
+Provide structured maintenance schedules and procedures
+Support fleet readiness, auditability, and configuration traceability
+2. RELIABILITY METRICS
+Mean Time Between Failures (MTBF): target 500 hours for mechanical actuators, 1,000 hours for electronics
+Mean Time To Repair (MTTR): ≤ 2 hours for replaceable modules
+Subsystem Availability: ≥ 99% during operational cycles
+Failure Mode Coverage: all high RPN (≥25) FMEA items monitored and mitigated
+Redundancy Metrics: critical systems have ≥2 independent fail-safe mechanisms
+3. MAINTENANCE CATEGORIES
+
+3.1 Preventive Maintenance:
+
+Scheduled inspections of frame, joints, actuators, and wiring
+BMS and energy system diagnostics
+Firmware and ROS2 node updates
+Cleaning of sensors, cameras, and mechanical joints
+
+3.2 Predictive Maintenance:
+
+Sensor-based monitoring of actuator torque, temperature, and vibration
+Battery SOC and cycle tracking
+Software logs and telemetry analysis for early fault detection
+
+3.3 Corrective Maintenance:
+
+Fault isolation and repair of failed hardware
+Node restart or firmware reflash for software issues
+Calibration or replacement of misaligned sensors
+
+3.4 Field Maintenance:
+
+Authorized technicians perform maintenance on-site
+Any field modification must follow documented CR and risk assessment
+Maintain detailed service and maintenance logs
+4. MAINTENANCE PROCEDURES
+Daily Pre-Mission Check:
+Verify battery charge and energy distribution
+Inspect mechanical joints and actuators visually
+Confirm ROS2 nodes and watchdog status
+Weekly Inspection:
+Check frame integrity and alignment
+Verify thermal management and cooling systems
+Test kill-line and reactive safety overrides
+Monthly Calibration:
+Sensor suite calibration (IMU, cameras, LiDAR)
+Actuator torque and position validation
+Energy model SOC verification
+Annual Overhaul:
+Complete inspection of mechanical, electrical, and control systems
+Firmware and software full update and regression testing
+Document configuration, RPN, and any updates to baselines
+5. LOGGING AND TRACEABILITY
+All maintenance events must be logged with:
+Date, technician, serial number
+Subsystems serviced
+Actions taken and parts replaced
+Logs stored for ≥5 years to ensure auditability
+Any anomaly triggering corrective maintenance must update FMEA and deployment profile records
+6. RELIABILITY VALIDATION
+Periodic endurance testing to confirm MTBF predictions
+Verification of failover systems under controlled failure conditions
+Analysis of maintenance logs to detect recurring failure patterns
+Continuous update of preventive schedules based on fleet data
+7. DESIGN INTENT
+Maximize uptime and operational readiness of OBSIDIAN-8 units
+Maintain predictable and auditable maintenance cycles
+Ensure early fault detection and mitigation to prevent mission-critical failures
+Integrate maintenance data into configuration and deployment records
+Preserve system integrity, safety, and fleet reliability over full lifecycle
