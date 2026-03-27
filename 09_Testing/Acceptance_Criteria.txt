@@ -1,0 +1,63 @@
+OBSIDIAN-8 V3
+
+09_Testing/Acceptance_Criteria.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define acceptance criteria for OBSIDIAN-8 V3 to ensure all systems meet functional, safety, and performance requirements before deployment.
+
+Provides clear, measurable pass/fail conditions
+Ensures reproducibility and auditability of tests
+Validates integration of mechanical, electrical, software, and swarm subsystems
+2. TEST CATEGORIES
+Mechanical & Actuation: stability, load tolerance, gait accuracy
+Electrical & Energy Systems: voltage stability, current draw, BMS integration
+Software & Control: ROS2 node reliability, authority model, watchdog functionality
+Perception & Navigation: sensor accuracy, SLAM mapping, terrain classification
+Swarm & Network: communication integrity, swarm task execution, remote mission control
+Safety & Failsafe: emergency stop, kill-line, hazard response
+3. MECHANICAL ACCEPTANCE
+Load Testing: structural frame withstands rated payload ±10%
+Gait Accuracy: leg trajectory deviation ≤ 2% from commanded path
+Tripod & Stair Mode: robot maintains balance on ±15° incline
+Actuator Response: joint position error ≤ 0.5° under nominal load
+4. ELECTRICAL ACCEPTANCE
+Battery System: SOC measurement accuracy ±3%, cutoff triggers correctly
+Power Distribution: rails maintain voltage within ±5% under load
+BMS Integration: overcurrent, undervoltage, and thermal limits enforce shutdown
+Watchdog: kill-line triggers within 50 ms of fault detection
+5. SOFTWARE ACCEPTANCE
+ROS2 Nodes: all required nodes launch without errors
+Authority Model: local safety overrides remote commands in all test scenarios
+Deployment Profiles: correct software, firmware, and configuration loaded per profile
+Logging: all critical events recorded with timestamps, no missing entries
+Duet/Maestro Interfaces: actuator commands executed accurately, feedback verified
+6. PERCEPTION & NAVIGATION ACCEPTANCE
+SLAM & Mapping: positional error ≤ 5 cm in indoor/outdoor test environments
+Terrain Classification: ≥ 95% classification accuracy on benchmark surfaces
+Obstacle Detection: ≥ 98% detection rate for obstacles ≥ 5 cm in height
+Path Planning: generated paths avoid obstacles and maintain planned speed/trajectory
+7. SWARM & NETWORK ACCEPTANCE
+Heartbeat & Communication: >99% message delivery in multi-unit simulations
+Task Assignment: all units execute tasks correctly within ±5% of assigned timing
+Remote Mission Control: operator commands received and executed within latency bounds
+Secure Communications: TLS and authentication verified; no unauthorized messages accepted
+8. SAFETY ACCEPTANCE
+Kill-Line & Watchdog: emergency stop triggered reliably in all failure simulations
+Reactive Control Overrides: prevents unsafe motion under fault or miscommand
+Energy-Aware Navigation: robot halts safely on low battery or hazardous terrain
+Field Failures: robot maintains predictable, safe state during communication loss or sensor failure
+9. ACCEPTANCE PROCESS
+Pre-Test Setup: verify deployment profile, energy levels, and system readiness
+Execution: perform mechanical, electrical, software, perception, swarm, and safety tests
+Validation: record all measurements, logs, and video evidence
+Pass/Fail Determination: compare results to acceptance thresholds in sections 3–8
+Audit: all tests logged and stored for review and regulatory compliance
+10. DESIGN INTENT
+Ensure all OBSIDIAN-8 units meet mission-ready operational standards
+Validate integration of mechanical, electrical, software, perception, and swarm systems
+Provide objective, auditable, and reproducible criteria for deployment approval
+Guarantee safety-first operation under all test conditions
+Maintain a traceable record for post-deployment review and continuous improvement
