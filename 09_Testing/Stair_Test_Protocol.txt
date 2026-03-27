@@ -1,0 +1,82 @@
+OBSIDIAN-8 V3
+
+09_Testing/Stair_Test_Protocol.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Stair Test Protocol (STP) for OBSIDIAN-8 V3.
+
+Validates robot stair-climbing mechanics, gait adaptation, and safety systems
+Ensures integration of perception, control, energy management, and mechanical actuation
+Provides measurable pass/fail criteria for deployment readiness
+2. TEST OBJECTIVES
+Verify safe and stable stair ascent and descent
+Measure joint positions, step clearance, and lift accuracy
+Validate actuator performance under dynamic load
+Test reactive safety and authority escalation during missteps
+Monitor energy consumption and system temperature
+Capture logs for audit and post-test analysis
+3. TEST SETUP
+Environment: standard test staircase or modular stair simulator
+Deployment Profile: FIELD_STANDARD or PERFORMANCE_MODE
+Sensors & Monitoring: IMU, encoders, force sensors, ROS2 topics
+Logging: joint telemetry, ROS2 command/feedback, energy consumption, actuator temperatures
+4. TEST PROCEDURE
+
+Step 1 – Initialization:
+
+Power up system and verify subsystem readiness
+Confirm deployment profile and baseline configuration
+Activate logging and telemetry capture
+
+Step 2 – Approach & Step Detection:
+
+Execute approach trajectory to stairs
+Use perception system to detect step height, depth, and orientation
+Confirm reactive control can correct minor misalignments
+
+Step 3 – Stair Ascent:
+
+Command stair-climbing gait
+Measure foot placement, step clearance, and joint angles
+Monitor actuator torque and load for each step
+Verify robot maintains balance and stability
+
+Step 4 – Stair Descent:
+
+Execute descent trajectory
+Measure controlled lowering of body and foot placement
+Ensure energy absorption and reactive control maintain stability
+Record all actuator and energy data
+
+Step 5 – Disturbance Simulation:
+
+Apply lateral or backward perturbation during ascent/descent
+Confirm reactive safety layer prevents tipping
+Log recovery performance and timing
+
+Step 6 – Continuous Loop Test:
+
+Repeat ascent/descent cycles over multiple runs (≥5)
+Monitor actuator temperature, energy consumption, and ROS2 node stability
+Ensure no cumulative errors or safety violations
+5. ACCEPTANCE CRITERIA
+Step clearance ≥ nominal + 5 mm, no foot collisions
+Joint torque within ±5% of safe operating limits
+Stability maintained with ≤1° roll/pitch deviation per step
+Recovery from perturbations within 1 s
+Energy consumption and actuator temperatures within deployment profile limits
+ROS2 nodes and logging remain operational; no kill-line activation
+6. FAILSAFE AND MONITORING
+Watchdog monitors system responsiveness and triggers kill-line if fault occurs
+Reactive control prevents falls, overextension, or unsafe movement
+Energy and thermal thresholds trigger safe slowdown or halt
+Emergency stop remains available at all times
+7. DESIGN INTENT
+Ensure safe, reliable, and repeatable stair traversal under all test conditions
+Validate integration of mechanical, control, perception, and energy systems
+Provide measurable metrics for acceptance and fleet deployment
+Confirm robustness of reactive safety and authority control layers
+Maintain traceable records for post-test audit and mission readiness
