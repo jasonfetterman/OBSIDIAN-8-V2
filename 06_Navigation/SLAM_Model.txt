@@ -1,0 +1,59 @@
+OBSIDIAN-8 V3
+
+06_Navigation/SLAM_Model.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Simultaneous Localization and Mapping (SLAM) Model for OBSIDIAN-8 V3.
+
+Enables the robot to localize itself while constructing/updating a persistent 3D map
+Integrates depth, visual, and inertial sensors for robust performance
+Supports navigation, obstacle avoidance, and mission planning
+Ensures deterministic, redundant, and auditable operation
+2. INPUT PARAMETERS
+Parameter	Source / Notes
+Fused 3D Point Cloud	Depth Fusion Model
+Camera Imagery	RGB Cameras
+IMU / Orientation	Sensor Suite
+Odometry	Wheel or leg kinematics
+Optional GPS / GNSS	Global localization
+3. SLAM ALGORITHM
+Front-End (Sensor Processing):
+Feature extraction from images and point clouds (ORB / SIFT / FPFH)
+Point cloud registration (ICP / NDT)
+Temporal filtering to reduce noise and outliers
+Back-End (Optimization & Mapping):
+Pose graph optimization to correct drift
+Loop closure detection to prevent accumulated error
+Integrate persistent map updates for global consistency
+Data Fusion:
+Merge visual, LiDAR, stereo depth, and IMU data using EKF / UKF or factor graph optimization
+Maintain voxel-based occupancy maps with static/dynamic separation
+4. FAILSAFE AND REDUNDANCY
+Loss of one sensor → fallback to remaining sensors (e.g., depth-only or visual-only SLAM)
+Confidence scoring ensures map updates only applied when sensor data is reliable
+Uncertain pose → reduce speed and enable conservative gait
+All SLAM updates logged for audit and rollback
+5. INTERFACES
+Mission Compute: receives robot pose and persistent map for planning
+Path Planning Model: uses map and pose for trajectory optimization
+Reactive Controller: local adjustments based on dynamic obstacles
+ROS2 topics:
+navigation/slam_pose
+navigation/slam_map
+navigation/slam_status
+6. VALIDATION AND TESTING
+Test in controlled and unstructured environments
+Verify localization accuracy against ground-truth trajectories
+Evaluate loop closure and drift correction performance
+Test real-time processing latency and throughput
+Simulate sensor failures to validate redundancy and fallback logic
+Log all SLAM updates for post-mission analysis
+7. DESIGN INTENT
+Provide accurate, redundant, and real-time localization and mapping
+Support navigation, obstacle avoidance, and mission execution
+Integrate seamlessly with perception, path planning, and trajectory execution
+Maintain deterministic, predictable, and auditable performance
+Ensure failsafe behavior under sensor degradation or partial failures
