@@ -1,0 +1,73 @@
+OBSIDIAN-8 V3
+
+08_Software/Deployment_Configuration.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Deployment Configuration for OBSIDIAN-8 V3.
+
+Standardizes software and system deployment across units
+Ensures deterministic operation, reproducibility, and auditability
+Integrates ROS2 packages, firmware, configuration files, and energy/terrain profiles
+Supports deployment profiles tailored to mission type and operational environment
+2. DEPLOYMENT PROFILES
+
+Each deployment profile specifies:
+
+Profile Name	Description	Key Settings
+FIELD_STANDARD	Default operational configuration for general field missions	Full ROS2 stack, energy-aware navigation, default terrain and gait maps
+ENERGY_SAVER	Missions requiring extended runtime	Reduced speed, low-power gait, limited sensor usage, optimized path planning
+HAZARD_ZONE	Missions in risky or unknown terrain	Conservative gaits, full sensor usage, enhanced logging, reactive safety overrides
+SWARM_OPERATION	Multi-unit coordinated missions	Full swarm comms enabled, distributed task management, synchronized mission control
+TEST_BENCH	Lab or simulation	Debug logging, simulated sensors, optional safety overrides
+3. CONFIGURATION COMPONENTS
+Software:
+ROS2 package versions pinned to deployment profile
+Launch files tailored for profile (nodes, parameters, topics)
+Firmware version matched to software stack
+Hardware:
+Hardware revision and actuator configuration verified per profile
+Power distribution and BMS parameters adjusted for energy-critical profiles
+Perception & Navigation:
+Terrain classification thresholds
+Persistent mapping parameters
+Path planning cost weights adjusted per profile
+Swarm & Network:
+Communication encryption keys
+Network topology and heartbeat intervals
+Distributed task assignment parameters
+Logging & Telemetry:
+Logging levels configurable per profile
+Telemetry channels enabled/disabled as needed
+Audit-ready format maintained
+4. DEPLOYMENT PROCESS
+Profile Selection: operator or automation selects deployment profile
+Version Verification: ensure all software, firmware, and configurations match profile revision
+Environment Validation: check sensors, actuators, and energy systems
+Upload & Activation: deploy configuration to robot or swarm
+Runtime Monitoring: verify real-time adherence to profile parameters
+Logging & Audit: store deployment metadata including timestamps, software versions, and configuration checksums
+5. FAILSAFE AND OVERRIDES
+Any deviation from profile parameters triggers local safety override
+Critical failures (power, communication, hardware) switch to FIELD_STANDARD_SAFE fallback
+Manual operator overrides logged and audited
+6. INTERFACES
+Mission Compute: reads active deployment profile and adjusts path planning, gait, and energy allocation
+Swarm Control: synchronizes deployment parameters across units
+ROS2 Topics:
+deployment/profile — active profile ID
+deployment/status — configuration health and runtime verification
+deployment/logs — audit-ready deployment logs
+7. VALIDATION AND TESTING
+Verify software and firmware match profile versions
+Test sensor and actuator configuration against profile limits
+Simulate mission conditions to ensure profile parameters enforce correct behavior
+Confirm logging and telemetry capture all profile-dependent metrics
+8. DESIGN INTENT
+Ensure consistent, auditable, and safe deployment across all units
+Enable mission-specific customization while preserving safety and deterministic control
+Maintain version traceability and rollback capability
+Integrate seamlessly with autonomy, perception, swarm, and control architectures
+Provide robust fallback and override mechanisms for all deployment conditions
