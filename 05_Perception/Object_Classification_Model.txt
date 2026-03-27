@@ -1,0 +1,58 @@
+OBSIDIAN-8 V3
+
+05_Perception/Object_Classification_Model.txt
+Revision: V3.2
+Status: Authoritative
+
+1. PURPOSE
+
+Define the Object Classification Model (OCM) for OBSIDIAN-8 V3.
+
+Classifies detected objects in 3D environment for navigation and mission execution
+Integrates depth fusion, camera imagery, and sensor data
+Supports real-time autonomous decision-making and safety overrides
+Ensures deterministic performance under normal and degraded sensor conditions
+2. INPUTS AND SENSORS
+Input Type	Source	Notes
+Fused 3D Point Cloud	Depth Fusion Model	Provides object geometry
+RGB Image Frames	Camera Array	For visual classification
+IMU / Odometry	Sensor Suite	Provides pose for projection
+Thermal / IR Sensor	Optional	Supports low-light / heat-based classification
+3. CLASSIFICATION ALGORITHM
+Object Segmentation:
+Cluster point cloud to identify distinct objects
+Remove ground plane and background using RANSAC / plane fitting
+Assign provisional bounding volumes
+Feature Extraction:
+Geometric: size, shape, volume, centroid, orientation
+Visual: color histograms, edges, textures
+Optional: thermal signature
+Machine Learning Classification:
+Pretrained models (CNN / PointNet / hybrid) classify objects into categories:
+Static obstacles (walls, poles, terrain features)
+Dynamic obstacles (humans, vehicles, other robots)
+Mission-specific objects (targets, tools, payloads)
+Confidence Scoring:
+Weighted fusion of geometric and visual features
+Thresholding ensures only high-confidence classifications used for autonomy decisions
+4. FAILSAFE AND REDUNDANCY
+Low-confidence or conflicting classification → flagged for Reactive Controller intervention
+Redundant sensors (stereo cameras + LiDAR) ensure fallback in case of visual or depth sensor failure
+Dynamic objects tracked over time to verify classification consistency
+5. INTERFACES
+Output: classified object list published on ROS2 topic perception/classified_objects
+Subscribers:
+Mission Compute for path planning and task execution
+Reactive Controller for collision avoidance
+Logging and audit modules for verification and debugging
+6. VALIDATION AND TESTING
+Test object detection and classification accuracy in controlled environments
+Validate against varied lighting, occlusion, and environmental conditions
+Simulate sensor degradation (camera blind spots, LiDAR occlusion)
+Measure latency to ensure real-time control cycle compliance
+Log results for post-mission verification and audit
+7. DESIGN INTENT
+Provide accurate, robust object classification for safe autonomous navigation
+Enable redundancy and fallback strategies for sensor failure
+Integrate tightly with depth fusion, autonomy, and control systems
+Maintain deterministic operation, auditability, and deployment readiness
