@@ -1,98 +1,95 @@
-# object_tracking.py
-# OBSIDIAN-8 V3 — REV D
-# Tracks objects in video frames over time, assigns unique IDs
+"""
+object_tracking.py
+OBSIDIAN-8 V3 — REV D
+Tracks detected objects over frames using SORT / simple centroid tracking
+"""
 
 import numpy as np
-from collections import OrderedDict
-from scipy.spatial import distance as dist
+from collections import deque
+
+class TrackedObject:
+    def __init__(self, object_id, bbox, max_history=30):
+        self.id = object_id
+        self.bbox = bbox  # [x1, y1, x2, y2]
+        self.history = deque(maxlen=max_history)
+        self.history.append(bbox)
+
+    def update(self, bbox):
+        self.bbox = bbox
+        self.history.append(bbox)
 
 class ObjectTracker:
-    def __init__(self, max_disappeared=10):
+    def __init__(self, max_distance=50):
+        self.next_id = 0
+        self.objects = []
+        self.max_distance = max_distance  # pixels
+
+    def _iou(self, bbox1, bbox2):
+        # Intersection over Union
+        xA = max(bbox1[0], bbox2[0])
+        yA = max(bbox1[1], bbox2[1])
+        xB = min(bbox1[2], bbox2[2])
+        yB = min(bbox1[3], bbox2[3])
+        interArea = max(0, xB - xA) * max(0, yB - yA)
+        boxAArea = (bbox1[2]-bbox1[0])*(bbox1[3]-bbox1[1])
+        boxBArea = (bbox2[2]-bbox2[0])*(bbox2[3]-bbox2[1])
+        iou = interArea / float(boxAArea + boxBArea - interArea + 1e-5)
+        return iou
+
+    def update(self, detections):
         """
-        max_disappeared: number of frames an object can disappear before removal
+        detections: list of [x1, y1, x2, y2, conf, class_id]
         """
-        self.next_object_id = 0
-        self.objects = OrderedDict()       # object_id -> centroid
-        self.disappeared = OrderedDict()   # object_id -> frames disappeared
-        self.max_disappeared = max_disappeared
-
-    def register(self, centroid):
-        self.objects[self.next_object_id] = centroid
-        self.disappeared[self.next_object_id] = 0
-        self.next_object_id += 1
-
-    def deregister(self, object_id):
-        del self.objects[object_id]
-        del self.disappeared[object_id]
-
-    def update(self, rects):
-        """
-        rects: list of bounding boxes [(startX, startY, endX, endY)]
-        """
-        if len(rects) == 0:
-            # mark existing objects as disappeared
-            for object_id in list(self.disappeared.keys()):
-                self.disappeared[object_id] += 1
-                if self.disappeared[object_id] > self.max_disappeared:
-                    self.deregister(object_id)
-            return self.objects
-
-        # compute centroids
-        input_centroids = np.zeros((len(rects), 2), dtype="int")
-        for (i, (startX, startY, endX, endY)) in enumerate(rects):
-            cX = int((startX + endX) / 2.0)
-            cY = int((startY + endY) / 2.0)
-            input_centroids[i] = (cX, cY)
-
-        # if no objects, register all
-        if len(self.objects) == 0:
-            for centroid in input_centroids:
-                self.register(centroid)
-        else:
-            object_ids = list(self.objects.keys())
-            object_centroids = list(self.objects.values())
-
-            # compute distance between each pair
-            D = dist.cdist(np.array(object_centroids), input_centroids)
-            rows = D.min(axis=1).argsort()
-            cols = D.argmin(axis=1)[rows]
-
-            used_rows, used_cols = set(), set()
-            for (row, col) in zip(rows, cols):
-                if row in used_rows or col in used_cols:
-                    continue
-                object_id = object_ids[row]
-                self.objects[object_id] = input_centroids[col]
-                self.disappeared[object_id] = 0
-                used_rows.add(row)
-                used_cols.add(col)
-
-            # check unmatched objects
-            unused_rows = set(range(D.shape[0])) - used_rows
-            for row in unused_rows:
-                object_id = object_ids[row]
-                self.disappeared[object_id] += 1
-                if self.disappeared[object_id] > self.max_disappeared:
-                    self.deregister(object_id)
-
-            # check unmatched input centroids
-            unused_cols = set(range(D.shape[1])) - used_cols
-            for col in unused_cols:
-                self.register(input_centroids[col])
-
+        updated_objects = []
+        for det in detections:
+            x1, y1, x2, y2, conf, cls = det
+            matched = False
+            for obj in self.objects:
+                iou = self._iou(obj.bbox, [x1, y1, x2, y2])
+                if iou > 0.3:  # match threshold
+                    obj.update([x1, y1, x2, y2])
+                    updated_objects.append(obj)
+                    matched = True
+                    break
+            if not matched:
+                new_obj = TrackedObject(self.next_id, [x1, y1, x2, y2])
+                updated_objects.append(new_obj)
+                self.next_id += 1
+        self.objects = updated_objects
         return self.objects
 
 # -------------------- TEST LOOP --------------------
 if __name__ == "__main__":
-    tracker = ObjectTracker(max_disappeared=5)
-    # simulate bounding boxes over frames
-    frames = [
-        [(30,30,60,60), (200,200,230,230)],
-        [(32,32,62,62), (202,202,232,232)],
-        [(34,34,64,64)],
-        []
-    ]
+    from image_preprocessing import ImagePreprocessor
+    from object_detection import ObjectDetector
+    import cv2
 
-    for i, rects in enumerate(frames):
-        objects = tracker.update(rects)
-        print(f"Frame {i}: {objects}")
+    cap = cv2.VideoCapture(0)
+    preprocessor = ImagePreprocessor()
+    detector = ObjectDetector(model_path="yolov8n.pt", device="cuda")
+    tracker = ObjectTracker()
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        processed = preprocessor.preprocess(frame)
+        detections = detector.detect(processed)
+        tracked = tracker.update(detections)
+
+        # Draw tracked objects
+        display_frame = (processed * 255).astype(np.uint8)
+        display_frame = cv2.cvtColor(display_frame, cv2.COLOR_RGB2BGR)
+        for obj in tracked:
+            x1, y1, x2, y2 = obj.bbox
+            cv2.rectangle(display_frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
+            cv2.putText(display_frame, f"ID:{obj.id}", (int(x1), int(y1)-5),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+
+        cv2.imshow("Tracked Objects", display_frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
