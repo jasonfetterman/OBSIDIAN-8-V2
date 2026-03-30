@@ -1,73 +1,92 @@
 # main_controller.py
 # OBSIDIAN-8 V3 — REV D
-# High-level orchestrator for motion, sensors, and autonomous/teleop control
+# Central controller orchestrating all subsystems: autonomous, teleop, vision, swarm, and motion
 
+import threading
 import time
-from motion_planner import MotionPlanner
-from path_planner import PathPlanner
-from sensor_fusion import SensorFusion
-from swarm_comms import SwarmComms
 from autonomous_mode import AutonomousMode
 from teleop_interface import TeleopInterface
-from dock_comm import DockComm
-from charge_control import DockComm as ChargeDock
+from motion_planner import MotionPlanner
+from swarm_comms import SwarmComms
 
-# -------------------- CONFIG --------------------
-CONTROL_LOOP_HZ = 50  # 50 Hz main loop
+class MainController:
+    def __init__(self, node_id="OB8-Node1"):
+        # Mode: "autonomous" or "teleop"
+        self.mode = "autonomous"
 
-# -------------------- INITIALIZE SYSTEMS --------------------
-print("[Main] Initializing OBSIDIAN-8 V3 systems...")
+        # Subsystems
+        self.autonomous = AutonomousMode(node_id=node_id)
+        self.teleop = TeleopInterface()
+        self.motion_planner = MotionPlanner()
+        self.swarm = self.autonomous.swarm  # Shared with autonomous mode
 
-sensor_fusion = SensorFusion()
-motion_planner = MotionPlanner()
-path_planner = PathPlanner()
-swarm = SwarmComms()
-autonomous = AutonomousMode()
-teleop = TeleopInterface()
-dock = DockComm()
-charge = ChargeDock()
+        self.running = True
 
-# Mode: 'AUTONOMOUS' or 'TELEOP'
-mode = 'AUTONOMOUS'
+    def mode_switch_loop(self):
+        """
+        Monitors input to switch between autonomous and teleop
+        """
+        while self.running:
+            # Example: check teleop flag (could be joystick input)
+            new_mode = self.teleop.get_mode()
+            if new_mode != self.mode:
+                print(f"[MainController] Switching mode: {self.mode} -> {new_mode}")
+                self.mode = new_mode
+            time.sleep(0.1)
 
-print("[Main] Initialization complete. Entering control loop.")
+    def control_loop(self):
+        """
+        Main control loop: runs at 50 Hz
+        """
+        while self.running:
+            if self.mode == "autonomous":
+                # Get perception data
+                tracked_objects = self.autonomous.process_vision()
+                foot_state = self.autonomous.foot_state
 
-# -------------------- MAIN LOOP --------------------
-try:
-    loop_delay = 1.0 / CONTROL_LOOP_HZ
-    while True:
-        start_time = time.time()
+                # Compute motion commands
+                commands = self.motion_planner.compute_gait(tracked_objects, foot_state)
 
-        # Update sensors
-        sensor_fusion.update()
+                # Send commands to servo driver
+                # TODO: integrate with servo_driver.cpp interface
+                # e.g., self.servo_driver.send_commands(commands)
 
-        # Determine current mode
-        if mode == 'AUTONOMOUS':
-            # Plan path and motion
-            planned_path = path_planner.plan(sensor_fusion.state)
-            motion_cmds = motion_planner.generate(planned_path, sensor_fusion.state)
-            autonomous.execute(motion_cmds)
-        elif mode == 'TELEOP':
-            teleop_cmds = teleop.get_input()
-            motion_planner.apply_teleop(teleop_cmds)
+            elif self.mode == "teleop":
+                # Get teleop commands
+                commands = self.teleop.get_commands()
+                # Send commands to servo driver
+                # TODO: integrate with servo_driver.cpp interface
 
-        # Swarm communication
-        swarm.update_status(sensor_fusion.state)
+            # Optional: handle swarm messages
+            messages = self.swarm.get_messages()
+            for msg in messages:
+                print("[Swarm] Received:", msg)
 
-        # Dock/charge monitoring
-        if dock.is_docked():
-            charge.send_charge_enable(True)
-            motion_planner.halt_motion()
-        else:
-            charge.send_charge_enable(False)
+            time.sleep(0.02)  # 50 Hz
 
-        # Maintain loop rate
-        elapsed = time.time() - start_time
-        sleep_time = max(0, loop_delay - elapsed)
-        time.sleep(sleep_time)
+    def run(self):
+        """
+        Starts main controller
+        """
+        # Mode switch thread
+        mode_thread = threading.Thread(target=self.mode_switch_loop)
+        mode_thread.start()
 
-except KeyboardInterrupt:
-    print("[Main] Shutting down OBSIDIAN-8 V3 systems...")
-    motion_planner.halt_motion()
-    charge.send_charge_enable(False)
-    dock.ser.close()
+        # Main control loop
+        try:
+            self.control_loop()
+        finally:
+            self.shutdown()
+            mode_thread.join()
+
+    def shutdown(self):
+        self.running = False
+        self.autonomous.shutdown()
+        self.teleop.shutdown()
+        print("[MainController] Shutdown complete.")
+
+
+# -------------------- TEST LOOP --------------------
+if __name__ == "__main__":
+    controller = MainController(node_id="OB8-Node1")
+    controller.run()
