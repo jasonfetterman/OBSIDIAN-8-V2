@@ -1,75 +1,107 @@
 """
 teleop_interface.py
 OBSIDIAN-8 V3 — REV D
-Provides remote manual control via joystick or network commands
+Provides manual control over the robot via gamepad or network commands
 """
 
-import pygame
 import threading
 import time
-from motion_planner import MotionPlanner
+
+# Optional libraries for gamepad
+try:
+    import pygame
+    PYGAME_AVAILABLE = True
+except ImportError:
+    PYGAME_AVAILABLE = False
 
 class TeleopInterface:
-    def __init__(self, robot_id="OBS8-01"):
-        # Initialize joystick
-        pygame.init()
-        pygame.joystick.init()
-        self.joystick = None
-        if pygame.joystick.get_count() > 0:
-            self.joystick = pygame.joystick.Joystick(0)
-            self.joystick.init()
-            print(f"[Teleop] Using joystick: {self.joystick.get_name()}")
-        else:
-            print("[Teleop] No joystick detected, network control only")
-        
-        self.robot_id = robot_id
-        self.motion_planner = MotionPlanner()
+    def __init__(self, motion_planner, control_rate=50):
+        """
+        motion_planner: instance of MotionPlanner to send joint commands
+        control_rate: loop frequency in Hz
+        """
+        self.motion_planner = motion_planner
         self.running = False
+        self.control_rate = control_rate
+        self.command_queue = []
+        self.lock = threading.Lock()
 
-    def read_joystick(self):
-        """
-        Read joystick axes and buttons, return command dict
-        """
-        pygame.event.pump()
-        axes = {}
-        buttons = {}
-        if self.joystick:
-            axes = {i: self.joystick.get_axis(i) for i in range(self.joystick.get_numaxes())}
-            buttons = {i: self.joystick.get_button(i) for i in range(self.joystick.get_numbuttons())}
-        return {"axes": axes, "buttons": buttons}
+        # Initialize gamepad if available
+        if PYGAME_AVAILABLE:
+            pygame.init()
+            pygame.joystick.init()
+            self.joystick_count = pygame.joystick.get_count()
+            if self.joystick_count > 0:
+                self.joystick = pygame.joystick.Joystick(0)
+                self.joystick.init()
+                print(f"[TeleopInterface] Gamepad detected: {self.joystick.get_name()}")
+            else:
+                self.joystick = None
+                print("[TeleopInterface] No gamepad detected")
+        else:
+            self.joystick = None
+            print("[TeleopInterface] Pygame not installed, gamepad disabled")
 
-    def network_command(self, cmd):
-        """
-        Accept network-based commands (dict) and convert to motion
-        Example cmd: {"forward": 0.5, "turn": -0.2}
-        """
-        # Convert to motion planner commands
-        self.motion_planner.set_velocity(cmd.get("forward",0), cmd.get("turn",0))
-
-    def teleop_loop(self):
+    def start(self):
         self.running = True
-        try:
-            while self.running:
-                # Read joystick input
-                cmd = self.read_joystick()
-                if cmd["axes"]:
-                    # Map axes to robot velocity
-                    forward = -cmd["axes"].get(1, 0)  # Y axis inverted
-                    turn = cmd["axes"].get(0, 0)      # X axis
-                    self.motion_planner.set_velocity(forward, turn)
+        self.thread = threading.Thread(target=self.control_loop)
+        self.thread.start()
 
-                # Add network command reading here if needed
-                # Example: self.network_command(received_network_cmd)
+    def stop(self):
+        self.running = False
+        self.thread.join()
 
-                time.sleep(0.02)  # 50 Hz
-        finally:
-            pygame.quit()
-            print("[Teleop] Stopped")
+    def control_loop(self):
+        """Main teleoperation loop"""
+        while self.running:
+            # 1. Process gamepad input
+            if self.joystick:
+                pygame.event.pump()
+                # Example mapping: left stick = forward/backward, right stick = turn
+                forward = self.joystick.get_axis(1)  # -1 to 1
+                turn = self.joystick.get_axis(0)     # -1 to 1
+
+                # Convert to joint commands (placeholder mapping)
+                joint_commands = self.convert_to_joint_commands(forward, turn)
+
+                # Execute trajectory
+                self.motion_planner.execute_trajectory(joint_commands)
+
+            # 2. Process queued network commands
+            with self.lock:
+                while self.command_queue:
+                    cmd = self.command_queue.pop(0)
+                    self.motion_planner.execute_trajectory(cmd)
+
+            time.sleep(1.0 / self.control_rate)
+
+    def convert_to_joint_commands(self, forward, turn):
+        """
+        Convert joystick input to joint trajectory commands.
+        Returns list of joint positions or velocities
+        """
+        # Example simple mapping for demonstration
+        joint_positions = [forward*0.1 + turn*0.05]*24  # 24-leg joints
+        return joint_positions
+
+    def enqueue_command(self, joint_command):
+        with self.lock:
+            self.command_queue.append(joint_command)
 
 # -------------------- TEST LOOP --------------------
 if __name__ == "__main__":
-    teleop = TeleopInterface(robot_id="OBS8-01")
+    # Mock motion planner for testing
+    class MockMotionPlanner:
+        def execute_trajectory(self, joint_positions):
+            print(f"[MockMotionPlanner] Executing: {joint_positions[:4]}...")
+
+    teleop = TeleopInterface(MockMotionPlanner())
+    teleop.start()
+    print("[TeleopInterface] Teleop loop started. Press Ctrl+C to stop.")
+
     try:
-        teleop.teleop_loop()
+        while True:
+            time.sleep(0.5)
     except KeyboardInterrupt:
-        print("[Teleop] Stopped by user")
+        teleop.stop()
+        print("[TeleopInterface] Stopped")
