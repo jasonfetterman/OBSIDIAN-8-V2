@@ -1,0 +1,43 @@
+⚡ OBSIDIAN‑8 V3 — FULL ELECTRICAL SYSTEM LIST
+Part Name	Supplier / Manufacturer	Quantity	Rating / Specs	Unit Price	Total Price	Description / Notes
+LiFePO₄ 24 V 30 Ah Battery	Bioenno	1	24 V / 30 Ah, 100 A BMS	$700	$700	Main energy source, powers servo and control banks
+LiFePO₄ 24 V 15 A Charger	Bioenno	1	24 V CC/CV, 15 A	$120	$120	Charging via dock or manual
+MeanWell RSD-500-24 DC Converter	MeanWell	2	24 V → 8 V, 500 W	$140	$280	Powers servo banks
+MeanWell LRS-350-12	MeanWell	1	12 V 29 A	$45	$45	Auxiliary logic / cooling devices
+DROK 24 V → 5 V Buck Converter	DROK	3	10 A	$15	$45	Powers Duet / Pi / Teensy / sensors
+Blue Sea Systems Fuse Block	Blue Sea Systems	1	12–24 V, 6–12 circuits	$55	$55	Fuse protection for servo banks and DC-DC rails
+Automotive Blade Fuses Kit	Generic	1	3–30 A	$25	$25	Spare fuses for protection
+100 A Main Fuse	Generic	1	100 A	$20	$20	Primary battery protection
+150 A ANL Fuse + Holder	Generic	1	150 A	$20	$20	High-current protection for servo bank
+80 A MIDI Fuses	Generic	2	80 A	$15	$30	Input protection to DC-DC converters
+150 A DC Contactors	Generic	2	24 V coil, 150 A	$20	$40	Servo bank power isolation / emergency cutoff
+XT60 Connectors	Generic	20	60 A max	$1.50	$30	Quick-disconnects for servo power
+XT90 Connectors	Generic	10	90 A max	$3.50	$35	Battery connection feeds
+Anderson SB120 Connector	Anderson Power	1	120 A	$40	$40	Docking / charging interface
+10 AWG Silicone Wire	Generic	50 ft	30–40 A	$90	$90	High-current servo / main power wiring
+12 AWG Silicone Wire	Generic	50 ft	20–25 A	$70	$70	Power distribution wiring
+18 AWG Wire	Generic	100 ft	10 A	$80	$80	Auxiliary power / low-current lines
+22 AWG Multi-wire	Generic	200 ft	1–2 A	$60	$60	Logic / sensor wiring
+Ferrule Crimp Kit	Generic	1	—	$40	$40	Professional wire termination
+Braided Wire Loom	Generic	100 ft	—	$50	$50	Cable protection / routing
+Heat Shrink Kit	Generic	1	—	$25	$25	Insulation on all wiring
+Isolated 5 V DC-DC Converter	DROK / MeanWell	1	5 V 10 A	$25	$25	Logic power for Duet / Pi / Teensy
+Duet 3 6HC Mainboard	Duet3D	1	24 V input, PWM outputs	$230	$230	Central motion / safety controller
+Duet 3 3HC Expansion Board	Duet3D	2	24 V input	$180	$360	Additional I/O for servo / sensors
+Teensy 4.1	PJRC	2	3.3 V logic	$35	$70	Real-time servo / motion control
+Teensy Ethernet Kit	PJRC	1	—	$20	$20	Networked communication / swarm control
+Pololu Maestro 24-Channel	Pololu	1	5–12 V	$90	$90	Auxiliary servo control
+Raspberry Pi 5	Raspberry Pi Foundation	1	5 V, 3 A	$90	$90	High-level compute / control
+NVIDIA Jetson Orin NX 16 GB	NVIDIA	1	12 V / 30 W	$600	$600	Vision / AI compute
+256 GB NVMe SSD	Samsung 980	1	—	$80	$80	Storage for OS / programs
+Luxonis OAK-D Pro	Luxonis	2	USB3, 12 V optional	$300	$600	Front stereo vision cameras
+Intel RealSense D455	Intel	2	USB3, 5 V	$300	$600	Top/rear depth cameras
+Arducam OV9281	Arducam	2	USB3, 5 V	$80	$160	High-speed monocular vision
+M12 Wide Angle Lenses	Generic	2	120° FOV	$25	$50	Lens upgrades for cameras
+BNO085 IMU	Bosch	2	3.3 V	$35	$70	Orientation / stability sensor
+Limit Switches	Omron	24	5 V / 100 mA	$3	$72	Endstop detection at joints
+Foot Contact Switches	Honeywell	8	5 V / 100 mA	$10	$80	Gait / foot contact sensing
+Industrial USB 3.0 Hub	StarTech	2	USB3, 5 V	$120	$240	Camera aggregation
+USB 3.0 Shielded Cables	StarTech	10	1–3 m	$15	$150	High-speed camera wiring
+
+✅ Total Estimated Electrical System Cost: ~$8,400
