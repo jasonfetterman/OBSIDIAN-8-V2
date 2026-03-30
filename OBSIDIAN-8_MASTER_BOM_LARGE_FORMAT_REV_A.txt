@@ -1,220 +1,78 @@
-============================================================
-OBSIDIAN-8 MASTER BOM — LARGE FORMAT (REV A)
-45" FOOTPRINT INDUSTRIAL OCTOPOD PLATFORM
-============================================================
+🔧 OBSIDIAN-8 V3 — MASTER BOM (REV D)
+Part Name	Supplier / Manufacturer	Quantity	Unit Price	Total Price	Description / Notes
+AGFRC A86BHMW 400 kg·cm HV Servo	AGFRC	24	$120	$2,880	Primary leg actuation, CNC aluminum case, steel gears, 8.4 V, dual ball bearings, 25T spline
+AGFRC A86BHMW 400 kg·cm HV Servo (Spare)	AGFRC	2	$120	$240	Spare units
+Aluminum Servo Mount Brackets (CNC/Printed)	Custom Fabrication / 3D Print	48	$6.25	$300	Reinforced servo mounting brackets for all leg joints
+TPU 95A Foot Pads	Generic	8	included	included	Replaceable foot pads
+3030 Aluminum Extrusion	80/20	60 ft	$6.67	$400	Primary load ring for frame
+2020 Aluminum Extrusion	80/20	40 ft	$4.50	$180	Vertical & bracing
+M6 Bolts (Grade 10.9)	McMaster-Carr	300	$0.40	$120	Frame assembly
+M5 T-Nuts	McMaster-Carr	500	$0.12	$60	Extrusion assembly
+3030 / 2020 Corner Brackets	McMaster-Carr	120	$1.75	$210	Steel brackets for frame connections
+Aluminum Reinforcement Plates	SendCutSend / Xometry	20	$10	$200	Top plate, battery tray, servo backing plates
+6061 Aluminum Plates (1/4")	SendCutSend / Xometry	60	$20	$1,200	Mechanical linkages and structural plates
+Carbon-Fiber Nylon Filament (PA6-CF / PA12-CF)	Taulman / eSun	4 spools	$80	$320	Coxa, femur, tibia segments, reinforced servo mounts
+ABS Filament (eSun ABS+)	eSun	12 spools	$25	$300	Enclosures, covers, body panels
+Polycarbonate Sheets	McMaster-Carr	4	$20	$80	Camera / sensor protection
+6001-2RS Bearings (12 mm bore)	SKF / NSK	56	$7.20	$403	Main joint bearings for legs
+608-2RS Bearings	SKF / NSK	40	$2.50	$100	Redundant / expansion joints
+12 mm Hardened Steel Shafting	McMaster-Carr	8 m	$50/m	$400	Precision ground rods for all joints
+Clamp-style Shaft Collars (12 mm)	McMaster-Carr	24	$5	$120	Shaft retention hardware
+M8 Shoulder Bolts	McMaster-Carr	48	$6	$288	Joint fasteners
+Washers / Lock Nuts	McMaster-Carr	Bulk	$80	$80	Spacers & reinforcement
+Aluminum Spacers Kit	McMaster-Carr	100+	$50	$50	Adjustable spacing for linkages
+Duet 3 6HC Mainboard	Duet3D	1	$230	$230	Primary safety/motion supervisor
+Duet 3 3HC Expansion Board	Duet3D	2	$180	$360	Expansion for additional IO
+Teensy 4.1	PJRC	2	$35	$70	Real-time servo/motion control
+Teensy Ethernet Kit	PJRC	1	$20	$20	Networking / communication
+Pololu Maestro 24-Channel	Pololu	1	$90	$90	Auxiliary servo controller
+Raspberry Pi 5	Raspberry Pi Foundation	1	$90	$90	High-level compute
+NVIDIA Jetson Orin NX 16 GB	NVIDIA	1	$600	$600	Vision / AI compute
+256 GB NVMe SSD	Samsung 980	1	$80	$80	Storage for Jetson / Pi
+Isolated 5 V DC-DC Converter	DROK / MeanWell	1	$25	$25	Logic power for control boards
+LiFePO₄ 24 V 30 Ah Battery	Bioenno	1	$700	$700	Main energy core
+LiFePO₄ 24 V 15 A Charger	Bioenno	1	$120	$120	CC/CV charger for battery
+MeanWell RSD-500-24 DC Converter	MeanWell	2	$140	$280	24 V → 8 V servo power rails
+MeanWell LRS-350-12	MeanWell	1	$45	$45	12 V auxiliary power
+DROK 24 V → 5 V Buck Converter	DROK	3	$15	$45	5 V logic/sensor supply
+Copper Bus Bars (8 mm thick)	McMaster-Carr	2	$30	$60	Power distribution
+Terminal Blocks (DIN Rail)	McMaster-Carr	10	$8	$80	Modular wiring
+Blue Sea Systems Fuse Block	Blue Sea Systems	1	$55	$55	Fuse protection for servo banks
+Automotive Blade Fuses Kit	Generic	1	$25	$25	Spare fuses
+100 A Main Fuse	Generic	1	$20	$20	Primary protection
+150 A ANL Fuse + Holder	Generic	1	$20	$20	High-current protection
+80 A MIDI Fuses	Generic	2	$15	$30	DC-DC input protection
+150 A Contactors	Generic	2	$20	$40	Servo bank shutdown
+Luxonis OAK-D Pro	Luxonis	2	$300	$600	Depth + stereo vision cameras
+Intel RealSense D455	Intel	2	$300	$600	Depth mapping
+Arducam OV9281 Global Shutter	Arducam	2	$80	$160	High-speed monochrome cameras
+M12 Wide Angle Lenses (120°)	Generic	2	$25	$50	Lens upgrades for cameras
+BNO085 IMU	Bosch	2	$35	$70	Orientation / stability
+Limit Switches	Omron	24	$3	$72	Endstop detection for joints
+Foot Contact Switches	Honeywell	8	$10	$80	Gait / foot contact sensing
+Industrial USB 3.0 Hub	StarTech	2	$120	$240	Camera aggregation
+USB 3.0 Shielded Cables	StarTech	10	$15	$150	High-speed camera data wiring
+Ubiquiti UniFi Mesh Node	Ubiquiti	1	$180	$180	Swarm communications
+Ubiquiti Antenna	Ubiquiti	1	$90	$90	Optional range boost
+CAT6 Shielded Cable (50 ft)	Monoprice	1	$40	$40	Wired backbone networking
+Noctua 80 mm Fans	Noctua	4	$25	$100	Cooling for servos / electronics
+Noctua 40 mm Fans	Noctua	4	$15	$60	Electronics cooling
+Aluminum Heat Sinks	Generic	4	$30	$120	CPU / power module cooling
+Anderson SB120 Connector	Anderson Power	1	$40	$40	Docking / charging connector
+Charging Controller (LiFePO₄)	Generic	1	$120	$120	Docked charging controller
+Alignment Guide Rails	Custom Machined	1	$150	$150	Dock alignment guides
+Dock Base Plate (Steel / Aluminum)	Custom Fabrication	1	$90	$90	Structural dock plate
+Electrical Housing	Custom Fabrication	1	$100	$100	Docked wiring protection
+10 AWG Silicone Wire	Generic	50 ft	$90	$90	High-current servo / main power wiring
+12 AWG Silicone Wire	Generic	50 ft	$70	$70	Power distribution wiring
+18 AWG Wire	Generic	100 ft	$80	$80	Auxiliary / signal wiring
+22 AWG Multi-wire	Generic	200 ft	$60	$60	Logic wiring for sensors / boards
+XT60 Connectors	Generic	20	$1.50	$30	Quick-disconnects for servo power
+XT90 Connectors	Generic	10	$3.50	$35	Battery feed connectors
+JST-XH Kit	Generic	1	$25	$25	Sensor wiring harness
+Dupont Kit	Generic	1	$20	$20	Logic / board connections
+Ferrule Crimp Kit	Generic	1	$40	$40	Professional wire termination
+Braided Wire Loom	Generic	100 ft	$50	$50	Cable protection / organization
+Heat Shrink Kit	Generic	1	$25	$25	Electrical insulation / finishing
 
-TARGET SPECIFICATIONS
-------------------------------------------------------------
-Footprint: 45 inches (1143 mm) outer foot-to-foot
-Target Mass: ~27 kg
-Actuation Class: 400 kg·cm brushless HV servos
-Shafting: 12 mm hardened steel
-Bearings: 6001-2RS (56 total)
-Battery: 24V 30Ah LiFePO4
-Control: Raspberry Pi 5 + Teensy 4.1 + Duet 3 6HC
-Power Architecture: Dual-bank 24V→8V DC-DC
-Docking: Anderson SB120 autonomous charging dock
-
-
-============================================================
-1. ACTUATION SYSTEM
-============================================================
-
-24 × AGFRC A86BHMW 400 kg·cm Brushless HV Servo
-2 × Spare Units
-
-Specs:
-- 400 kg·cm @ 8.4V
-- CNC aluminum case
-- Steel gears
-- Dual ball bearings
-- 25T spline
-
-Estimated Cost: ~$6,240
-
-
-============================================================
-2. FRAME SYSTEM
-============================================================
-
-Extrusion:
-- ~4m 3030 Aluminum Extrusion (Primary Load Ring)
-- ~4m 2020 Aluminum Extrusion (Vertical & Bracing)
-
-Structural Hardware:
-- M6 Grade 10.9 bolts
-- Steel corner brackets
-- Sliding T-nuts
-
-Reinforcement Plates:
-- 3mm Aluminum (Top plate, battery tray, servo backing plates)
-
-Estimated Cost: ~$920
-
-
-============================================================
-3. JOINT & SHAFT SYSTEM
-============================================================
-
-Bearings:
-- 56 × 6001-2RS (12 mm bore, 28 mm OD)
-
-Shafting:
-- 12 mm Hardened Steel Precision Ground Rod
-
-Retention:
-- 12 mm Clamp-style Shaft Collars
-- High-grade mounting hardware
-
-Estimated Cost: ~$404
-
-
-============================================================
-4. PRINTED STRUCTURE
-============================================================
-
-Material:
-- PA6-CF or PA12-CF (Carbon Fiber Nylon)
-
-Estimated Usage:
-- 3–4 spools
-
-Printed Components:
-- 8 Coxa housings (3-bearing stack)
-- 8 Femur box-beam segments
-- 8 Tibia box-beam segments
-- Reinforced servo mounting blocks
-- TPU 95A replaceable foot pads
-
-Estimated Cost: ~$320
-
-
-============================================================
-5. BATTERY SYSTEM
-============================================================
-
-Battery:
-- LiTime 24V 30Ah LiFePO4
-- 100A internal BMS
-- ~5.5 kg
-
-Charger:
-- 24V 15A LiFePO4 CC/CV Charger
-
-Estimated Cost: ~$680
-
-
-============================================================
-6. SERVO POWER SYSTEM
-============================================================
-
-DC-DC Regulation:
-- 2 × MeanWell RSD-500 (24V → 8V adjustable)
-
-Protection:
-- 150A ANL Main Fuse + Holder
-- 2 × 80A MIDI Fuse (DC-DC inputs)
-- 2 × 150A DC Contactors (Servo Bank Shutdown)
-
-Distribution:
-- Copper Bus Bars
-- 6 AWG Silicone Main Trunk
-- 8 AWG Bank Feed
-- 10–12 AWG Servo Distribution
-- Hydraulic crimp terminals
-
-Estimated Cost: ~$1,040
-
-
-============================================================
-7. CONTROL SYSTEM
-============================================================
-
-High-Level Compute:
-- Raspberry Pi 5
-
-Motion Controller:
-- Teensy 4.1
-
-Safety & IO Supervisor:
-- Duet 3 6HC
-
-Logic Power:
-- Isolated 5V DC-DC Converter
-
-Signal Wiring:
-- Shielded PWM wiring
-- Ferrules & proper termination
-
-Estimated Cost: ~$370
-
-
-============================================================
-8. MONITORING & SAFETY
-============================================================
-
-Current Monitoring:
-- 2 × ACS758-100B Hall Effect Sensors
-
-Thermal Monitoring:
-- 100k NTC Thermistors
-
-Emergency Controls:
-- Industrial E-Stop button
-- Marine-grade 150A Battery Disconnect
-
-Estimated Cost: ~$220
-
-
-============================================================
-9. AUTONOMOUS DOCK SYSTEM
-============================================================
-
-Dock Connector:
-- Anderson SB120 (robot + dock side)
-
-Dock Structure:
-- Steel/Aluminum Base Plate
-- UHMW/HDPE Funnel Alignment Rails
-
-Electrical Housing:
-- Charger enclosure
-- Protected wiring harness
-
-Estimated Cost: ~$400
-
-
-============================================================
-PROJECT COST SUMMARY
-============================================================
-
-Actuation: ~$6,240
-Frame: ~$920
-Joint Hardware: ~$404
-Printed Structure: ~$320
-Battery: ~$680
-Power Distribution: ~$1,040
-Control: ~$370
-Safety: ~$220
-Dock: ~$400
-
-Estimated Total: ~$10,594
-Optimized Target Range: ~$9,800–10,200
-
-
-============================================================
-SYSTEM CLASSIFICATION
-============================================================
-
-Large-format 45" autonomous octopod platform
-400 kg·cm brushless actuation
-12 mm shaft industrial joint architecture
-56 bearing configuration
-Dual-bank high-current servo rails
-24V 30Ah LiFePO4 energy core
-Layered Pi / Teensy / Duet authority model
-Autonomous docking & recharge
-Full electrical safety isolation
-
-END OF MASTER BOM — REV A
-============================================================
+✅ Total Estimated Cost: ~$14,685
