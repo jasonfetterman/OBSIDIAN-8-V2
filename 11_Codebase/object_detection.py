@@ -1,43 +1,73 @@
-# object_detection.py
-# OBSIDIAN-8 V3 — REV D
-# Object detection module using vision interface and AI models (YOLOv8 example)
+"""
+object_detection.py
+OBSIDIAN-8 V3 — REV D
+Performs real-time object detection on preprocessed frames
+"""
 
 import cv2
-from vision_interface import VisionInterface
-from ultralytics import YOLO  # YOLOv8
+import torch
+import numpy as np
 
-class ObjectDetection:
-    def __init__(self, model_path="yolov8n.pt", use_oak=True, undistort_params=None):
-        self.vision = VisionInterface(use_oak=use_oak, undistort_params=undistort_params)
-        self.model = YOLO(model_path)  # load pre-trained YOLOv8 model
+class ObjectDetector:
+    def __init__(self, model_path="yolov8n.pt", device="cuda"):
+        """
+        model_path: path to YOLOv8 model
+        device: "cuda" for GPU or "cpu"
+        """
+        self.device = device
+        self.model = torch.hub.load("ultralytics/yolov8", "custom", path=model_path, force_reload=True)
+        self.model.to(self.device)
+        self.model.eval()
 
-    def detect_objects(self):
+    def detect(self, frame):
         """
-        Returns list of detections in format: [(startX, startY, endX, endY, class_id, confidence)]
+        frame: np.array (preprocessed, RGB, 0-1 normalized)
+        Returns: list of detections with [x1, y1, x2, y2, confidence, class_id]
         """
-        frame = self.vision.get_processed_frame()
-        results = self.model.predict(frame)
+        # YOLO expects HWC 0-255
+        input_frame = (frame * 255).astype(np.uint8)
+
+        # Convert to torch tensor, add batch dimension, HWC -> CHW
+        img_tensor = torch.from_numpy(input_frame).permute(2, 0, 1).unsqueeze(0).float().to(self.device)
+
+        with torch.no_grad():
+            results = self.model(img_tensor)[0]
+
         detections = []
-
-        for result in results:
-            boxes = result.boxes.xyxy  # bounding boxes: x1,y1,x2,y2
-            classes = result.boxes.cls  # class IDs
-            confidences = result.boxes.conf  # confidence scores
-            for box, cls, conf in zip(boxes, classes, confidences):
-                x1, y1, x2, y2 = map(int, box)
-                detections.append((x1, y1, x2, y2, int(cls), float(conf)))
+        for det in results.cpu().numpy():
+            x1, y1, x2, y2, conf, cls = det
+            detections.append([x1, y1, x2, y2, conf, int(cls)])
 
         return detections
 
-    def shutdown(self):
-        self.vision.shutdown()
-
 # -------------------- TEST LOOP --------------------
 if __name__ == "__main__":
-    detector = ObjectDetection(model_path="yolov8n.pt", use_oak=True)
-    try:
-        while True:
-            detections = detector.detect_objects()
-            print("Detections:", detections)
-    finally:
-        detector.shutdown()
+    from image_preprocessing import ImagePreprocessor
+
+    cap = cv2.VideoCapture(0)
+    preprocessor = ImagePreprocessor(target_size=(640, 480))
+    detector = ObjectDetector(model_path="yolov8n.pt", device="cuda")
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        processed = preprocessor.preprocess(frame)
+        detections = detector.detect(processed)
+
+        # Draw bounding boxes
+        display_frame = (processed * 255).astype(np.uint8)
+        display_frame = cv2.cvtColor(display_frame, cv2.COLOR_RGB2BGR)
+        for det in detections:
+            x1, y1, x2, y2, conf, cls = det
+            cv2.rectangle(display_frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
+            cv2.putText(display_frame, f"{cls}:{conf:.2f}", (int(x1), int(y1)-5),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+
+        cv2.imshow("Object Detection", display_frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
