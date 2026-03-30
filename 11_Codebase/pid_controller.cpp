@@ -1,63 +1,86 @@
- // pid_controller.cpp
- // OBSIDIAN-8 V3 — REV D
- // PID controller implementation for joint control
+//
+// pid_controller.cpp
+// OBSIDIAN-8 V3 — REV D
+// Implements PID control for precise servo angle tracking
+//
 
 #include <iostream>
+#include <vector>
 #include <chrono>
+#include <thread>
+#include "servo_interface.h"
 
-class PIDController {
-private:
+struct PID {
     double kp;
     double ki;
     double kd;
 
     double integral;
     double last_error;
-    std::chrono::steady_clock::time_point last_time;
 
+    PID(double _kp, double _ki, double _kd)
+        : kp(_kp), ki(_ki), kd(_kd), integral(0.0), last_error(0.0) {}
+};
+
+class ServoPIDController {
 public:
-    PIDController(double kp_, double ki_, double kd_)
-        : kp(kp_), ki(ki_), kd(kd_), integral(0.0), last_error(0.0) {
-        last_time = std::chrono::steady_clock::now();
+    ServoPIDController(size_t num_servos) {
+        servos.resize(num_servos);
+        pid_loops.resize(num_servos);
+        for (size_t i = 0; i < num_servos; i++) {
+            pid_loops[i] = PID(2.0, 0.01, 0.1);  // example gains
+        }
     }
 
-    double compute(double setpoint, double measured) {
-        auto now = std::chrono::steady_clock::now();
-        std::chrono::duration<double> elapsed = now - last_time;
-        double dt = elapsed.count();
-
-        double error = setpoint - measured;
-        integral += error * dt;
-        double derivative = (dt > 0) ? (error - last_error) / dt : 0.0;
-
-        double output = kp * error + ki * integral + kd * derivative;
-
-        last_error = error;
-        last_time = now;
-
-        return output;
+    void set_target(size_t index, double angle) {
+        if (index < servos.size())
+            servos[index] = angle;
     }
 
-    void reset() {
-        integral = 0.0;
-        last_error = 0.0;
-        last_time = std::chrono::steady_clock::now();
+    void update() {
+        for (size_t i = 0; i < servos.size(); i++) {
+            double current_angle = ServoInterface::getAngle(i);  // read current servo
+            double error = servos[i] - current_angle;
+
+            PID &pid = pid_loops[i];
+            pid.integral += error * dt();
+            double derivative = (error - pid.last_error) / dt();
+
+            double output = pid.kp * error + pid.ki * pid.integral + pid.kd * derivative;
+
+            // Clamp output to servo limits
+            if (output > 1.0) output = 1.0;
+            if (output < -1.0) output = -1.0;
+
+            ServoInterface::setAngle(i, current_angle + output);  // incremental adjustment
+
+            pid.last_error = error;
+        }
+    }
+
+private:
+    std::vector<double> servos;       // target angles
+    std::vector<PID> pid_loops;
+
+    double dt() {
+        return 0.02;  // 50 Hz
     }
 };
 
 // -------------------- TEST LOOP --------------------
-#ifdef TEST_PID
 int main() {
-    PIDController pid(1.0, 0.01, 0.05);
-    double target = 30.0;
-    double measured = 0.0;
+    ServoInterface::init();
+    ServoPIDController controller(24);  // 24 servos for 8 legs
 
-    for(int i=0; i<100; i++) {
-        double output = pid.compute(target, measured);
-        measured += output * 0.1; // simulate response
-        std::cout << "Step " << i << ": output=" << output << ", measured=" << measured << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    // Example: all servos to 30 degrees (~0.5236 radians)
+    for (size_t i = 0; i < 24; i++) {
+        controller.set_target(i, 0.5236);
     }
+
+    while (true) {
+        controller.update();
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
+
     return 0;
 }
-#endif
