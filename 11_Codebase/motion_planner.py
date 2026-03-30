@@ -1,82 +1,50 @@
 # motion_planner.py
 # OBSIDIAN-8 V3 — REV D
-# Converts planned paths or teleop inputs into joint commands
+# Converts perception and sensor data into leg gait commands
 
-import math
-from pid_controller import PIDController
-from kinematics import InverseKinematics
+import numpy as np
+from path_planner import PathPlanner
 
-# -------------------- CONFIG --------------------
-JOINT_LIMITS = {
-    'coxa': (-90, 90),     # degrees
-    'femur': (-45, 90),
-    'tibia': (-90, 0),
-}
-
-PID_PARAMS = {
-    'coxa': (1.0, 0.01, 0.05),
-    'femur': (1.2, 0.01, 0.05),
-    'tibia': (1.0, 0.01, 0.05),
-}
-
-CONTROL_RATE_HZ = 200  # Low-level servo update rate
-
-# -------------------- INITIALIZE --------------------
-pid_controllers = {
-    joint: PIDController(*PID_PARAMS[joint]) for joint in JOINT_LIMITS
-}
-
-ik_solver = InverseKinematics()
-
-# -------------------- FUNCTIONS --------------------
-def apply_joint_limits(joint_name, angle_deg):
-    min_angle, max_angle = JOINT_LIMITS[joint_name]
-    return max(min(angle_deg, max_angle), min_angle)
-
-# -------------------- CLASS --------------------
 class MotionPlanner:
     def __init__(self):
-        self.current_joint_targets = {
-            'coxa': 0.0,
-            'femur': 0.0,
-            'tibia': 0.0
-        }
+        # Initialize path planner
+        self.path_planner = PathPlanner()
+        # Gait parameters
+        self.step_height = 0.05  # meters
+        self.step_length = 0.1   # meters
+        self.swing_time = 0.3    # seconds per leg
+        self.num_legs = 8
+        self.current_leg_phase = np.zeros(self.num_legs)
 
-    def generate(self, planned_path, sensor_state):
+    def compute_gait(self, tracked_objects, foot_state):
         """
-        Convert path coordinates to joint angles using IK,
-        then apply PID to generate smooth joint commands.
+        tracked_objects: dict {object_id: centroid}
+        foot_state: list of bools indicating which foot is in contact
+        Returns: dict of leg target positions / velocities
         """
-        joint_cmds = []
-        for foot_position in planned_path:  # planned_path: list of (x, y, z)
-            angles = ik_solver.solve(foot_position)
-            # Apply joint limits and PID
-            angles_limited = {}
-            for joint in angles:
-                limited = apply_joint_limits(joint, angles[joint])
-                pid_output = pid_controllers[joint].compute(limited, self.current_joint_targets[joint])
-                angles_limited[joint] = pid_output
-                self.current_joint_targets[joint] = pid_output
-            joint_cmds.append(angles_limited)
-        return joint_cmds
+        # Placeholder: simple forward motion with obstacle avoidance
+        path_adjustment = self.path_planner.plan(tracked_objects)
 
-    def apply_teleop(self, teleop_cmds):
-        """
-        Convert teleop joystick or controller commands into joint targets.
-        teleop_cmds: dict with 'coxa', 'femur', 'tibia' deltas
-        """
-        joint_cmds = {}
-        for joint, delta in teleop_cmds.items():
-            new_target = self.current_joint_targets[joint] + delta
-            new_target = apply_joint_limits(joint, new_target)
-            pid_output = pid_controllers[joint].compute(new_target, self.current_joint_targets[joint])
-            joint_cmds[joint] = pid_output
-            self.current_joint_targets[joint] = pid_output
-        return joint_cmds
+        leg_commands = {}
+        for leg in range(self.num_legs):
+            # Determine swing or stance
+            if foot_state[leg]:
+                # stance phase: apply ground contact adjustments
+                leg_commands[leg] = {
+                    "phase": "stance",
+                    "x": path_adjustment[leg][0],
+                    "y": path_adjustment[leg][1],
+                    "z": 0.0
+                }
+            else:
+                # swing phase: lift leg
+                leg_commands[leg] = {
+                    "phase": "swing",
+                    "x": path_adjustment[leg][0],
+                    "y": path_adjustment[leg][1],
+                    "z": self.step_height
+                }
+            # Increment leg phase for timing
+            self.current_leg_phase[leg] += 0.02  # assumes 50 Hz update
 
-    def halt_motion(self):
-        """
-        Stops all motion immediately by sending current joint angles as target
-        """
-        print("[MotionPlanner] Halting motion, maintaining current joint positions")
-        return self.current_joint_targets.copy()
+        return leg_commands
