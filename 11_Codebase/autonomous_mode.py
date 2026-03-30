@@ -1,95 +1,99 @@
 """
 autonomous_mode.py
 OBSIDIAN-8 V3 — REV D
-Integrates sensor data, object tracking, depth maps, and swarm comms
-for fully autonomous navigation and task execution
+Coordinates sensors, vision, path planning, and motion execution for autonomous operation
 """
 
 import time
-import numpy as np
-from imu_reader import IMUReader
-from foot_sensor import FootSensor
-from stereo_depth import StereoDepth
-from image_preprocessing import ImagePreprocessor
-from object_detection import ObjectDetector
+import threading
+from sensor_fusion import SensorFusion
+from vision_interface import VisionInterface
+from object_detection import ObjectDetection
 from object_tracking import ObjectTracker
-from swarm_comms import SwarmComms
+from stereo_depth import StereoDepth
+from motion_planner import MotionPlanner
+from path_planner import PathPlanner
 
 class AutonomousMode:
-    def __init__(self, robot_id="OBS8-01"):
-        # Sensors
-        self.imu = IMUReader()
-        self.foot_sensors = FootSensor()
+    def __init__(self, camera_sources=[0,1]):
+        # Initialize modules
+        self.vision = VisionInterface(camera_sources=camera_sources)
+        self.detector = ObjectDetection(model_path="yolov8n.pt", device="cuda")
+        self.tracker = ObjectTracker(max_distance=50.0)
         self.stereo = StereoDepth()
-        self.preprocessor = ImagePreprocessor(target_size=(640,480))
-        self.detector = ObjectDetector(model_path="yolov8n.pt", device="cuda")
-        self.tracker = ObjectTracker()
-        
-        # Swarm communication
-        self.swarm = SwarmComms(robot_id=robot_id, port=5000)
-        self.swarm.start()
-        
+        self.sensors = SensorFusion()
+        self.motion_planner = MotionPlanner()
+        self.path_planner = PathPlanner()
+
         self.running = False
+        self.state_lock = threading.Lock()
+        self.robot_state = {}
 
-    def get_robot_state(self):
-        imu_data = {
-            "quaternion": self.imu.getQuaternion(),
-            "accel": self.imu.getAccel(),
-            "gyro": self.imu.getGyro()
-        }
-        foot_state = self.foot_sensors.read()
-        return {"imu": imu_data, "foot": foot_state}
+    def start(self):
+        """Start autonomous loop in a separate thread"""
+        self.running = True
+        self.vision.start()
+        self.thread = threading.Thread(target=self.autonomous_loop)
+        self.thread.start()
 
-    def perceive_environment(self):
-        oak_depth = self.stereo.get_oakd_depth()
-        rs_depth = self.stereo.get_realsense_depth()
-
-        # Choose best available depth
-        depth = oak_depth if oak_depth is not None else rs_depth
-
-        ret, frame = True, np.zeros((480,640,3), dtype=np.uint8)
-        if ret:
-            processed = self.preprocessor.preprocess(frame)
-            detections = self.detector.detect(processed)
-            tracked = self.tracker.update(detections)
-            return depth, tracked
-        return depth, []
-
-    def broadcast_state(self):
-        state = {
-            "robot_state": self.get_robot_state(),
-            "timestamp": time.time()
-        }
-        self.swarm.broadcast(state)
+    def stop(self):
+        """Stop autonomous loop"""
+        self.running = False
+        self.thread.join()
+        self.vision.stop()
 
     def autonomous_loop(self):
-        self.foot_sensors.start()
-        self.running = True
-        try:
-            while self.running:
-                # Update sensors
-                self.imu.update()
-                
-                # Perceive environment
-                depth_map, tracked_objects = self.perceive_environment()
-                
-                # Broadcast to swarm
-                self.broadcast_state()
-                
-                # Here, path planning / motion commands would be issued
-                # Example: plan next footstep or trajectory
-                # This can be integrated with motion_planner.py and path_planner.py
+        """Main autonomous control loop"""
+        while self.running:
+            # 1. Get camera frames
+            frames = self.vision.get_all_frames()
 
-                time.sleep(0.05)  # 20 Hz main loop
-        finally:
-            self.foot_sensors.stop()
-            self.swarm.stop()
-            self.stereo.shutdown()
+            # 2. Object detection and tracking
+            all_detections = []
+            for frame in frames:
+                if frame is not None:
+                    detections = self.detector.detect(frame)
+                    all_detections.extend(detections)
+            tracked_objects = self.tracker.update(all_detections)
+
+            # 3. Sensor fusion
+            fused_state = self.sensors.update(frames[0] if frames else None, tracked_objects)
+
+            # 4. Depth map
+            depth_map = self.stereo.get_oakd_depth() or self.stereo.get_realsense_depth()
+
+            # 5. Path planning
+            planned_path = self.path_planner.plan(fused_state, depth_map)
+
+            # 6. Motion planning
+            joint_commands = self.motion_planner.compute_trajectory(fused_state, planned_path)
+
+            # 7. Send commands to servos (via servo_driver / motion executor)
+            self.motion_planner.execute_trajectory(joint_commands)
+
+            # 8. Update robot state
+            with self.state_lock:
+                self.robot_state = fused_state
+
+            # Loop rate ~30 Hz
+            time.sleep(0.033)
+
+    def get_robot_state(self):
+        with self.state_lock:
+            return self.robot_state
 
 # -------------------- TEST LOOP --------------------
 if __name__ == "__main__":
-    auto_mode = AutonomousMode(robot_id="OBS8-01")
+    auto = AutonomousMode(camera_sources=[0,1])
+    auto.start()
+    print("[AutonomousMode] Started autonomous loop")
+
     try:
-        auto_mode.autonomous_loop()
+        while True:
+            state = auto.get_robot_state()
+            if state:
+                print(f"Orientation: {state['orientation']}, Foot Contact: {state['foot_contact']}")
+            time.sleep(0.5)
     except KeyboardInterrupt:
-        print("[AutonomousMode] Stopped by user")
+        auto.stop()
+        print("[AutonomousMode] Stopped")
