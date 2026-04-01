@@ -1,18 +1,18 @@
 OBSIDIAN-8 V3 – TORQUE AND STABILITY MODEL
-Revision: V3.0
-Status: Baseline Locked
+Revision: V3.3
+Status: Authoritative
 
 ------------------------------------------------------------
 1. SYSTEM MASS ASSUMPTION
 ------------------------------------------------------------
 
 Target Total Mass:
-20 kg
+24.8 kg (hybrid frame + printed limbs)
 
 Gravitational Force:
 F = m × g
-F = 20 kg × 9.81 m/s²
-F ≈ 196 N total system load
+F = 24.8 kg × 9.81 m/s²
+F ≈ 243 N total system load
 
 ------------------------------------------------------------
 2. STATIC TRIPOD SUPPORT MODEL
@@ -23,26 +23,26 @@ Tripod gait:
 
 Load per supporting leg:
 
-196 N ÷ 3 ≈ 65.3 N per leg
+243 N ÷ 3 ≈ 81 N per leg
 
 Dynamic factor (movement, acceleration, terrain):
 Apply 2× safety multiplier.
 
 Design Load per Leg:
-≈ 130 N
+≈ 162 N
 
 ------------------------------------------------------------
 3. TIBIA TORQUE REQUIREMENT
 ------------------------------------------------------------
 
 Assume tibia effective length:
-0.20 m
+0.18 m (slightly shorter due to hybrid frame geometry)
 
 Torque required at joint:
 
 τ = F × L
-τ = 130 N × 0.20 m
-τ = 26 Nm required per tibia joint
+τ = 162 N × 0.18 m
+τ ≈ 29 Nm required per tibia joint
 
 ------------------------------------------------------------
 4. SERVO CAPABILITY
@@ -57,7 +57,7 @@ Convert:
 
 Conclusion:
 
-Single servo torque insufficient for 26 Nm load
+Single servo torque insufficient for 29 Nm load
 if acting alone at full lever arm.
 
 ------------------------------------------------------------
@@ -69,7 +69,7 @@ Stability achieved by:
 - Geometry optimization
 - Reducing effective moment arm
 - Distributing load through femur + coxa
-- Maintaining CG inside support triangle
+- Maintaining CG inside support triangle (now ~0.42 m Z)
 - Avoiding worst-case lever extension
 
 Servo never operates at full extension under load.
@@ -80,17 +80,17 @@ Servo never operates at full extension under load.
 
 Worst-case stair ascent:
 
-Front tripod supports majority load.
-CG shifts forward.
+Front tripod supports majority load.  
+CG shifts forward due to hybrid frame and battery placement.
 
 Estimated load multiplier:
 2.5× static load.
 
 Design worst-case per leg:
-≈ 160 N–180 N
+≈ 203–210 N
 
 Torque at 0.18 m effective lever:
-τ ≈ 29–32 Nm
+τ ≈ 37–38 Nm
 
 System must avoid static hold at full extension.
 
@@ -116,10 +116,10 @@ System does NOT rely on servo stall torque.
 
 Instead relies on:
 
-- Shortened moment arm during load
-- Controlled stride length
-- Reduced aggression under low voltage
-- Stair mode frequency reduction
+- Shortened moment arm during load  
+- Controlled stride length  
+- Reduced aggression under low voltage  
+- Stair mode frequency reduction  
 
 Safety multiplier incorporated in control logic.
 
@@ -129,9 +129,9 @@ Safety multiplier incorporated in control logic.
 
 If torque margin insufficient:
 
-Upgrade to 80–100 kg·cm class servos.
-
-Recalculate torque envelope accordingly.
+- Upgrade to 80–100 kg·cm class servos  
+- Recalculate torque envelope accordingly  
+- Reinforce printed brackets at high-torque points
 
 ------------------------------------------------------------
 10. ENGINEERING SIGNATURE
@@ -139,13 +139,13 @@ Recalculate torque envelope accordingly.
 
 Torque modeling is:
 
-- Conservative
-- Dynamic-factor aware
-- Not stall-dependent
-- Geometry-aware
-- Energy-aware
+- Conservative  
+- Dynamic-factor aware  
+- Not stall-dependent  
+- Geometry-aware  
+- Energy-aware  
 
-Movement is controlled to stay within envelope.
+Movement is controlled to stay within envelope
 
 ------------------------------------------------------------
 END OF TORQUE AND STABILITY MODEL
