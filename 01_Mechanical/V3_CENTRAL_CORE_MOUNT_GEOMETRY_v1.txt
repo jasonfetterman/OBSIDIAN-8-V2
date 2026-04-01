@@ -1,6 +1,6 @@
 OBSIDIAN-8 V3
-CENTRAL CORE MOUNT GEOMETRY v1
-Based on: V3_LARGE_FORMAT_BASELINE
+CENTRAL CORE MOUNT GEOMETRY v3
+Based on: V3.3_HYBRID_FRAME
 Status: CORE STRUCTURAL INTERFACE DEFINITION
 Units: Millimeters
 
@@ -14,7 +14,7 @@ power system, and mission payload stack.
 
 Core must:
 - Remain within reserved clearance zone
-- Tie into radial structure
+- Tie into 3030 main ring and radial 2020 braces
 - Avoid loading printed parts in tension
 
 ---------------------------------------
@@ -23,11 +23,10 @@ RESERVED CORE VOLUME
 
 Central Clearance Cylinder:
 Diameter: 300 mm
-Height: Full FRAME_HEIGHT (900 mm)
+Height: Full FRAME_HEIGHT (~1143 mm)
 
 No permanent structure allowed
-outside this boundary
-without documented update.
+outside this boundary without documented update.
 
 ---------------------------------------
 CORE SUPPORT STRATEGY
@@ -36,8 +35,8 @@ CORE SUPPORT STRATEGY
 Primary support via:
 6 radial 2020 braces (bottom plane)
 
-Optional secondary support via:
-Upper radial tie-ins at 60% height.
+Secondary support (optional):
+Upper radial tie-ins at 60–65% frame height
 
 Core must not:
 Hang solely from upper ring.
@@ -57,34 +56,30 @@ Aluminum plate (6–8 mm thick)
 or composite equivalent
 
 Mounting:
-Bolted to radial 2020 braces
-using M6 fasteners.
+Bolted to radial 2020 braces using M6 fasteners.
+Use printed gusset brackets only for lateral support, not primary load.
 
 ---------------------------------------
 UPPER CORE STABILIZER
 ---------------------------------------
 
 Optional upper stabilizer ring
-attached to vertical posts
-at 540 mm height.
+attached to vertical posts at ~700 mm height.
 
 Purpose:
-Prevent lateral oscillation
-of central stack.
+Prevent lateral oscillation of central stack.
 
 ---------------------------------------
 LOAD PATH
 ---------------------------------------
 
 Core Mass
-→ Core Plate
+→ Lower Core Plate
 → Radial 2020 Braces
-→ Ring Nodes
+→ 3030 Ring Nodes
 → Vertical Posts
 
-No single radial brace
-should carry majority of load.
-
+No single radial brace should carry majority of load.
 Mass distribution must remain symmetrical.
 
 ---------------------------------------
@@ -92,10 +87,10 @@ MASS LIMITS
 ---------------------------------------
 
 Maximum recommended central core mass:
-25 kg
+20–25 kg
 
 If exceeding:
-Add secondary reinforcement ring.
+Add secondary reinforcement ring or additional radial braces.
 
 ---------------------------------------
 FASTENER RULES
@@ -109,25 +104,26 @@ Bolt spacing:
 
 No single-bolt cantilever mounts allowed.
 
+Printed brackets may be used only for alignment and vibration damping.
+
 ---------------------------------------
 VIBRATION CONTROL
 ---------------------------------------
 
 Core plate may use:
-Moderate vibration isolators
-between electronics and plate.
+Moderate vibration isolators between electronics and plate.
 
-Do not isolate entire core mass
-from frame structure.
+Do not isolate entire core mass from frame structure.
 
 ---------------------------------------
 CENTER OF GRAVITY CONTROL
 ---------------------------------------
 
 Heavy components (batteries):
-Mount below 50% frame height.
+Mount below 50% of frame height
 
 Avoid tall, narrow mass stacks.
+Centralize compute modules near geometric center.
 
 ---------------------------------------
 ALIGNMENT REQUIREMENTS
@@ -137,7 +133,7 @@ Core plate center must align
 within ±2 mm of geometric origin.
 
 Vertical alignment tolerance:
-< 1° deviation.
+< 1° deviation
 
 ---------------------------------------
 FAILURE CONDITIONS
@@ -148,7 +144,7 @@ Redesign required if:
 - Core oscillates visibly under torsion test
 - Radial braces deflect > 3 mm under static load
 - Mount bolts loosen after dynamic test
-- Printed clamps show creep
+- Printed clamps show creep or excessive deformation
 
 ---------------------------------------
 END OF FILE
