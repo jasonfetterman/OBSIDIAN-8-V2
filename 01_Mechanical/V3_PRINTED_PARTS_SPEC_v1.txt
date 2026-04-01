@@ -1,6 +1,6 @@
 OBSIDIAN-8 V3
-PRINTED PARTS SPECIFICATION v1
-Based on: V3_LARGE_FORMAT_BASELINE
+PRINTED PARTS SPECIFICATION v3
+Based on: V3.3_HYBRID_FRAME
 Status: STRUCTURAL INTERFACE DEFINITION
 Material: Carbon Fiber Reinforced Nylon
 Units: Millimeters
@@ -42,6 +42,7 @@ Design Rules:
 - Printed part only handles shear stabilization
 - Internal ribbing required
 - Minimum 12 mm material around bolt channels
+- Reinforce underside ribs for hybrid frame weight (up to 25 kg core + payload)
 
 ---------------------------------------
 PART GROUP B — VERTICAL POST FOOT BLOCK
@@ -50,17 +51,19 @@ PART GROUP B — VERTICAL POST FOOT BLOCK
 Quantity: 8
 
 Function:
-Mount vertical 3030 posts to ring node.
+Mount vertical 3030 posts to ring node and landing interface.
 
 Interface:
 - Base saddle for ring segment
 - Vertical receiver for 3030 post
 - M8 structural fasteners
+- Landing foot interface (TPU pad or skid)
 
 Design Rules:
 - Direct aluminum-to-aluminum compression alignment
 - Printed block must not carry axial compression load alone
-- Add internal gussets at 45° angles
+- Add internal gussets at 45° angles and vertical ribs to support shock
+- Reinforce all shear faces that mate with landing node
 
 ---------------------------------------
 PART GROUP C — RADIAL 2020 CLAMP
@@ -80,6 +83,7 @@ Design Rules:
 - Clamp geometry distributes shear
 - Avoid thin arms under bending load
 - Minimum 8 mm wall at junctions
+- Reinforce contact points for hybrid frame dynamic torque
 
 ---------------------------------------
 PART GROUP D — CROSS BRACE GUSSET
@@ -98,6 +102,7 @@ Design Rules:
 - Triangular geometry preferred
 - Prevent torsional twist
 - Maintain 6 mm minimum edge margin from inserts
+- Reinforce gusset at post-to-cross brace junction for high-torque stair loads
 
 ---------------------------------------
 PRINT ORIENTATION RULES
@@ -107,6 +112,7 @@ PRINT ORIENTATION RULES
 - Orient parts so compression loads are vertical relative to layers.
 - Avoid printing large structural faces flat if bending stress is expected.
 - Add fillets (minimum 3 mm radius) to all internal corners.
+- Print landing foot blocks with vertical layers aligned to compression path.
 
 ---------------------------------------
 FAILURE PREVENTION RULES
@@ -116,6 +122,7 @@ FAILURE PREVENTION RULES
 - No cantilevered thin arms under dynamic load.
 - No unsupported insert closer than 3 mm to edge.
 - Test-fit every interface before final assembly.
+- Inspect reinforced ribs on first 10 operational stair-load cycles.
 
 ---------------------------------------
 END OF FILE
