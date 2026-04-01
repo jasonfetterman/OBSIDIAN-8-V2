@@ -1,6 +1,6 @@
 OBSIDIAN-8 V3
-FASTENER SPECIFICATION v1
-Based on: V3_LARGE_FORMAT_BASELINE
+FASTENER SPECIFICATION v3
+Based on: V3.3_HYBRID_FRAME
 Status: STRUCTURAL HARDWARE DEFINITION
 Units: Metric
 
@@ -11,10 +11,11 @@ PRIMARY STRUCTURE — 3030 CONNECTIONS
 Primary Ring Joints (3030 to 3030)
 Fastener Type: M8 Socket Head Cap Screw
 Grade: 10.9 minimum
-Length: 20–25 mm (verify with corner block depth)
+Length: 25 mm recommended (verify with corner block depth)
 Washer: M8 hardened washer
 Thread Interface: Steel T-nut or threaded insert block
 Torque Spec: 22–25 Nm
+Nord-Lock washer recommended for vibration-sensitive joints
 
 Vertical Post to Ring Node
 Fastener Type: M8 Socket Head Cap Screw
@@ -39,6 +40,7 @@ Fastener Type: M6 Socket Head Cap Screw
 Grade: 10.9 minimum
 Length: 16–20 mm
 Torque Spec: 9–11 Nm
+Printed alignment brackets may supplement lateral stability, not primary load
 
 ---------------------------------------
 PRINTED CF NYLON COMPONENT INTERFACES
@@ -48,7 +50,7 @@ Heat-Set Inserts:
 Type: Brass heat-set threaded insert
 Size: M6 and M8 as required
 Install Method: Controlled temperature insertion
-Minimum Wall Thickness Around Insert: 3 mm radial
+Minimum Wall Thickness Around Insert: 3 mm radial (≥4 mm for high-torque joints)
 
 Bolt Hole Oversize:
 +0.2 mm over nominal diameter
@@ -57,6 +59,7 @@ Printed Part Rule:
 - No direct threading into nylon
 - All structural fasteners use inserts
 - Avoid tensile loading of printed material
+- Reinforce or shim at primary torque points
 
 ---------------------------------------
 VIBRATION CONTROL
@@ -68,6 +71,7 @@ Applied to all structural fasteners
 
 Optional:
 Nord-Lock washers for primary ring joints (recommended)
+Rubber or polymer washers allowed for electronics mounting points only
 
 ---------------------------------------
 GENERAL HARDWARE RULES
@@ -77,6 +81,7 @@ GENERAL HARDWARE RULES
 - Do not use low-grade (8.8 or below) for primary load paths
 - Re-torque after first structural load test
 - Inspect printed interfaces after first 10 operational hours
+- Verify torque on hybrid 3030/printed junctions after stair-mode testing
 
 ---------------------------------------
 END OF FILE
