@@ -1,57 +1,104 @@
 OBSIDIAN-8 V3
 
 01_Mechanical/Stair_Mode_Mechanics.txt
-Revision: V3.2
+Revision: V3.3
 Status: Authoritative
 
 1. PURPOSE
 
-Define mechanical and kinematic behavior of OBSIDIAN-8 V3 for stair traversal.
+Define mechanical and kinematic behavior of OBSIDIAN-8 V3.3 for stair traversal  
+(hybrid 3030/2020 backbone + 3D printed limbs and brackets).  
 
-Ensures stable motion while ascending or descending stairs.
-Integrates with control authority, reactive safety, and neutral stance geometry.
-Provides reference for calibration, testing, and deployment.
+Ensures:
+
+- Stable motion while ascending or descending stairs  
+- Integration with control authority, reactive safety, and neutral stance geometry  
+- Reference for calibration, testing, and deployment
+
 2. MODE ACTIVATION CRITERIA
+
 Stair mode engages when:
-Front leg detects step elevation > 0.05 m (via LIDAR or proximity sensor)
-Incline exceeds normal ramp threshold
-Stable support polygon confirmed
+
+- Front leg detects step elevation > 0.05 m (via LIDAR or proximity sensor)  
+- Incline exceeds normal ramp threshold  
+- Stable support polygon confirmed  
+
 System automatically exits stair mode when:
-Step elevation < 0.02 m for >1 second
-Uneven terrain ends or neutral stance regained
+
+- Step elevation < 0.02 m for >1 second  
+- Uneven terrain ends or neutral stance regained
+
 3. LEG KINEMATICS ADJUSTMENTS
-Joint	Nominal Angle	Stair Ascend Adjustment	Stair Descend Adjustment	Notes
-Hip	0°	+10°	-10°	Increases step height
-Knee	30°	+20°	+10°	Avoids scraping step
-Ankle	0°	+5°	-5°	Foot angle to step surface
-Adjustments ensure foot clearance and stability while keeping CG within safe bounds.
-Step-by-step motion is coordinated with reactive controller to prevent tipping.
+
+Joint | Nominal Angle | Stair Ascend Adjustment | Stair Descend Adjustment | Notes
+--- | --- | --- | --- | ---
+Hip | 0° | +10° | -10° | Increases step height
+Knee | 30° | +20° | +10° | Avoids scraping step
+Ankle | 0° | +5° | -5° | Foot angle to step surface
+
+Notes:
+
+- 3D printed brackets reduce limb inertia, allowing smoother step trajectories  
+- Adjustments ensure foot clearance and stability while keeping CG within safe bounds  
+- Step-by-step motion coordinated with reactive controller to prevent tipping
+
 4. LOAD AND STABILITY CONSIDERATIONS
-Each leg must bear up to 40% dynamic load during step transitions.
-CG dynamically shifted toward grounded legs during ascent and descent.
-Limbs follow predefined support polygon: at least 3 points of contact for stability.
-Torque limits enforced per actuator specifications to prevent overloading.
+
+- Each leg must bear up to 40% dynamic load during step transitions  
+- CG dynamically shifted toward grounded legs during ascent/descent  
+- Limbs follow predefined support polygon: minimum 3 points of contact for stability  
+- Torque limits enforced per actuator specifications to prevent overloading  
+- Lighter 3D printed legs reduce peak torque while stair-lifting
+
 5. ARMOR AND PAYLOAD CLEARANCE
-Leg retraction angles calculated to avoid contact with armor covers.
-Payload and torso modules maintain center-of-mass alignment with neutral stance adjustments.
-Quick collision checks via embedded sensors before step lift.
+
+- Leg retraction angles calculated to avoid contact with modular armor panels  
+- Payload and torso modules maintain center-of-mass alignment with neutral stance adjustments  
+- Quick collision checks via embedded sensors before step lift  
+
 6. CONTROL INTEGRATION
+
 Reactive controller monitors:
-Step height & incline sensors
-Ground reaction forces
-Limb position sensors
+
+- Step height & incline sensors  
+- Ground reaction forces  
+- Limb position sensors  
+
 Control authority hierarchy:
-Hardware kill-line
-Reactive safety preemption
-Mission compute / stair mode sequence
-Swarm commands cannot override stair-mode adjustments.
+
+- Hardware kill-line  
+- Reactive safety preemption  
+- Mission compute / stair mode sequence  
+
+Swarm commands cannot override stair-mode adjustments
+
 7. VALIDATION AND TESTING
-Simulation: Multi-step ascent/descent with varying payloads.
-Field: Stair traversal at 0.2 m, 0.3 m, and 0.4 m step heights.
-Metrics recorded: torque utilization, CG deviation, actuator temperature, slip incidents.
-FMEA cross-reference: FM-003 (battery undervoltage), FM-004 (servo overheating), FM-008 (IMU drift).
+
+Simulation:
+
+- Multi-step ascent/descent with varying payloads and printed modules  
+
+Field:
+
+- Stair traversal at 0.2 m, 0.3 m, 0.4 m step heights  
+
+Metrics recorded:
+
+- Torque utilization  
+- CG deviation (updated for lower V3.3 CG)  
+- Actuator temperature  
+- Slip incidents  
+
+FMEA cross-reference:
+
+- FM-003 (battery undervoltage)  
+- FM-004 (servo overheating)  
+- FM-008 (IMU drift)
+
 8. DESIGN INTENT
-Provides repeatable, safe stair traversal for OBSIDIAN-8 V3.
-Maintains structural integrity, actuator safety, and balance.
-Fully integrated with Neutral Stance Geometry, Mass and CG Model, and System Control Authority Model.
-Ensures operator and swarm commands respect reactive safety hierarchy during stair mode.
+
+- Provides repeatable, safe stair traversal for OBSIDIAN-8 V3.3  
+- Maintains structural integrity, actuator safety, and balance  
+- Fully integrated with Neutral Stance Geometry, Mass and CG Model, and System Control Authority Model  
+- Ensures operator and swarm commands respect reactive safety hierarchy during stair mode  
+- Supports modular 3D printed limbs and printed brackets for easy replacement and maintenance
