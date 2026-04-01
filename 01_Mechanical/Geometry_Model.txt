@@ -1,6 +1,6 @@
 OBSIDIAN-8 V3 – GEOMETRY MODEL
-Revision: V3.0
-Status: Baseline Locked
+Revision: V3.3
+Status: Authoritative
 
 ------------------------------------------------------------
 1. CORE DIMENSIONS
@@ -12,24 +12,30 @@ Crouch Height: ~680 mm CG reference
 Maximum Stair Rise: 200 mm
 
 Body Configuration:
-Octagonal 2020 aluminum extrusion frame
+Hybrid 3030 aluminum extrusion backbone + 2020 secondary supports, octagonal cross-section frame
+3D printed modules for limbs, armor, and payload bays
 
 ------------------------------------------------------------
 2. BODY STRUCTURE
 ------------------------------------------------------------
 
 Frame Type:
-2020 aluminum extrusion (8-sided central core)
+3030 aluminum extrusion backbone forming central load paths
+2020 extrusions for secondary braces and sensor/payload mounts
+3D printed mounting brackets for actuators, panels, and electronics
 
 Central Electronics Plane:
 Approx. 300 mm diameter mounting plate
 Material: 3 mm aluminum or 5 mm polycarbonate
+Mounted to 3030 backbone via T-slot nuts
 
 Leg Mounting:
-Reinforced 3–5 mm aluminum or reinforced printed plates
+Reinforced 3D printed brackets with embedded gussets
+M6 fasteners to 3030 backbone for high-torque attachment
 
 Structural Design Goal:
-Minimize torsional flex during tripod gait.
+Minimize torsional flex under tripod gait
+Preserve modularity for maintenance and upgrades
 
 ------------------------------------------------------------
 3. LEG GEOMETRY
@@ -39,14 +45,15 @@ Per Leg:
 3 DOF configuration
 
 Segments:
-Coxa
-Femur
-Tibia
+Coxa – printed bracket, reinforced
+Femur – printed with internal ribs for torsion resistance
+Tibia – printed, long for stair clearance
 
 Design Bias:
 Long tibia for stair clearance
 Moderate femur for torque efficiency
 Coxa width optimized for lateral stability
+Reinforced attachment points to extrusion backbone
 
 ------------------------------------------------------------
 4. NEUTRAL STANCE GEOMETRY
@@ -60,7 +67,8 @@ Neutral Stance Requirements:
 - Tilt tolerance: ≤ 5° in neutral
 
 Stance Polygon:
-Must fully enclose CG projection during static posture.
+Fully encloses CG projection during static posture
+Backbone and printed brackets maintain alignment
 
 ------------------------------------------------------------
 5. TRIPOD GAIT GEOMETRY
@@ -74,10 +82,11 @@ Lift Height (Normal Mode): ~80–120 mm
 Lift Height (Stair Mode): ~200 mm
 
 Stride Length:
-Scaled based on voltage and performance mode.
+Scaled based on voltage and performance mode
 
 Design Requirement:
-No CG excursion outside support triangle.
+No CG excursion outside support triangle
+Hybrid frame maintains rigidity to prevent leg deflection
 
 ------------------------------------------------------------
 6. STAIR MODE GEOMETRY
@@ -87,10 +96,10 @@ Front Tripod:
 Increased lift arc to ≥ 200 mm
 
 Body Pitch Compensation:
-Forward CG shift before rear tripod lift.
+Forward CG shift prior to rear tripod lift
 
 Maximum Safe Pitch:
-≤ 10° sustained during stair ascent.
+≤ 10° sustained during stair ascent
 
 Abort Conditions:
 - Excessive tilt
@@ -102,7 +111,7 @@ Abort Conditions:
 ------------------------------------------------------------
 
 Head Position:
-Forward-biased mount above CG plane.
+Forward-biased mount above CG plane
 
 Contains:
 - 6 RGB cameras (wide field coverage)
@@ -111,32 +120,33 @@ Contains:
 - RTK antenna mount (top surface, clear sky exposure)
 
 Cable Routing:
-Strain-relieved through protected channel to central electronics plane.
+Strain-relieved through protected channels integrated in printed brackets and extrusion backbone
 
 ------------------------------------------------------------
 8. CG TARGET MODEL
 ------------------------------------------------------------
 
 Primary CG Target:
-Within central octagon.
+Within central 3030 backbone octagon
 
 Vertical CG:
-As low as practical while preserving stair clearance.
+As low as practical while preserving stair clearance
 
 Battery Placement:
-Lowest practical mounting position.
+Lowest practical mounting position (3D printed housing integrated with backbone)
 
 Heavy Compute Placement:
-Centralized and thermally isolated.
+Centralized and thermally isolated (mounted on 3030 backbone plate)
 
 ------------------------------------------------------------
 9. DESIGN CONSTRAINTS
 ------------------------------------------------------------
 
-- No structural member may flex enough to disturb SLAM alignment.
-- No servo horn shall be load-bearing without reinforcement.
-- Bearing-supported joints required at primary torque transfer points.
-- Printed components must not carry primary torsional loads.
+- No structural member may flex enough to disturb SLAM alignment
+- No servo horn shall be load-bearing without reinforcement
+- Bearing-supported joints required at primary torque transfer points
+- Printed components must not carry primary torsional loads
+- All 3D printed brackets must interface with extrusions using M5/M6 fasteners or embedded gussets
 
 ------------------------------------------------------------
 10. DESIGN PRIORITIES
@@ -147,6 +157,7 @@ Centralized and thermally isolated.
 3. Stair safety
 4. Cable protection
 5. Modular serviceability
+6. Hybrid integration of extrusion backbone and printed parts
 
 ------------------------------------------------------------
 END OF GEOMETRY MODEL
