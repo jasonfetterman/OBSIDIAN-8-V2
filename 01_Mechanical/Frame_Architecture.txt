@@ -1,56 +1,97 @@
 OBSIDIAN-8 V3
 
 01_Mechanical/Frame_Architecture.txt
-Revision: V3.2
+Revision: V3.3
 Status: Authoritative
 
 1. PURPOSE
 
-Define the mechanical frame architecture of OBSIDIAN-8 V3, including structural design, load distribution, material selection, and modularity for actuators, sensors, and armor systems.
+Define the mechanical frame architecture of OBSIDIAN-8 V3 using a hybrid extrusion and 3D printed design. Includes structural layout, load paths, material selection, modular interfaces, and integration with actuators, sensors, and armor systems.
 
 This document ensures:
 
 Predictable mechanical behavior under operational loads
-Compatibility with actuation and armor subsystems
-Modularity for maintenance and upgrades
+Compatibility with 3D printed subsystems and armor
+Modularity for maintenance, upgrades, and design iteration
 Traceable design decisions linked to CM records
+
 2. FRAME STRUCTURE OVERVIEW
-Main Chassis: Central backbone connecting all subsystems. Material: High-strength aluminum alloy or carbon-fiber composite.
-Leg Attachments: Modular connection points for articulated limbs (Leg_MK1_Obsidian, Leg_MK2_Obsidian).
-Torso Modules: Houses Mission Compute, Battery System, Sensors.
-Armor Mounting Points: Standardized slots for Covers_armor components.
-Payload Bays: Modular compartments for mission-specific equipment.
-Maintenance Access: Removable panels for internal inspections without disassembly.
+
+Main Chassis: 
+- Backbone constructed from 3030 aluminum extrusions forming the central torso structure. 
+- Primary load-bearing paths for battery, mission compute, and limb attachments.
+
+Secondary Supports:
+- 2020 extrusions for cross-braces, sensor mounts, and payload bay frames. 
+- Provides structural rigidity while minimizing weight.
+
+Leg Attachments:
+- Modular 3D printed interface brackets attach limbs to 3030 backbone. 
+- Compatible with Leg_MK1_Obsidian and Leg_MK2_Obsidian designs.
+- Reinforced gussets and brackets used for high-stress points.
+
+Torso Modules:
+- 3D printed housings for Mission Compute, Battery System, and Sensors.
+- Designed to slide or bolt onto T-slot extrusions for easy access.
+
+Armor Mounting Points:
+- 3D printed quick-release brackets attach to standardized extrusion slots.
+- Allows modular armor panels (Covers_armor) to be replaced or upgraded.
+
+Payload Bays:
+- 3D printed compartments fit within or attach to extrusion framework.
+- Modular and configurable based on mission requirements.
+
+Maintenance Access:
+- Panels and modules designed for slide-fit or bolted removal.
+- No disassembly of backbone required for standard maintenance.
+
 3. MATERIAL SELECTION AND PROPERTIES
-Component	Material	Notes / Reasoning
-Main Chassis	7075 Aluminum Alloy	High strength-to-weight ratio
-Limb Joints	Titanium Alloy	Fatigue-resistant, corrosion-proof
-Armor Covers	Polycarbonate + Kevlar	Lightweight impact protection
-Internal Panels	ABS Plastic	Easy to remove, low cost
-Fasteners	Stainless Steel	Corrosion resistance, reliability
+
+Component         Material / Method           Notes / Reasoning
+Main Chassis      3030 Aluminum Extrusions   High stiffness, lightweight, modular
+Secondary Supports 2020 Aluminum Extrusions  Cross-bracing, sensor mounts, low weight
+Limb Brackets      3D Printed PETG/Nylon    Strength at actuator mounts, customizable
+Armor Covers       3D Printed + Polycarbonate Infill or hybrid for impact resistance
+Internal Panels    3D Printed ABS or PETG   Lightweight, removable
+Fasteners          M5/M6 Bolts + T-slot Nuts Standardized modular attachment
+
 4. LOAD AND STRESS CONSIDERATIONS
-Frame designed for dynamic motion loads under full articulation.
-Safety factor ≥ 2.0 for all structural elements.
-Stress distribution analyzed via FEA (Finite Element Analysis) on:
-Chassis backbone
-Limb mounting points
-Armor attachment interfaces
-Vibration damping integrated at actuator mounts to protect electronics.
+
+- Backbone extrusions designed for dynamic motion and static loads.
+- Safety factor ≥ 2.0 for all extrusion members and printed actuator mounts.
+- High-stress points (leg mounts, shoulder joints) reinforced with printed gussets and metal brackets.
+- Finite Element Analysis (FEA) recommended on main 3030 chassis and key printed components.
+- Vibration damping integrated via printed gaskets or rubber pads at actuator mounts.
+
 5. MODULARITY AND INTERFACES
-Actuator Interfaces: Standardized mounting holes, torque limits documented.
-Sensor Mounts: Adjustable brackets with orientation locking.
-Armor Panels: Quick-release mechanism, keyed alignment to frame.
-Power & Data Channels: Embedded routing paths within frame for wiring harnesses.
+
+Actuator Interfaces:
+- 3D printed mounting plates bolt to extrusion end plates.
+- Adjustable slots for fine alignment.
+- Torque limits documented per actuator type.
+
+Sensor Mounts:
+- 2020 extrusion-mounted sliding brackets with locking tabs.
+- Allows orientation adjustment and rapid replacement.
+
+Armor Panels:
+- Quick-release printed brackets align to extrusion slots.
+- Panels can be swapped without tools for field maintenance.
+
+Power & Data Channels:
+- Internal extrusion cavities route wiring harnesses.
+- Printed cable guides clip onto extrusions for secure routing.
+
 6. COMPATIBILITY WITH CM / DEPLOYMENT
-Frame revision recorded in Configuration Management Plan.
-Each unit linked to its deployment_profile specifying hardware revision.
-Structural changes require Change Request (CR) approval, per CM guidelines.
+
+- Frame revision recorded in Configuration Management Plan.
+- Each unit linked to deployment_profile specifying hardware and printed part revisions.
+- Structural or interface changes require Change Request (CR) approval per CM guidelines.
+
 7. DESIGN INTENT
 
-The frame architecture ensures:
-
-High structural integrity while maintaining weight efficiency
-Modular and upgradeable mechanical layout
-Integration compatibility with actuation, sensor, and armor subsystems
-Predictable performance across all operational scenarios
-Traceable and auditable design evolution
+- Maintain high structural integrity with minimal weight using extrusion backbone.
+- Modular, upgradeable layout compatible with 3D printed limbs, sensors, and armor.
+- Predictable performance under dynamic loads and articulation.
+- Fully traceable and auditable design evolution.
