@@ -1,52 +1,71 @@
 OBSIDIAN-8 V3
 
 01_Mechanical/Structural_Load_Model.txt
-Revision: V3.2
+Revision: V3.3
 Status: Authoritative
 
 1. PURPOSE
 
-Define mechanical load distribution and structural integrity for OBSIDIAN-8 V3.
+Define mechanical load distribution and structural integrity for OBSIDIAN-8 V3.3  
+(hybrid 3030/2020 backbone + 3D printed limbs and modules).  
 
-Ensures the frame and actuators handle static, dynamic, and impact loads.
-Provides reference for FEA, CM, FMEA, and deployment validation.
-Supports stair traversal, payload handling, and normal locomotion.
+Ensures:
+
+- Frame and actuators handle static, dynamic, and impact loads  
+- Reference for FEA, CM, FMEA, and deployment validation  
+- Supports stair traversal, payload handling, and normal locomotion
+
 2. LOAD TYPES
-Load Type	Description	Notes
-Static Load	Weight of chassis, payload, battery, armor at rest	Base design load
-Dynamic Load	Forces during walking, stair traversal, acceleration/deceleration	Up to 1.5× static
-Impact Load	Sudden contact or collision	Safety factor ≥ 2.0
-Torsional Load	Twist forces on frame due to uneven terrain	Evaluated per actuator mount
-Bending Load	Beam bending on chassis and limb mounts	Monitored via FEA
+
+Load Type | Description | Notes
+--- | --- | ---
+Static Load | Weight of chassis, payload, battery, armor at rest | Base design load (~24.8 kg total)
+Dynamic Load | Forces during walking, stair traversal, acceleration/deceleration | Up to 1.5× static
+Impact Load | Sudden contact or collision | Safety factor ≥ 2.0
+Torsional Load | Twist forces on frame due to uneven terrain | Evaluated per actuator mount
+Bending Load | Beam bending on chassis and limb mounts | Monitored via FEA
+
 3. LOAD DISTRIBUTION
-Legs: Each leg designed to support 40–45% of total static mass during neutral stance.
-Torso Modules: Evenly distribute battery and mission payload along X-axis to minimize torsion.
-Armor Panels: Lightweight panels reduce uneven lateral loading.
-Actuators: Torque limits enforce safe operation under dynamic loads.
-Support Polygon: CG kept within polygon defined by limb contact points to prevent tipping.
+
+- **Legs:** Each leg designed to support 35–40% of total static mass during neutral stance (reduced due to lighter 3D printed limbs)  
+- **Torso Modules:** Evenly distribute battery and mission payload along X-axis to minimize torsion  
+- **Armor Panels:** Lightweight printed + polycarbonate panels reduce uneven lateral loading  
+- **Actuators:** Torque limits enforce safe operation under dynamic loads  
+- **Support Polygon:** CG maintained within polygon defined by limb contact points to prevent tipping
+
 4. SAFETY FACTORS AND MARGINS
-Material Factor of Safety: ≥ 2.0 for all primary load-bearing elements.
-Joint Stress Limit: 80% of yield strength under max expected load.
-Deflection Limits:
-Chassis backbone: ≤ 1.5 mm under max static load
-Limb mounting plates: ≤ 2 mm under max dynamic load
+
+- **Material Factor of Safety:** ≥ 2.0 for all primary load-bearing elements  
+- **Joint Stress Limit:** 80% of yield strength under max expected load  
+- **Deflection Limits:**  
+  - Chassis backbone: ≤ 1.5 mm under max static load  
+  - Limb mounting plates/brackets: ≤ 2 mm under max dynamic load (3D printed gussets reinforced)  
+
 5. LOAD CASES
-Case ID	Scenario	Max Load (kg)	Notes
-LC-001	Neutral stance, static	33.3	Base CG
-LC-002	Forward motion, flat terrain	50	Includes dynamic torque
-LC-003	Stair ascent, full payload	55	Step height 0.3 m
-LC-004	Stair descent, full payload	55	Step height 0.3 m
-LC-005	Sudden impact, frontal collision	70	Safety factor applied
-All cases analyzed via Finite Element Analysis (FEA) to confirm stress limits, deflection, and safety margins.
+
+Case ID | Scenario | Max Load (kg) | Notes
+--- | --- | --- | ---
+LC-001 | Neutral stance, static | 24.8 | Base CG (V3.3 mass)
+LC-002 | Forward motion, flat terrain | 38 | Includes dynamic torque
+LC-003 | Stair ascent, full payload | 42 | Step height 0.3 m
+LC-004 | Stair descent, full payload | 42 | Step height 0.3 m
+LC-005 | Sudden impact, frontal collision | 56 | Safety factor applied  
+
+Notes: All cases analyzed via Finite Element Analysis (FEA) to confirm stress limits, deflection, and safety margins
+
 6. INTEGRATION WITH OTHER MODELS
-Links to Frame_Architecture.txt for mounting points.
-Compatible with Mass_and_CG_Model.txt for load calculations.
-Supports Neutral_Stance_Geometry.txt for baseline stance and CG reference.
-Provides inputs for Stair_Mode_Mechanics.txt to calculate dynamic load shifts.
-FMEA references: FM-004 (servo overheating), FM-005 (structural crack), FM-009 (power distribution stress).
+
+- Links to **Frame_Architecture.txt** for mounting points  
+- Compatible with **Mass_and_CG_Model.txt** for load calculations  
+- Supports **Neutral_Stance_Geometry.txt** for baseline stance and CG reference  
+- Provides inputs for **Stair_Mode_Mechanics.txt** to calculate dynamic load shifts  
+- FMEA references: FM-004 (servo overheating), FM-005 (structural crack), FM-009 (power distribution stress)
+
 7. DESIGN INTENT
-Maintain structural integrity across all operational scenarios.
-Minimize deflection and stress on critical components.
-Ensure actuator and limb safety under dynamic and impact loads.
-Provide predictable mechanical behavior for control authority and reactive safety systems.
-Fully traceable and CM-compliant for all load-bearing elements.
+
+- Maintain structural integrity across all operational scenarios  
+- Minimize deflection and stress on critical components  
+- Ensure actuator and limb safety under dynamic and impact loads  
+- Provide predictable mechanical behavior for control authority and reactive safety systems  
+- Fully traceable and CM-compliant for all load-bearing elements  
+- Supports hybrid frame and modular printed components for easy replacement and upgrade
