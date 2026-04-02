@@ -1,0 +1,22 @@
+# OBSIDIAN-8 CABLE ROUTING STANDARD (REV A)
+
+## Internal Routing
+- All parts must include internal cable channels
+- Channel width: 6–10 mm
+- Use rounded edges (no sharp corners)
+
+## Pass-Through Holes
+- Between segments: 10–15 mm diameter
+
+## Strain Relief
+- Add anchor points every 100–150 mm
+- Use zip-tie slots or clip points
+
+## Connector Clearance
+- XT60: minimum 16 mm space
+- JST: minimum 8–10 mm space
+
+## Routing Rules
+- Avoid tight bends
+- Keep wires away from moving joints
+- Protect wires from pinch points
