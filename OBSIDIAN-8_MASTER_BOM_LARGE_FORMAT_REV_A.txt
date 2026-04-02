@@ -22,14 +22,14 @@ Polycarbonate Sheets | McMaster-Carr | 4 | $20 | $80 | Camera/sensor protection
 
 ACTUATION
 --------------------------------------------------------------------------------------------
-AGFRC A86BHMW 400 kg·cm HV Servo | AGFRC | 24 | $120 | $2,880 | Primary leg actuation, CNC case, steel gears, dual ball bearings, 25T spline
-AGFRC Servo Spare | AGFRC | 2 | $120 | $240 | Backup servos
+AGFRC A86BHMW 400 kg·cm HV Servo | AGFRC | 24 | $120 | $2,880 | Primary leg actuation, CNC case, steel gears, dual ball bearings, 25T spline  https://www.agf-rc.com/55kg-high-torque-waterproof-brushless-programmable-servo-a86bhmw-p6919759.html
+AGFRC Servo Spare | AGFRC | 2 | $120 | $240 | Backup servos  https://www.agf-rc.com/55kg-high-torque-waterproof-brushless-programmable-servo-a86bhmw-p6919759.html
 Aluminum Servo Mount Brackets | Custom/3D Print | 48 | $6.25 | $300 | Reinforced brackets
 TPU 95A Foot Pads | Generic | 8 | included | included | Replaceable foot pads
-6001-2RS Bearings (12mm bore) | SKF/NSK | 56 | $7.20 | $403 | Main leg joint bearings
-608-2RS Bearings | SKF/NSK | 40 | $2.50 | $100 | Redundant / expansion joints
+6001-2RS Bearings (12mm bore) | SKF/NSK | 56 | $4.62 | $308.71 | Main leg joint bearings   https://www.sp-spareparts.com/en/p/6001-2rs-c3-timken?msclkid=3493b2b41c47133188addb7ac9a7817d&utm_source=bing&utm_medium=cpc&utm_campaign=C6%20No%20vendidos,%20margen%20y%20clics&utm_term=C6&utm_content=C6
+608-2RS Bearings | SKF/NSK | 40 | $0.47 | $68.79 | Redundant / expansion joints
 12 mm Hardened Steel Shafting | McMaster-Carr | 8 m | $50 | $400 | Precision ground rods
-Clamp-style Shaft Collars | McMaster-Carr | 24 | $5 | $120 | Shaft retention
+Clamp-style Shaft Collars | Amazon | 24 | $5 | $120 | Shaft retention  https://www.amazon.com/Collar-Aluminum-Halves-Clamping-Thickness/dp/B0BPDBY2H2/ref=sr_1_2_sspa?adgrpid=1337006702541718&dib=eyJ2IjoiMSJ9.ZUsDsb7BDQ-AEXJifXCkYgkJ5WmKf-i6vlVJRqll5C2KZUN5UjDRpIorvDVT1qFpfUzbKqVrzpL4rqylPhYJUSQzkajT-_CURF7R8_81ATUA4jHrtq5O8i-rSxtuvZnP4Vovva5v9kQq0pEbFWCiX_ik5OdKupYJyKczdgwauVYyPog6VkMwmWuQquQRAt7wFfdBfSDV28yg50FNJY30i_31XZczY6XCnFtURy9Z-qBzOoEc0rwSwhjCM-G9vgiByYF1XGp20KfWwMr4-UJDKLV2F6rBHF-hY_ZsiYwFzVM.yHkWqU0Hqv_Jrr0OkAxRJb882bJc-AIaoNbl4isIpRM&dib_tag=se&hvadid=83563159764972&hvbmt=bp&hvdev=c&hvlocphy=72526&hvnetw=o&hvqmt=p&hvtargid=kwd-83563260303195%3Aloc-190&hydadcr=24144_13545762&keywords=12mm%2Bshaft%2Bcollar&mcid=b4f8545f742c305aba790f3986dc846d&msclkid=f32408e0aff01dcb4c82612e741385b3&qid=1775164424&s=industrial&sr=1-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1
 M8 Shoulder Bolts | McMaster-Carr | 48 | $6 | $288 | Joint fasteners
 Washers / Lock Nuts | McMaster-Carr | Bulk | $80 | $80 | Spacers & reinforcement
 Aluminum Spacers Kit | McMaster-Carr | 100+ | $50 | $50 | Adjustable linkage spacing
