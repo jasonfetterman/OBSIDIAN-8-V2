@@ -1,0 +1,33 @@
+COXA JOINT STANDARD (OBSIDIAN-8 V3)
+
+Rotation Axis: Vertical (Yaw)
+Load Type: Radial dominant + shock loads
+
+SHAFT:
+- Diameter: 8mm (minimum) → 10mm preferred
+- Material: Hardened steel (or precision rod)
+- Fit: Slip fit through bearings, clamped on output side
+
+BEARINGS:
+- Type: 608ZZ (8x22x7) OR 6000 series if upgrading
+- Quantity: 2 per leg (top + bottom)
+- Spacing: 20–35mm apart (CRITICAL for stability)
+
+HOUSING:
+- Fully captured bearing pockets
+- Press fit tolerance: -0.02mm
+- Reinforced outer walls (≥4mm thickness)
+
+SERVO INTERFACE:
+- Servo does NOT carry radial load
+- Output drives shaft via:
+    → Clamping hub OR
+    → Steel coupler
+
+LOAD PATH:
+LEG → SHAFT → BEARINGS → HOUSING → 2020 FRAME
+
+DO NOT:
+- Mount servo directly as structural support
+- Use single bearing
+- Print shaft
