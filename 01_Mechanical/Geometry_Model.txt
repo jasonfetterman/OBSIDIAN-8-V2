@@ -1,164 +1,149 @@
-OBSIDIAN-8 V3 – GEOMETRY MODEL
-Revision: V3.3
+OBSIDIAN-8 V3
+Geometry_Model.txt
+Revision: V3.4
 Status: Authoritative
 
 ------------------------------------------------------------
-1. CORE DIMENSIONS
+1. CORE DIMENSIONS
 ------------------------------------------------------------
 
-Standing Height (Neutral): 1143 mm
-Target Total Mass: ≤ 20 kg
-Crouch Height: ~680 mm CG reference
-Maximum Stair Rise: 200 mm
+Standing Height (Neutral): 1143 mm  
+Crouch Height (reference Cg): ≈ 680 mm  
+Target Mass (operational): ≤ 20 kg frame only  
+Max Stair Rise: 200 mm  
 
-Body Configuration:
-Hybrid 3030 aluminum extrusion backbone + 2020 secondary supports, octagonal cross-section frame
-3D printed modules for limbs, armor, and payload bays
-
-------------------------------------------------------------
-2. BODY STRUCTURE
-------------------------------------------------------------
-
-Frame Type:
-3030 aluminum extrusion backbone forming central load paths
-2020 extrusions for secondary braces and sensor/payload mounts
-3D printed mounting brackets for actuators, panels, and electronics
-
-Central Electronics Plane:
-Approx. 300 mm diameter mounting plate
-Material: 3 mm aluminum or 5 mm polycarbonate
-Mounted to 3030 backbone via T-slot nuts
-
-Leg Mounting:
-Reinforced 3D printed brackets with embedded gussets
-M6 fasteners to 3030 backbone for high-torque attachment
-
-Structural Design Goal:
-Minimize torsional flex under tripod gait
-Preserve modularity for maintenance and upgrades
+Body Configuration: Hybrid 3030 aluminum extrusion backbone + 2020 secondary supports in octagonal layout.  
+3D‑printed modules provide armor, limb interfaces, and payload mounts.  
+Design intent anchored to /01_Mechanical/Frame_Architecture.txt.  
 
 ------------------------------------------------------------
-3. LEG GEOMETRY
+2. BODY STRUCTURE
 ------------------------------------------------------------
 
-Per Leg:
-3 DOF configuration
+Frame Type:  
+- 3030 aluminum extrusion forming primary load paths.  
+- 2020 cross‑braces support sensors and payload bays.  
+- 3D‑printed brackets mount actuators, panels, and electronics.  
 
-Segments:
-Coxa – printed bracket, reinforced
-Femur – printed with internal ribs for torsion resistance
-Tibia – printed, long for stair clearance
+Central Electronics Plane:  
+- Diameter ≈ 300 mm; 3 mm aluminum or 5 mm polycarbonate plate.  
+- Mounted to 3030 backbone via T‑slot nuts and insulated spacers.  
 
-Design Bias:
-Long tibia for stair clearance
-Moderate femur for torque efficiency
-Coxa width optimized for lateral stability
-Reinforced attachment points to extrusion backbone
+Leg Mounting:  
+- Reinforced printed brackets with integrated gussets.  
+- M6 fasteners clamp to 3030 backbone for high torque loads.  
 
-------------------------------------------------------------
-4. NEUTRAL STANCE GEOMETRY
-------------------------------------------------------------
-
-Neutral Stance Requirements:
-
-- Feet positioned for maximum stability polygon
-- CG centered within 50 mm of geometric center
-- No servo near stall torque at neutral
-- Tilt tolerance: ≤ 5° in neutral
-
-Stance Polygon:
-Fully encloses CG projection during static posture
-Backbone and printed brackets maintain alignment
+Structural Goal:  
+- Minimize torsional flex under tripod operation.  
+- Preserve modularity for rapid maintenance and upgrade cycles.  
 
 ------------------------------------------------------------
-5. TRIPOD GAIT GEOMETRY
+3. LEG GEOMETRY
 ------------------------------------------------------------
 
-Tripod Sets:
-Set A: LF, RM, LR
-Set B: RF, LM, RR
+Configuration: 3 DOF per leg (Coxa / Femur / Tibia).  
+Coxa — reinforced printed bracket with embedded bearing boss.  
+Femur — printed section with internal ribbing for torsion resistance.  
+Tibia — extended segment for stair clearance.  
 
-Lift Height (Normal Mode): ~80–120 mm
-Lift Height (Stair Mode): ~200 mm
-
-Stride Length:
-Scaled based on voltage and performance mode
-
-Design Requirement:
-No CG excursion outside support triangle
-Hybrid frame maintains rigidity to prevent leg deflection
+Design Bias:  
+- Long tibia for stair reach.  
+- Moderate femur for torque efficiency.  
+- Coxa width optimized for lateral stability.  
+- Metal thread inserts in printed parts at attachment points.  
 
 ------------------------------------------------------------
-6. STAIR MODE GEOMETRY
+4. NEUTRAL STANCE GEOMETRY
 ------------------------------------------------------------
 
-Front Tripod:
-Increased lift arc to ≥ 200 mm
+Neutral stance must achieve:
+- Foot placement defining maximum stability polygon.  
+- Cg within ± 50 mm of geometric center.  
+- No servo operating near stall torque.  
+- Tilt ≤ 5° at neutral.  
 
-Body Pitch Compensation:
-Forward CG shift prior to rear tripod lift
-
-Maximum Safe Pitch:
-≤ 10° sustained during stair ascent
-
-Abort Conditions:
-- Excessive tilt
-- Current > threshold
-- Voltage sag
+Stance polygon fully encloses Cg projection; backbone and brackets maintain alignment under 10 N‑m torsion.  
 
 ------------------------------------------------------------
-7. HEAD MODULE GEOMETRY
+5. TRIPOD GAIT GEOMETRY
 ------------------------------------------------------------
 
-Head Position:
-Forward-biased mount above CG plane
+Tripod Sets for six‑leg pattern:  
+Set A = LF, RM, LR  Set B = RF, LM, RR  
 
-Contains:
-- 6 RGB cameras (wide field coverage)
-- 1 depth camera
-- IMU
-- RTK antenna mount (top surface, clear sky exposure)
+Lift Height – Normal Mode: ≈ 80 – 120 mm  
+Lift Height – Stair Mode: ≈ 200 mm  
+Stride Length – Scaled to voltage / mode ratio.  
 
-Cable Routing:
-Strain-relieved through protected channels integrated in printed brackets and extrusion backbone
-
-------------------------------------------------------------
-8. CG TARGET MODEL
-------------------------------------------------------------
-
-Primary CG Target:
-Within central 3030 backbone octagon
-
-Vertical CG:
-As low as practical while preserving stair clearance
-
-Battery Placement:
-Lowest practical mounting position (3D printed housing integrated with backbone)
-
-Heavy Compute Placement:
-Centralized and thermally isolated (mounted on 3030 backbone plate)
+Design Rules:  
+- Cg projection shall remain inside active tripod triangle.  
+- Frame deflection ≤ 1 mm under dynamic load.  
+- Reactive controller monitors leg feedback for stability.  
 
 ------------------------------------------------------------
-9. DESIGN CONSTRAINTS
+6. STAIR MODE GEOMETRY
 ------------------------------------------------------------
 
-- No structural member may flex enough to disturb SLAM alignment
-- No servo horn shall be load-bearing without reinforcement
-- Bearing-supported joints required at primary torque transfer points
-- Printed components must not carry primary torsional loads
-- All 3D printed brackets must interface with extrusions using M5/M6 fasteners or embedded gussets
+Front Tripod lift arc ≥ 200 mm.  
+Body pitch compensation applies pre‑rear tripod lift via energy model.  
+Max sustained pitch angle = 10° (verified per Operational_Envelope.txt).  
+
+Abort conditions:  
+- Excessive tilt > 10°  
+- Current > actuator threshold  
+- Voltage sag detected by BMS  
+Trigger → Reactive STOP and Safe‑Pose lock.  
 
 ------------------------------------------------------------
-10. DESIGN PRIORITIES
+7. HEAD MODULE GEOMETRY
 ------------------------------------------------------------
 
-1. Stability under load
-2. Predictable CG behavior
-3. Stair safety
-4. Cable protection
-5. Modular serviceability
-6. Hybrid integration of extrusion backbone and printed parts
+Mount Position: forward‑biased above Cg plane on front 3030 rail.  
+
+Contains:  
+- 6 RGB cameras for 360° coverage  
+- 1 depth camera  
+- IMU  
+- RTK antenna (top surface, sky exposure)  
+
+Cable Routing: strain‑relieved through extrusion channels and printed guides;
+secured with nylon loom and isolation pads against vibration.  
 
 ------------------------------------------------------------
-END OF GEOMETRY MODEL
+8. CENTER OF GRAVITY TARGET MODEL
+------------------------------------------------------------
+
+Primary Cg target within central octagonal 3030 core.  
+Vertical Cg position: as low as practical while preserving stair clearance.  
+
+Battery Placement → lowest practical plane (printed housing integrated to backbone).  
+Compute Modules → centered on electronics plate for symmetry and thermal balance.  
+
+Cg validation method defined in /00_System_Definition/Mass_and_Center_of_Gravity_Model.txt.  
+
+------------------------------------------------------------
+9. DESIGN CONSTRAINTS
+------------------------------------------------------------
+
+- Structural flex shall not exceed values that disturb SLAM alignment.  
+- No servo horn is load‑bearing without metal reinforcement.  
+- Primary torque‑transfer joints use bearing‑supported shafts.  
+- Printed parts must not carry primary torsional loads.  
+- All printed brackets fastened to extrusions with M5/M6 hardware and embedded gussets.  
+- All geometry updates require CR review and FEA verification.  
+
+------------------------------------------------------------
+10. DESIGN PRIORITIES
+------------------------------------------------------------
+
+1. Stability under load  
+2. Predictable Cg behavior  
+3. Stair safety and tripod control  
+4. Cable and thermal protection  
+5. Ease of service / rapid module exchange  
+6. Validated hybrid integration of extrusion backbone and printed components  
+7. Compliance with FMEA and Operational_Envelope standards  
+
+------------------------------------------------------------
+END OF GEOMETRY MODEL
 ------------------------------------------------------------
