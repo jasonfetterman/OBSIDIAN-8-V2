@@ -1,282 +1,222 @@
 OBSIDIAN-8 V3
 Safety_Architecture.txt
-Revision: V3.2
+Revision: V3.3
 Status: Authoritative
 
 ------------------------------------------------------------
 1. PURPOSE
 ------------------------------------------------------------
 
-Define the complete layered safety architecture of OBSIDIAN-8 V3.
+Define the layered safety architecture of OBSIDIAN‑8 V3,
+establishing fault containment, escalation behavior,
+and hardware–software enforcement boundaries.
 
-This document establishes:
+This architecture governs:
+- Safety authority hierarchy  
+- Fault containment strategy  
+- Escalation pathways  
+- Hardware enforcement layers  
+- Software safety mechanisms  
+- Operational safety boundaries  
 
-- Safety authority hierarchy
-- Fault containment strategy
-- Escalation pathways
-- Hardware enforcement layers
-- Software safety mechanisms
-- Operational safety boundaries
-
-Safety dominance is non-negotiable.
-
-
-------------------------------------------------------------
-2. SAFETY DESIGN PRINCIPLES
-------------------------------------------------------------
-
-2.1 Layered Defense
-
-Safety is implemented across:
-
-- Mechanical constraints
-- Electrical protections
-- Reactive control enforcement
-- Watchdog supervision
-- Hardware kill-line
-- Operational envelope restrictions
-
-No single point of failure may permit uncontrolled motion.
-
-2.2 Fail-Safe Default
-
-On ambiguity, loss of signal, or fault:
-
-System must default to STOP or KILL.
-
-2.3 Authority Supremacy
-
-Lower authority layer number overrides higher.
-
-Layer 0 (Hardware Kill) is absolute.
-
+Safety dominance is absolute and non‑negotiable.
 
 ------------------------------------------------------------
-3. SAFETY LAYER MODEL
+2. SAFETY DESIGN PRINCIPLES
 ------------------------------------------------------------
 
-Layer 0 – Hardware Kill Authority  
-Layer 1 – Reactive Motion Control  
-Layer 2 – Mission Compute  
-Layer 3 – Remote Supervision  
-Layer 4 – Maintenance Mode  
+2.1 Layered Defense  
+Safety implemented across:  
+- Mechanical constraints  
+- Electrical protections  
+- Reactive control enforcement  
+- Watchdog supervision  
+- Hardware kill‑line  
+- Operational envelope restrictions  
 
-Lower number = higher safety dominance.
+No single point of failure may permit uncontrolled motion.
 
+2.2 Fail‑Safe Default  
+On ambiguity, signal loss, or fault:  
+→ System defaults to STOP or hardware KILL state.
 
-------------------------------------------------------------
-4. HARDWARE SAFETY CONTROLS
-------------------------------------------------------------
-
-4.1 Physical Emergency Stop
-
-Must:
-
-- Directly interrupt servo rail
-- Not depend on software
-- Be externally accessible
-
-4.2 Kill-Line Relay
-
-Controlled by watchdog.
-Fail-safe open on power loss.
-
-4.3 BMS Protection
-
-Must enforce:
-
-- Overcurrent cutoff
-- Undervoltage cutoff
-- Overtemperature cutoff
-
-Cannot be overridden by software.
-
+2.3 Authority Supremacy  
+Lower layer number = higher authority.  
+Layer 0 (Hardware Kill) overrides all.  
+Reference: /03_Control_Architecture/Authority_Model.txt  
 
 ------------------------------------------------------------
-5. ELECTRICAL SAFETY MECHANISMS
+3. SAFETY LAYER MODEL
 ------------------------------------------------------------
 
-- Segmented power rails
-- Current limiting
-- Reverse polarity protection
-- Thermal shutdown on regulators
-- Servo rail isolation from compute rail
-
-Electrical instability must not cause uncontrolled motion.
-
-
-------------------------------------------------------------
-6. REACTIVE SAFETY ENFORCEMENT
-------------------------------------------------------------
-
-Reactive controller enforces:
-
-- Motion envelope limits
-- Joint angle limits
-- Velocity limits
-- Acceleration limits
-- Stability envelope limits
-- Slip detection halt
-
-Reactive layer may override mission commands at any time.
-
+| Layer | Designation | Function |
+|:--:|:----------------|:---------------------------------------------|
+| 0 | Hardware Kill Authority | Immediate power cut / servo rail interrupt |
+| 1 | Reactive Motion Control | Envelope, limit, and stability enforcement |
+| 2 | Mission Compute | High‑level autonomy and navigation logic |
+| 3 | Remote Supervision | Operator command / telemetry |
+| 4 | Maintenance Mode | Diagnostics under authentication |
 
 ------------------------------------------------------------
-7. WATCHDOG SUPERVISION
+4. HARDWARE SAFETY CONTROLS
 ------------------------------------------------------------
 
-Independent Raspberry Pi watchdog monitors:
+4.1 Physical Emergency Stop  
+- Directly interrupts servo rail; does not depend on software.  
+- Accessible from outside chassis.  
 
-- Reactive heartbeat
-- Mission heartbeat
-- Authority coherence
-- Remote supervision presence
+4.2 Kill‑Line Relay  
+- Controlled by watchdog (Section 7).  
+- Fail‑safe open on power loss.  
 
-On reactive failure:
+4.3 BMS Protection  
+- Over‑current, under‑voltage, over‑temperature cutoffs.  
+- Cannot be overridden by software commands.  
 
-Kill-line activated.
-
-Watchdog cannot be disabled by mission layer.
-
-
-------------------------------------------------------------
-8. HEARTBEAT SAFETY MODEL
-------------------------------------------------------------
-
-Loss of heartbeat results in:
-
-Mission heartbeat loss:
-Reactive STOP.
-
-Reactive heartbeat loss:
-Kill-line activation.
-
-Authority mismatch:
-Escalation to kill.
-
-No motion permitted without validated heartbeat.
-
+Reference: /02_Electrical/BMS_Circuit_Specification.txt  
 
 ------------------------------------------------------------
-9. MOTION SAFETY CONSTRAINTS
+5. ELECTRICAL SAFETY MECHANISMS
 ------------------------------------------------------------
 
-Motion must remain within:
+- Segmented power rails (mission / compute / servo)  
+- Current limiting and fusing  
+- Reverse‑polarity and over‑voltage protection  
+- Thermal shutdown on regulators  
+- Servo rail isolation from compute rail  
 
-- Deployment profile limits
-- Energy-aware constraints
-- Terrain class limits
-- CG stability envelope
-- Thermal envelope
-
-Violation triggers:
-
-Reactive override.
-
+Electrical faults must not propagate to motion systems.
 
 ------------------------------------------------------------
-10. ENERGY SAFETY CONSTRAINTS
+6. REACTIVE SAFETY ENFORCEMENT
 ------------------------------------------------------------
 
-Energy thresholds enforce:
+Reactive controller enforces:
+- Motion envelope, joint angle, velocity, acceleration limits  
+- Center‑of‑gravity stability band  
+- Slip or ground‑loss halt  
+- Thermal and energy threshold derating  
 
-- Reduced capability state
-- Mission termination state
-- Controlled stop
-- Pre-BMS cutoff stop
-
-System must never reach BMS cutoff during motion.
-
-
-------------------------------------------------------------
-11. FAULT CONTAINMENT STRATEGY
-------------------------------------------------------------
-
-Fault categories:
-
-- Compute failure
-- Sensor failure
-- Power anomaly
-- Thermal anomaly
-- Authority conflict
-- Communication loss
-
-Each must result in deterministic containment.
-
-No silent fault allowed.
-
+Reactive layer may override mission commands at any time.  
+Reference: /03_Control_Architecture/Reactive_Controller_Spec.txt  
 
 ------------------------------------------------------------
-12. ESCALATION TIERS
+7. WATCHDOG SUPERVISION
 ------------------------------------------------------------
 
-Tier 1 – Degraded Mode  
-Tier 2 – Controlled Stop  
-Tier 3 – Servo Disable  
-Tier 4 – Full Power Isolation  
+Independent Raspberry Pi watchdog monitors:  
+- Reactive heartbeat  
+- Mission compute heartbeat  
+- Authority coherence  
+- Remote supervision presence  
 
-Escalation path depends on fault severity.
-
-
-------------------------------------------------------------
-13. HUMAN SAFETY PROVISIONS
-------------------------------------------------------------
-
-- Minimum approach distance defined
-- Manual E-stop always available
-- No autonomous operation outside supervision
-- Clear system state indication required
-
-Human safety supersedes mission success.
-
+On reactive failure → Kill‑line activation.  
+Watchdog cannot be disabled by mission software.  
+Reference: /11_Codebase/pi_watchdog/  
 
 ------------------------------------------------------------
-14. PROHIBITED CONDITIONS
+8. HEARTBEAT SAFETY MODEL
 ------------------------------------------------------------
 
-The following are strictly prohibited:
+Loss actions:  
+- Mission heartbeat loss → Reactive STOP  
+- Reactive heartbeat loss → Kill‑line activation  
+- Authority mismatch → Power Isolation  
 
-- Software override of hardware kill
-- Servo rail energization without reactive validation
-- Operation with watchdog disabled
-- Dual authority motion control
-- Ignoring thermal overlimit
-- Ignoring BMS warnings
-
+No motion permitted without validated dual heartbeat.  
 
 ------------------------------------------------------------
-15. VALIDATION REQUIREMENTS
+9. MOTION SAFETY CONSTRAINTS
 ------------------------------------------------------------
 
-Safety architecture must pass:
+Motion limited by:  
+- Deployment profile parameters  
+- Energy‑aware constraints  
+- Terrain class limits  
+- CG stability envelope  
+- Thermal boundaries  
 
-- Kill-line latency test
-- Reactive crash test
-- Mission crash test
-- Power brownout test
-- Authority conflict simulation
-- Thermal overlimit test
-- Low-SOC shutdown test
-
-System must demonstrate deterministic STOP behavior.
-
+Violation → Reactive override or controlled stop.  
+Reference: /00_System_Definition/Operational_Envelope.txt  
 
 ------------------------------------------------------------
-16. DESIGN INTENT
+10. ENERGY SAFETY CONSTRAINTS
 ------------------------------------------------------------
 
-The OBSIDIAN-8 V3 safety architecture ensures:
+Energy model defines:  
+- Reduced capability state (≥ 20 % SOC)  
+- Mission termination state (≤ 15 % SOC)  
+- Controlled stop trigger (≤ 10 % SOC)  
+- Pre‑BMS cutoff stop (≥ 5 % SOC margin)  
 
-- Hardware-dominant motion cutoff
-- Layered authority containment
-- Deterministic failure behavior
-- No uncontrolled motion states
-- Protection of human operators
-- Protection of system integrity
-
-Safety is primary.
-Autonomy is secondary.
+System must never reach BMS hard cutoff while in motion.  
 
 ------------------------------------------------------------
-END OF FILE
+11. FAULT CONTAINMENT STRATEGY
+------------------------------------------------------------
+
+Fault categories: compute, sensor, power, thermal, authority, communication.  
+Each fault → deterministic containment state; no silent failure allowed.  
+Cross‑referenced to /00_System_Definition/Failure_Modes_and_Effects_Analysis.txt.  
+
+------------------------------------------------------------
+12. ESCALATION TIERS
+------------------------------------------------------------
+
+| Tier | State | Description |
+|:--:|:----------|:-------------|
+| 1 | Degraded | Autonomy reduced / limp mode |
+| 2 | Controlled Stop | Graceful halt with stability preserved |
+| 3 | Servo Disable | All actuators power‑down |
+| 4 | Full Isolation | Complete power cut via kill‑line relay |
+
+------------------------------------------------------------
+13. HUMAN SAFETY PROVISIONS
+------------------------------------------------------------
+
+- Minimum approach distance ≥ 0.5 m from active unit  
+- Physical E‑stop must remain accessible at all times  
+- No unsupervised autonomous operation permitted  
+- Visible and audible status indication mandatory  
+
+------------------------------------------------------------
+14. PROHIBITED CONDITIONS
+------------------------------------------------------------
+
+Prohibited actions:  
+- Software override of hardware kill  
+- Servo rail energization without reactive validation  
+- Operation with watchdog disabled or faulty  
+- Simultaneous dual command authority  
+- Ignoring thermal or BMS over‑limit events  
+
+------------------------------------------------------------
+15. VALIDATION REQUIREMENTS
+------------------------------------------------------------
+
+Safety architecture must pass:  
+- Kill‑line latency test  
+- Reactive and mission crash tests  
+- Power brownout simulation  
+- Authority conflict simulation  
+- Thermal over‑limit and low‑SOC shutdown tests  
+
+Documented in /09_Testing/Safety_Validation/  
+
+------------------------------------------------------------
+16. DESIGN INTENT
+------------------------------------------------------------
+
+The OBSIDIAN‑8 V3 Safety Architecture ensures:  
+- Hardware‑dominant motion cutoff  
+- Layered authority containment  
+- Deterministic failure response  
+- No uncontrolled motion states  
+- Human operator protection  
+- Preservation of system integrity  
+
+Safety is primary; autonomy remains subordinate.  
+
+------------------------------------------------------------
+END OF FILE
 ------------------------------------------------------------
