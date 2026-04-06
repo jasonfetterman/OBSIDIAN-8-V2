@@ -1,47 +1,105 @@
-OBSIDIAN-8 V3.3
-Mechanical Frame BOM
-Revision: V3.3
-Status: Authoritative
+OBSIDIAN-8 V3.3
+01_Mechanical/Mechanical_Frame_BOM.txt
+Revision: V3.4
+Status: Authoritative
+Units: Metric (mm / kg)
 
-1. FRAME BACKBONE (3030 EXTRUSIONS)
+------------------------------------------------------------
+1. FRAME BACKBONE — 3030 ALUMINUM EXTRUSIONS
+------------------------------------------------------------
 
-Part ID       Description                         Qty     Notes
-FB-3030-01    3030 Aluminum Extrusion, 500mm     2       Main torso side rails
-FB-3030-02    3030 Aluminum Extrusion, 400mm     2       Top and bottom cross rails
-FB-3030-03    3030 Aluminum Extrusion, 350mm     2       Front-to-back torso braces
-FB-3030-04    3030 Aluminum Extrusion, 250mm     4       Shoulder/leg attachment supports
+| Part ID | Description | Qty | Notes |
+|:--|:--|:--:|:--|
+| FB‑3030‑01 | 3030 Aluminum Extrusion 500 mm | 2 | Main torso side rails |
+| FB‑3030‑02 | 3030 Aluminum Extrusion 400 mm | 2 | Top / bottom cross rails |
+| FB‑3030‑03 | 3030 Aluminum Extrusion 350 mm | 2 | Front‑to‑back torso braces |
+| FB‑3030‑04 | 3030 Aluminum Extrusion 250 mm | 4 | Shoulder / leg attachment supports |
+| FB‑3030‑05 | 3030 Primary Ring Segments 288 mm | 12 | From FRAME CUT LIST v3 / ring geometry |
 
-2. SECONDARY SUPPORTS (2020 EXTRUSIONS)
+Profile: 3030 ‑ T‑slot, clear anodized finish per ASTM AA‑10C.  
+Reference: /01_Mechanical/Frame_Cut_List_v3.txt.  
 
-Part ID       Description                         Qty     Notes
-SS-2020-01    2020 Aluminum Extrusion, 200mm     4       Sensor mount rails
-SS-2020-02    2020 Aluminum Extrusion, 150mm     6       Payload bay frame members
-SS-2020-03    2020 Aluminum Extrusion, 100mm     6       Internal cross-braces
+------------------------------------------------------------
+2. SECONDARY SUPPORTS — 2020 ALUMINUM EXTRUSIONS
+------------------------------------------------------------
 
-3. 3D PRINTED COMPONENTS
+| Part ID | Description | Qty | Notes |
+|:--|:--|:--:|:--|
+| SS‑2020‑01 | 2020 Aluminum Extrusion 200 mm | 4 | Sensor mount rails |
+| SS‑2020‑02 | 2020 Aluminum Extrusion 150 mm | 6 | Payload bay frame members |
+| SS‑2020‑03 | 2020 Aluminum Extrusion 100 mm | 6 | Internal cross‑braces |
+| SS‑2020‑04 | 2020 Upper Ring Segments 270 mm | 12 | Supports hybrid frame geometry |
 
-Part ID       Description                         Qty     Material / Notes
-3DP-LIMB-01   Leg MK1 Bracket                      4       PETG/Nylon, reinforced gussets
-3DP-LIMB-02   Leg MK2 Bracket                      4       PETG/Nylon, reinforced gussets
-3DP-TORSO-01  Battery Housing                      1       PETG, slides onto 3030
-3DP-TORSO-02  Mission Compute Housing             1       PETG, slides onto 3030
-3DP-SENSOR-01 Sensor Mounts                        4       PETG/Nylon, adjustable orientation
-3DP-ARMOR-01  Armor Panels                         6       PLA + polycarbonate hybrid
-3DP-PAYLOAD-01 Modular Payload Trays              2       PETG/ABS, fits within 2020 frame
-3DP-MISC-01   Cable Guides & Gaskets              10      PETG/Rubber, vibration damping
+Profile: 2020 ‑ T‑slot, black anodized finish.  
+Cut per Frame Cut List and validated against 2020 tolerance table ±0.2 mm.  
 
-4. FASTENERS AND CONNECTORS
+------------------------------------------------------------
+3. 3D PRINTED COMPONENTS
+------------------------------------------------------------
 
-Part ID       Description                         Qty     Notes
-FAS-TNUT-M5   M5 T-slot Nuts                        50     For extrusion assembly
-FAS-BOLT-M5   M5x16 Bolts                           50     For printed part mounting
-FAS-BOLT-M6   M6x20 Bolts                           20     For high-load brackets
-FAS-WASHER-M5 Flat Washers M5                       50
-FAS-WASHER-M6 Flat Washers M6                       20
-FAS-BRACKET   Aluminum Corner Brackets             12     3030/2020 joints
+| Part ID | Description | Qty | Material / Notes |
+|:--|:--|:--:|:--|
+| 3DP‑LIMB‑01 | Leg MK1 Bracket | 4 | CF Nylon (PETG/Nylon blend), gusset‑reinforced |
+| 3DP‑LIMB‑02 | Leg MK2 Bracket | 4 | CF Nylon, revised socket geometry |
+| 3DP‑TORSO‑01 | Battery Housing | 1 | PETG, slides onto 3030 extrusion |
+| 3DP‑TORSO‑02 | Mission Compute Housing | 1 | PETG, top‑mounted access panel |
+| 3DP‑SENSOR‑01 | Adjustable Sensor Mounts | 4 | CF Nylon, yaw lock ring integrated |
+| 3DP‑ARMOR‑01 | Armor Panels | 6 | PLA + Polycarbonate hybrid composite |
+| 3DP‑PAYLOAD‑01 | Modular Payload Trays | 2 | PETG/ABS, fits 2020 frame slots |
+| 3DP‑MISC‑01 | Cable Guides / Gaskets | 10 | PETG‑Rubber blend, vibration isolators |
+| 3DP‑GUSSET‑01 | Structural Gussets | 8 | CF Nylon, high‑stress mount reinforcement |
 
-5. OPTIONAL REINFORCEMENTS
+Manufacturing Parameters per /01_Mechanical/Printed_Parts_Specification_v1.txt.  
 
-Part ID       Description                         Qty     Notes
-REIN-GUSSET   3D Printed Gussets                  8       High-stress leg/shoulder mounts
-REIN-CORNER   3030 Aluminum L-Corner Brackets      4       Added torsional rigidity
+------------------------------------------------------------
+4. FASTENERS AND CONNECTORS
+------------------------------------------------------------
+
+| Part ID | Description | Qty | Notes |
+|:--|:--|:--:|:--|
+| FAS‑TNUT‑M5 | M5 T‑slot Nuts | 50 | For 3030 / 2020 extrusions |
+| FAS‑BOLT‑M5 | M5 × 16 Bolts | 50 | Printed part mounting |
+| FAS‑BOLT‑M6 | M6 × 20 Bolts | 20 | High‑load brackets / leg attachments |
+| FAS‑WASHER‑M5 | Flat Washers M5 | 50 | General assembly |
+| FAS‑WASHER‑M6 | Flat Washers M6 | 20 | High‑load assembly |
+| FAS‑BRACKET | Aluminum Corner Brackets | 12 | 3030/2020 joints |
+| FAS‑INSERT‑M5 | Heat‑Set Threaded Inserts M5 | 30 | All printed parts per spec |
+| FAS‑INSERT‑M6 | Heat‑Set Threaded Inserts M6 | 10 | High‑load printed attachments |
+
+All fasteners stainless A2 ‑ 70 or zinc plated 10.9 per application.  
+
+------------------------------------------------------------
+5. OPTIONAL REINFORCEMENTS AND BRACING
+------------------------------------------------------------
+
+| Part ID | Description | Qty | Notes |
+|:--|:--|:--:|:--|
+| REIN‑GUSSET | 3D Printed Structural Gussets | 8 | High‑stress leg / shoulder junctions |
+| REIN‑CORNER | 3030 Aluminum L‑Corner Brackets | 4 | Additional torsional rigidity |
+| REIN‑GLOVE | Rubber Isolation Pads | 6 | Vibration control under actuators |
+| REIN‑PLATE | Aluminum Cross‑Tie Plates | 2 | Optional torsion stiffeners at torso mid‑plane |
+
+------------------------------------------------------------
+6. REVISION AND CONFIGURATION CONTROL
+------------------------------------------------------------
+
+- All component IDs tracked in Configuration Management Plan (/00_System_Definition/Configuration_Management_Plan.txt).  
+- Extrusion lengths verified against Frame Cut List before fabrication release.  
+- 3D printed part revisions logged per Printed Parts Specification.  
+- Any dimensional update requires Class B or higher Change Request.  
+
+------------------------------------------------------------
+7. DESIGN INTENT
+------------------------------------------------------------
+
+This Bill of Materials defines the mechanical component baseline for OBSIDIAN‑8 V3.3 hybrid frame.
+It links the structure directly to the Frame Architecture and Printed Parts Specification to ensure:
+
+- Dimensional consistency across fabrication and assembly  
+- Traceable mass and geometry for mechanical simulation  
+- Controlled material transitions between aluminum and printed components  
+- Repeatable modularity for maintenance and upgrades  
+
+------------------------------------------------------------
+END OF FILE
+------------------------------------------------------------
