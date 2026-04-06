@@ -1,188 +1,234 @@
 OBSIDIAN-8 V3
 System_Block_Diagram.txt
-Revision: V3.2
+Revision: V3.4
 Status: Authoritative
 
 ------------------------------------------------------------
 1. PURPOSE
 ------------------------------------------------------------
 
-Provide a single authoritative high-level system architecture
-representation for OBSIDIAN-8 V3.
+Provide the authoritative high‑level system architecture
+for OBSIDIAN‑8 V3 with integrated Duet 3 motion system.
 
-This document defines:
-
-- Major subsystems
-- Data flow pathways
-- Power flow pathways
-- Authority flow hierarchy
-- Safety enforcement boundaries
+Defines:
+- Major subsystems  
+- Data and power flows  
+- Authority hierarchy  
+- Safety and containment boundaries  
 
 ------------------------------------------------------------
-2. HIGH-LEVEL SYSTEM BLOCKS
+2. HIGH‑LEVEL SYSTEM BLOCKS
 ------------------------------------------------------------
 
                      +------------------------+
-                     |   Remote Operator      |
-                     |  (Encrypted Channel)   |
+                     |   Remote Operator      |
+                     | (Encrypted Channel)    |
                      +-----------+------------+
                                  |
                                  v
                      +------------------------+
-                     | Remote Control Node    |
-                     | Authentication Layer   |
+                     | Remote Control Node    |
+                     | Authentication Layer   |
                      +-----------+------------+
                                  |
                                  v
                      +------------------------+
-                     | Mission & Autonomy     |
-                     | - Navigation           |
-                     | - Docking              |
-                     | - Energy Manager       |
+                     | Mission & Autonomy     |
+                     | – Navigation           |
+                     | – Docking              |
+                     | – Energy Manager       |
                      +-----------+------------+
                                  |
                                  v
                      +------------------------+
-                     | Reactive Controller    |
-                     | - Motion Envelope      |
-                     | - Stability Monitor    |
+                     | Reactive Controller    |
+                     | – Motion Envelope      |
+                     | – Stability Monitor    |
                      +-----------+------------+
                                  |
                                  v
                      +------------------------+
-                     | Duet Bridge Interface  |
+                     | Duet 3 Bridge Interface|
+                     | (duet_bridge node)     |
                      +-----------+------------+
                                  |
                                  v
                      +------------------------+
-                     | Servo Actuators        |
+                     | Duet 3 Mainboard 6HC   |
+                     | – Servo outputs        |
+                     | – Temp sensing         |
+                     +-----------+------------+
+                                 |
+                                 v
+                     +------------------------+
+                     | Servo Actuators        |
                      +------------------------+
 
 ------------------------------------------------------------
-3. PERCEPTION FLOW
+3. PERCEPTION FLOW
 ------------------------------------------------------------
 
-Sensors:
-- Camera
-- Depth Sensor
-- IMU
-
-         +----------------------+
-         |   Perception Nodes   |
-         | - Camera Node        |
-         | - Depth Node         |
-         | - IMU Node           |
-         | - Terrain Classifier |
-         +----------+-----------+
-                    |
-                    v
-            Mission & Autonomy
-
-Perception data must not directly command actuators.
+Sensors (Camera, Depth, IMU, Environmental) feed → Perception Stack → Mission.  
+Perception outputs pose and terrain data only—no direct actuator commands.  
+Reference: /05_Perception/Sensor_Suite_Design.txt  
 
 ------------------------------------------------------------
-4. POWER FLOW ARCHITECTURE
+4. POWER FLOW ARCHITECTURE
 ------------------------------------------------------------
 
                  +------------------+
-                 |  Battery Pack    |
-                 |  + BMS           |
+                 |  Battery Pack    |
+                 |  + Smart BMS     |
                  +--------+---------+
                           |
                           v
               +----------------------+
-              | Power Distribution   |
-              | - Servo Rail         |
-              | - Compute Rail       |
+              | Power Distribution   |
+              | – Compute Rail 24 V  |
+              | – Servo Rail 24 V    |
+              | – Accessory 5 V      |
               +-----+-----------+----+
                     |           |
                     v           v
-              Servo Actuators   Compute Stack
+            Duet 3 Mainboard    Compute Stack  
 
-Kill-Line Relay:
-Between Power Distribution and Servo Rail.
-
-Hardware E-Stop:
-Interrupts Servo Rail directly.
+Kill‑Line Relay between Power Distribution and Servo Rail.  
+Hardware E‑Stop interrupts Servo Rail directly.  
 
 ------------------------------------------------------------
-5. SAFETY SUPERVISION BLOCK
+5. SAFETY SUPERVISION BLOCK
 ------------------------------------------------------------
 
             +-----------------------+
-            | Pi Watchdog           |
-            | - Heartbeat Monitor   |
-            | - Authority Check     |
+            | Pi Watchdog System    |
+            | – Heartbeat Monitor   |
+            | – Authority Check     |
             +-----------+-----------+
                         |
                         v
-                Kill-Line Relay
+                Kill‑Line Relay
+                        |
+                        v
+               Duet 3 Enable Input
 
-Watchdog supervises:
-- Reactive Node
-- Mission Node
-- Authority Consistency
+Watchdog supervises:
+- Reactive Controller  
+- Mission Compute  
+- duet_bridge heartbeat  
 
-------------------------------------------------------------
-6. AUTHORITY FLOW
-------------------------------------------------------------
-
-Layer 4 – Maintenance  
-Layer 3 – Remote  
-Layer 2 – Mission  
-Layer 1 – Reactive  
-Layer 0 – Hardware Kill  
-
-Authority flows downward.
-Safety overrides upward.
-
-Lower layer always dominates higher.
+On loss of communication → Kill‑Line release (open) → Servo rail disables.  
+Reference: /11_Codebase/pi_watchdog/  
 
 ------------------------------------------------------------
-7. DATA FLOW SUMMARY
+6. AUTHORITY FLOW
 ------------------------------------------------------------
 
-Sensors → Perception → Mission → Reactive → Duet → Actuators
+Layer 4 – Maintenance Mode  
+Layer 3 – Remote Supervision  
+Layer 2 – Mission Compute  
+Layer 1 – Reactive Controller  
+Layer 0 – Hardware Kill (Watchdog + Duet chain)  
 
-Remote → Mission → Reactive → Duet → Actuators
+Authority flows downward, safety dominance flows upward.  
 
-Watchdog monitors Reactive + Mission.
-
-Hardware kill interrupts Servo rail regardless of software state.
-
-------------------------------------------------------------
-8. FAILURE CONTAINMENT BOUNDARIES
-------------------------------------------------------------
-
-Mission failure:
-Reactive STOP.
-
-Reactive failure:
-Watchdog kill-line.
-
-Watchdog failure:
-Kill-line defaults open.
-
-BMS fault:
-Power isolation.
-
-No single failure may result in uncontrolled motion.
+Duet 3 board executes motion commands issued from Layer 1 but power is
+governed by Layer 0. No Duet motion may occur without active heartbeat
+validation from Reactive and Watchdog.  
 
 ------------------------------------------------------------
-9. DESIGN INTENT
+7. DATA FLOW SUMMARY
 ------------------------------------------------------------
 
-The system block diagram ensures:
+Sensors → Perception → Mission → Reactive → duet_bridge → Duet 3 → Actuators  
+Remote → Mission → Reactive → Duet 3 → Actuators  
 
-- Clear subsystem separation
-- Deterministic authority enforcement
-- Hardware-dominant safety cutoff
-- Transparent data and power pathways
-- Isolation between perception and actuation
-
-This diagram represents the canonical architecture
-for OBSIDIAN-8 V3.
+Watchdog monitors Reactive, Mission, and duet_bridge rates.  
+Hardware Kill cuts Servo power independent of software state.  
 
 ------------------------------------------------------------
-END OF FILE
+8. FAILURE CONTAINMENT BOUNDARIES
+------------------------------------------------------------
+
+Mission failure → Reactive STOP  
+Reactive failure → Watchdog Kill‑Line  
+duet_bridge failure → Duet heartbeat timeout → STOP  
+Duet firmware fault → Kill‑Line open → Servo disable  
+Watchdog failure → Kill‑Line defaults open  
+BMS fault → Power Isolation  
+
+No single failure may result in uncontrolled motion.  
+Reference: /00_System_Definition/Failure_Modes_and_Effects_Analysis.txt  
+
+------------------------------------------------------------
+9. DESIGN INTENT
+------------------------------------------------------------
+
+Architecture ensures:  
+- Deterministic authority enforcement  
+- Hardware‑dominant safety cutoff  
+- Transparent data and power pathways  
+- Isolated perception and actuation domains  
+- Integrated Duet 3 motion control within safety hierarchy  
+
+This diagram is the canonical architecture for OBSIDIAN‑8 V3 with Duet 3.
+
+------------------------------------------------------------
+END OF FILE
+------------------------------------------------------------
+
+------------------------------------------------------------
+
+OBSIDIAN-8 V3
+Failure_Modes_and_Effects_Analysis.txt
+Revision: V3.4
+Status: Authoritative
+
+(Append after FM‑013)
+
+------------------------------------------------------------
+
+FM‑014  
+Subsystem: Duet 3 Bridge Interface  
+Failure Mode: Loss of duet_bridge heartbeat or USB link  
+Cause: Software crash / communication timeout  
+Effect: Servo halt / motion freeze  
+S: 4  O: 2  D: 2  RPN: 16  
+Mitigation: Reactive STOP + Watchdog Kill‑Line trigger  
+Reference: /02_Electrical/Duet3_Interface.txt  
+
+------------------------------------------------------------
+
+FM‑015  
+Subsystem: Duet 3 Mainboard  
+Failure Mode: Firmware fault or overcurrent shutdown  
+Cause: Internal firmware exception / power surge  
+Effect: Servo power loss / reset  
+S: 3  O: 2  D: 3  RPN: 18  
+Mitigation: BMS current limiting + automatic re‑initialization sequence  
+Reference: /02_Electrical/Duet3_Interface.txt  
+
+------------------------------------------------------------
+
+FM‑016  
+Subsystem: Duet 3 Temperature Sensor Channel  
+Failure Mode: False reading causing premature shutdown  
+Cause: Sensor offset or EMI disturbance  
+Effect: Unexpected servo disable, reduced mobility  
+S: 2  O: 3  D: 3  RPN: 18  
+Mitigation: Sensor averaging + redundant thermal check through Reactive node  
+Reference: /01_Mechanical/Actuation_Systems/Thermal_Model.txt  
+
+------------------------------------------------------------
+
+FM‑017  
+Subsystem: Duet 3 CAN Bus  
+Failure Mode: Bus fault or desync  
+Cause: Connector loosening / noise / packet loss  
+Effect: Peripheral data loss / debug channel failure  
+S: 2  O: 2  D: 3  RPN: 12  
+Mitigation: Physical shielding + retransmission protocol check  
+Reference: /02_Electrical/Duet3_Interface.txt  
+
+------------------------------------------------------------
+END OF ADDITIONS
 ------------------------------------------------------------
