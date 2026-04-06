@@ -1,132 +1,118 @@
-OBSIDIAN-8 V3
-FABRICATION TOLERANCE SPECIFICATION v3
-Based on: V3.3_HYBRID_FRAME
-Status: MANUFACTURING CONTROL STANDARD
-Units: Millimeters
+OBSIDIAN‑8 V3  
+01_Mechanical/Fabrication_Tolerance_Specification.txt  
+Revision: V3.4  
+Status: Authoritative  
+Units: Millimeters (mm)
 
----------------------------------------
-PURPOSE
----------------------------------------
+------------------------------------------------------------
+1. PURPOSE
+------------------------------------------------------------
 
-Define dimensional tolerances for aluminum members,
-printed components, and assembly alignment.
+Define dimensional tolerances and manufacturing controls for aluminum extrusions, printed components, and assembly alignment within the 1143 mm (45 in) hybrid frame.  
+Goal — prevent cumulative tolerance drift that degrades rigidity and fitment precision.  
 
-Prevent cumulative tolerance drift in 45-inch (1143 mm) hybrid frame.
+Linked Documents: Frame_Cut_List_v3.txt, Printed_Parts_Specification_v1.txt, Test & Validation Master Plan_v1.txt  
 
----------------------------------------
-ALUMINUM CUT TOLERANCES
----------------------------------------
+------------------------------------------------------------
+2. ALUMINUM CUT TOLERANCES
+------------------------------------------------------------
 
-3030 / 2020 Linear Cuts:
-±0.5 mm maximum
+| Cut Type | Parameter | Tolerance | Notes |
+|:--|:--|:--:|:--|
+| Linear Cuts (3030 / 2020) | Length | ± 0.5 mm | Applies to all field and shop cuts |
+| Miter Cut (15 °) | Angle | ± 0.5 ° | Verify pair fit before fastening |
+| Miter Cut (15 °) | Length | ± 0.5 mm | Maintain matched segment sets |
+| Vertical Posts | Height | 1143 mm ± 0.5 mm | Across all eight posts |
 
-Miter Cuts (15°):
-Angle tolerance ±0.5°
-Length tolerance ±0.5 mm
+Segments must be paired and assembled in matched sets as produced. Do not mix unmatched tolerance parts between rings.  
 
-Post Height (1143 mm):
-±0.5 mm across all posts
+------------------------------------------------------------
+3. RING DIAMETER TOLERANCE
+------------------------------------------------------------
 
-Segments must be matched sets.
-Do not mix unmatched tolerances.
+Primary Ring Outer Diameter = 1143 mm ± 1.0 mm  
+Measurement = average of three diameters at 120 ° intervals.  
 
----------------------------------------
-RING DIAMETER TOLERANCE
----------------------------------------
+Out‑of‑round condition ≤ 2.0 mm total (deviation between largest/smallest).  
+Ring flatness verified before vertical post installation.  
 
-Primary Ring Outer Diameter:
-1143 mm ±1.0 mm
+------------------------------------------------------------
+4. VERTICAL ALIGNMENT
+------------------------------------------------------------
 
-Measured across 3 different diameters.
+| Parameter | Tolerance | Notes |
+|:--|:--:|:--|
+| Post Vertical Deviation | < 0.5 ° | Use digital level or laser alignment tool |
+| Post Height Variation | < 1.0 mm | Referenced against datum plate |
+| Upper Ring Concentricity | ± 2 mm | Relative to primary ring center |
 
-Out-of-round condition:
-Maximum deviation 2 mm total.
+All posts must seat flush and square. Shim only beneath metal bases — never beneath printed interfaces.  
 
----------------------------------------
-VERTICAL ALIGNMENT
----------------------------------------
+------------------------------------------------------------
+5. 2020 BRACING TOLERANCES
+------------------------------------------------------------
 
-Post vertical deviation:
-< 0.5° from true vertical
+- Radial brace length field‑trimmed after node confirmation; final installed tolerance ± 1 mm.  
+- Cross braces cut after primary structure confirmed square.  
+- Ensure braces engage securely to 3030 main ring using corner brackets.  
+- Printed gussets may provide lateral support only — not primary load reinforcement.  
 
-Post height variation:
-< 1 mm across all posts
+------------------------------------------------------------
+6. PRINTED PART TOLERANCES
+------------------------------------------------------------
 
-Upper ring concentricity:
-±2 mm relative to primary ring center
+| Parameter | Tolerance | Notes |
+|:--|:--:|:--|
+| Dimensional (after shrink compensation) | ± 0.3 mm | CF Nylon or PETG per spec |
+| Bolt Hole Oversize | +0.2 mm | Facilitates insert fit |
+| Insert Seating Depth | ± 0.2 mm | Flush to  –0.1 mm |
+| Mating Surface Flatness | ≤ 0.3 mm warp over 100 mm | Verify before final assembly |
 
----------------------------------------
-2020 BRACING TOLERANCES
----------------------------------------
+Critical interfaces must undergo dry fit testing before torque application.  
+Reinforce or shim any printed bracket at high‑torque locations (FEMUR/COXA mounts).  
 
-Radial brace length:
-Field trim recommended
-Final installed tolerance ±1 mm
+------------------------------------------------------------
+7. FASTENER FITMENT
+------------------------------------------------------------
 
-Cross braces:
-Cut after primary structure confirmed square
+- No force‑fit alignment through bolting.  
+- If hole misalignment > 0.5 mm → stop assembly and correct geometry.  
+- Fasteners must enter square and seat flat on metal surfaces.  
+- Use grade 10.9 hardware for primary loads / A2‑70 for light subsystems.  
 
-Ensure braces tie securely to 3030 main ring
-Printed gussets may provide lateral support only
+------------------------------------------------------------
+8. CUMULATIVE ERROR CONTROL
+------------------------------------------------------------
 
----------------------------------------
-PRINTED PART TOLERANCES
----------------------------------------
+To avoid geometric stack‑up error:  
+- Do **not** fully torque structure before confirming symmetry.  
+- Verify primary ring flatness prior to upper assembly.  
+- Confirm vertical alignment before installing cross bracing.  
+- Mount printed core brackets only after main ring rigidity is validated.  
 
-General dimensional tolerance:
-±0.3 mm after shrink compensation
+Assembly must progress in documented validation stages described in Test & Validation Master Plan Phase 1 – 3.  
 
-Bolt hole oversize:
-+0.2 mm over nominal
+------------------------------------------------------------
+9. INSPECTION CHECKPOINTS
+------------------------------------------------------------
 
-Insert seating depth:
-±0.2 mm
+**Checkpoint 1** – Primary ring diameter and flatness verified (V3 target 1143 ± 1 mm).  
+**Checkpoint 2** – Vertical posts aligned and cut equal height (1143 ± 0.5 mm).  
+**Checkpoint 3** – Upper ring checked for concentricity and level.  
+**Checkpoint 4** – Radial braces and printed gussets installed / verified against drawings.  
+**Checkpoint 5** – Final torque inspection of all fasteners (verify 8 N·m M6 hardware).  
 
-Critical mating surfaces:
-Test-fit required prior to final assembly
+All measurements logged under /10_Lifecycle/Fabrication_Inspection_Record.txt.  
 
-Reinforce or shim printed brackets at high-torque locations
+------------------------------------------------------------
+10. DESIGN INTENT
+------------------------------------------------------------
 
----------------------------------------
-FASTENER FITMENT
----------------------------------------
+Maintain dimensional accuracy and symmetry throughout manufacture and assembly of the OBSIDIAN‑8 V3 frame.  
+Ensure all metal and printed components assemble without residual stress or forced fit conditions.  
+Preserve rigidity targets for Torsional Stiffness Specification v1 and structural validation testing.  
+All fabrication and inspection records become part of the Configuration Management audit package.  
 
-No forced alignment using bolts
-
-If hole misalignment > 0.5 mm:
-Disassemble and correct root geometry
-
----------------------------------------
-CUMULATIVE ERROR CONTROL
----------------------------------------
-
-Do not:
-- Fully torque structure before confirming symmetry
-- Install upper ring before verifying primary ring flatness
-- Install cross bracing before vertical alignment confirmed
-- Mount printed core brackets before main ring rigidity verified
-
-Build must progress in validation stages
-
----------------------------------------
-INSPECTION CHECKPOINTS
----------------------------------------
-
-Checkpoint 1:
-Primary ring diameter & flatness verified
-
-Checkpoint 2:
-Vertical posts aligned and equal height
-
-Checkpoint 3:
-Upper ring concentric and level
-
-Checkpoint 4:
-Radial braces & printed gussets installed and verified
-
-Checkpoint 5:
-Full torque inspection complete
-
----------------------------------------
-END OF FILE
----------------------------------------
+------------------------------------------------------------
+END OF FILE
+------------------------------------------------------------
