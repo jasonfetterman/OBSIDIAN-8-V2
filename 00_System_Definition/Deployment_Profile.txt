@@ -1,64 +1,89 @@
 OBSIDIAN-8 V3
-
-Deployment_Profile
-Revision: V3.2
+Deployment_Profile.txt
+Revision: V3.3
 Status: Authoritative
 
+------------------------------------------------------------
 1. GENERAL INFORMATION
+------------------------------------------------------------
 
-Unit Serial Number: [Unique Identifier]
-Unit Model / Frame Revision: [e.g., OBSIDIAN-8 V3 – Alpha Frame]
-Deployment Date: [YYYY-MM-DD]
-Operator / Team: [Assigned Operator / Team Name]
-Operational Environment: [Indoor/Outdoor, Lab, Field, Combat Simulation, etc.]
-Mission Type: [Exploration, Patrol, Swarm Exercise, etc.]
+Unit Serial Number: [Unique Identifier]  
+Unit Model / Frame Revision: [e.g., OBSIDIAN‑8 V3 – Alpha Frame]  
+Deployment Date: [YYYY‑MM‑DD]  
+Operator / Team: [Assigned Operator / Team Name]  
+Operational Environment: [Indoor / Outdoor / Lab / Field / Simulation / Combat Exercise]  
+Mission Type: [Exploration / Patrol / Swarm Exercise / Inspection / Research]  
 
-2. HARDWARE CONFIGURATION
+------------------------------------------------------------
+2. HARDWARE CONFIGURATION
+------------------------------------------------------------
 
-Actuator Models: [List all installed actuators]
-Battery Chemistry & Configuration: [Battery type, voltage, cells, backup]
-BMS Revision: [Version / Firmware]
-Power Distribution Revision: [Board or harness version]
-Sensors Installed: [LIDAR, IMU, Cameras, etc.]
-Optional Add-ons: [Extra payloads or modules]
+Actuator Models: [List all installed actuators by model code and count]  
+Battery Chemistry & Configuration: [Battery type; nominal V / Ah; cell count; backup source]  
+BMS Revision: [Version / Firmware Tag]  
+Power Distribution Revision: [Board or harness identifier / rev]  
+Sensors Installed: [LIDAR, IMU, Depth Cameras, Environmental Sensors etc.]  
+Optional Add‑ons: [Payloads or modules mounted for this deployment]  
 
-3. SOFTWARE CONFIGURATION
+------------------------------------------------------------
+3. SOFTWARE CONFIGURATION
+------------------------------------------------------------
 
-ROS2 Package Versions: [List each package & version]
-Message Definitions Version: [Version used in this deployment]
-Firmware Versions: [Main board, subsystems]
-Launch Configurations: [Launch files or scripts used]
-Security Patches / Cybersecurity Profile: [Date/version]
+ROS 2 Package Versions: [List each package and version hash]  
+Message Definitions Version: [Message schema revision used in this deployment]  
+Firmware Versions: [Main controller, watchdog, BMS, peripherals]  
+Launch Configurations: [List launch files / scripts invoked for mission bring‑up]  
+Security Patches / Cybersecurity Profile: [Patch release date / profile revision]  
 
-4. CALIBRATION & TESTING
+------------------------------------------------------------
+4. CALIBRATION & TESTING
+------------------------------------------------------------
 
-Calibration Version: [Identifier / date]
-Pre-Deployment Tests:
-Actuator motion verification
-Sensor alignment checks
-Swarm coordination test (if applicable)
-Network & SSH connectivity verification
-Kill-line and safety dominance verification
-Safety Overrides Active: [Yes/No; describe limits if applicable]
+Calibration Version: [Identifier / date]  
+Pre‑Deployment Tests completed:  
+- Actuator motion verification  
+- Sensor alignment checks  
+- Swarm coordination test (if applicable)  
+- Network and SSH connectivity verification  
+- Kill‑line and safety dominance verification  
 
-5. NETWORK & COMMUNICATION
+Safety Overrides Active: [Yes / No – describe limits if applicable]  
+Calibration artifacts stored in: /09_Testing/Calibration_Reports/  
 
-Primary Network: [Wi-Fi / 4G / LAN / Swarm mesh]
-Remote Control Access: [Operator ID / Auth Method]
-Encryption Protocol: [TLS / AES-256 / Custom]
-SSH / Maintenance Access: [Allowed / Restricted]
-Swarm Channel Configuration: [Unique ID, authentication keys]
+------------------------------------------------------------
+5. NETWORK & COMMUNICATION
+------------------------------------------------------------
 
-6. SECURITY & AUTHORIZATION
+Primary Network: [Wi‑Fi / 4G / LAN / Swarm mesh]  
+Remote Control Access: [Operator ID / Auth Method]  
+Encryption Protocol: [TLS 1.3 / AES‑256 / Custom]  
+SSH / Maintenance Access: [Allowed / Restricted / Disabled]  
+Swarm Channel Configuration: [Unique Swarm ID; authentication keys; ROS 2 DDS Security enabled]  
 
-Credential Profile: [Active tokens, expiration, roles]
-Access Control Level: [Admin / Operator / Observer]
-Firmware Verification: [Signed / Verified / Version]
-Field Modification Permissions: [Allowed / Prohibited]
+------------------------------------------------------------
+6. SECURITY & AUTHORIZATION
+------------------------------------------------------------
 
-7. DEPLOYMENT STATUS
+Credential Profile: [Active tokens; expiration; assigned roles]  
+Access Control Level: [Administrator / Operator / Observer]  
+Firmware Verification: [Signed / Verified / Version]  
+Field Modification Permissions: [Allowed / Prohibited – note CR reference if allowed]  
+Cybersecurity Reference: /Cybersecurity_Threat_Model.txt  
 
-Ready for Deployment: [Yes / No]
-Deployment Restrictions: [Environmental limits, payload limits, operational constraints]
-Authorized By: [System Architect / Safety Reviewer / Production Manager]
-Notes / Observations: [Any unit-specific remarks]
+------------------------------------------------------------
+7. DEPLOYMENT STATUS
+------------------------------------------------------------
+
+Ready for Deployment: [Yes / No]  
+Deployment Restrictions: [Environmental limits, payload limits, operational constraints]  
+Authorized By:  
+ System Architect _______________________  
+ Safety Reviewer ________________________  
+ Production Manager ____________________  
+Authorization Date: _____________________  
+
+Notes / Observations: [Any unit‑specific remarks or deviations from baseline]  
+
+------------------------------------------------------------
+END OF FILE
+------------------------------------------------------------
