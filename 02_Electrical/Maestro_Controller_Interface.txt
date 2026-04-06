@@ -1,0 +1,34 @@
+OBSIDIAN‑8 PLATFORM DOCUMENT  
+Title: Maestro Controller Interface  
+Revision: V3.0 Date: 2024‑10‑03  
+Status: Active
+
+1. Scope  
+Defines wiring, communication, and power interface between the Pololu Maestro 24‑Channel servo controller and system compute units.
+
+2. Hardware Connections  
+- Power: 5 V supply from BMS Regulated Output  
+- Ground: Shared with Teensy Control Ground  
+- Signal Voltage: 5 V servo signal lines  
+- Logic Control Port: USB from Raspberry Pi 5 (preferred)  
+- Alternate Port: UART (TX/RX) from Teensy 4.1 at 115200 bps  
+
+3. Channel Assignments  
+| Channel | Controlled Axis / Subsystem | Notes |
+|----------|------------------------------|-------|
+| 0–5 | Leg Subsystem A Servos | feedback via encoder bus |
+| 6–11 | Leg B |  |
+| 12–15 | Gimbal / Sensor Mast | variable torque arm |
+
+4. Communication Protocol  
+Uses Pololu Compact Protocol.  
+Command sequence: 0xAA, DeviceID, Command, ...  
+Follows Maestro User Guide §5.  
+Heartbeat interval: 100 ms from teensy\_maestro node.
+
+5. Failsafe Behavior  
+If no valid packet for > 300 ms, Maestro outputs neutral signal to all servos (pulse width 1500 µs).  
+An external watchdog kills 5 V bus after 500 ms timeout.
+
+6. Configuration Files  
+All settings stored in `/config/maestro_v3.cfg` and checked into `obsidian_ws/config/`.
