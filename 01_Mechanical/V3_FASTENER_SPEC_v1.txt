@@ -1,88 +1,104 @@
-OBSIDIAN-8 V3
-FASTENER SPECIFICATION v3
-Based on: V3.3_HYBRID_FRAME
-Status: STRUCTURAL HARDWARE DEFINITION
-Units: Metric
+OBSIDIAN‑8 V3  
+01_Mechanical/Fastener_Specification.txt  
+Revision: V3.4  
+Status: Authoritative  
+Units: Metric (mm / Nm)
 
----------------------------------------
-PRIMARY STRUCTURE — 3030 CONNECTIONS
----------------------------------------
+------------------------------------------------------------
+1. PRIMARY STRUCTURE — 3030 CONNECTIONS
+------------------------------------------------------------
 
-Primary Ring Joints (3030 to 3030)
-Fastener Type: M8 Socket Head Cap Screw
-Grade: 10.9 minimum
-Length: 25 mm recommended (verify with corner block depth)
-Washer: M8 hardened washer
-Thread Interface: Steel T-nut or threaded insert block
-Torque Spec: 22–25 Nm
-Nord-Lock washer recommended for vibration-sensitive joints
+**Primary Ring Joints (3030 ↔ 3030)**  
+Fastener Type: M8 Socket Head Cap Screw  
+Grade: 10.9 (minimum)  
+Length: 25 mm (re‑verify with corner block depth)  
+Washer: M8 hardened steel  
+Thread Interface: Steel T‑nut / threaded insert block  
+Torque Spec: 22 – 25 N·m  
+Washer Option: Nord‑Lock type recommended for vibration‑sensitive joints  
 
-Vertical Post to Ring Node
-Fastener Type: M8 Socket Head Cap Screw
-Grade: 10.9 minimum
-Length: 25–30 mm
-Thread Interface: Steel T-nut
-Torque Spec: 22–25 Nm
+**Vertical Post ↔ Ring Node**  
+Fastener Type: M8 Socket Head Cap Screw  
+Grade: 10.9 (minimum)  
+Length: 25 – 30 mm  
+Thread Interface: Steel T‑nut (compatible profile)  
+Torque Spec: 22 – 25 N·m  
+Apply medium strength threadlocker (blue).  
 
----------------------------------------
-SECONDARY STRUCTURE — 2020 CONNECTIONS
----------------------------------------
+------------------------------------------------------------
+2. SECONDARY STRUCTURE — 2020 CONNECTIONS
+------------------------------------------------------------
 
-2020 to 3030 Interfaces
-Fastener Type: M6 Socket Head Cap Screw
-Grade: 10.9 minimum
-Length: 16–20 mm
-Thread Interface: Steel T-nut (slot compatible)
-Torque Spec: 9–11 Nm
+**2020 ↔ 3030 Interfaces**  
+Fastener Type: M6 Socket Head Cap Screw  
+Grade: 10.9 (minimum)  
+Length: 16 – 20 mm  
+Thread Interface: Steel T‑nut (slot compatible)  
+Torque Spec: 9 – 11 N·m  
 
-2020 Cross Bracing
-Fastener Type: M6 Socket Head Cap Screw
-Grade: 10.9 minimum
-Length: 16–20 mm
-Torque Spec: 9–11 Nm
-Printed alignment brackets may supplement lateral stability, not primary load
+**2020 Cross Bracing**  
+Fastener Type: M6 Socket Head Cap Screw  
+Grade: 10.9 (minimum)  
+Length: 16 – 20 mm  
+Torque Spec: 9 – 11 N·m  
+Printed alignment brackets provide lateral stability only — not primary load transfer.  
 
----------------------------------------
-PRINTED CF NYLON COMPONENT INTERFACES
----------------------------------------
+------------------------------------------------------------
+3. PRINTED CF NYLON COMPONENT INTERFACES
+------------------------------------------------------------
 
-Heat-Set Inserts:
-Type: Brass heat-set threaded insert
-Size: M6 and M8 as required
-Install Method: Controlled temperature insertion
-Minimum Wall Thickness Around Insert: 3 mm radial (≥4 mm for high-torque joints)
+Heat‑Set Inserts:  
+- Type: Brass heat‑set threaded insert  
+- Sizes: M6 and M8 (common)  
+- Install Method: Controlled temperature insertion (220 – 240 °C)  
+- Minimum Wall Thickness: ≥ 3 mm radial (≥ 4 mm for high‑torque interfaces)  
 
-Bolt Hole Oversize:
-+0.2 mm over nominal diameter
+Bolt Hole Oversize: + 0.2 mm over nominal diameter  
 
-Printed Part Rule:
-- No direct threading into nylon
-- All structural fasteners use inserts
-- Avoid tensile loading of printed material
-- Reinforce or shim at primary torque points
+Rules for Printed Interfaces:  
+- No direct threading into nylon or PETG material.  
+- All structural fasteners require threaded inserts.  
+- Avoid tensile loading through printed walls.  
+- Reinforce or shim at primary torque zones (Femur/Coxa mounts).  
 
----------------------------------------
-VIBRATION CONTROL
----------------------------------------
+------------------------------------------------------------
+4. VIBRATION AND THREAD CONTROL
+------------------------------------------------------------
 
-Threadlocker:
-Type: Medium strength (Blue)
-Applied to all structural fasteners
+Threadlocker: Medium strength  (Blue Loctite 243 or equivalent) applied to all structural fasteners.  
+Nord‑Lock washers installed on Primary Ring Joints and Vertical Post connections.  
+Rubber / polymer washers allowed only at non‑structural mounts (electronics or covers).  
+Torque sequence: cross‑pattern starting from center outward to minimize stress concentration.  
 
-Optional:
-Nord-Lock washers for primary ring joints (recommended)
-Rubber or polymer washers allowed for electronics mounting points only
+------------------------------------------------------------
+5. GENERAL HARDWARE RULES
+------------------------------------------------------------
 
----------------------------------------
-GENERAL HARDWARE RULES
----------------------------------------
+- Use only metric hardware; no imperial substitutes approved.  
+- Minimum grade for primary load paths = 10.9; no grade 8.8 or lower fasteners permitted.  
+- Re‑torque all structural fasteners after initial load validation / first walk test.  
+- Inspect and re‑verify torque on 3030 ↔ printed junctions after Stair‑Mode and Tripod Gait tests.  
+- Check printed inserts and brackets for creep or deformation after first 10 operational hours.  
+- Replace fasteners if any sign of corrosion, rounding, or thread galling.  
 
-- Do not mix imperial hardware
-- Do not use low-grade (8.8 or below) for primary load paths
-- Re-torque after first structural load test
-- Inspect printed interfaces after first 10 operational hours
-- Verify torque on hybrid 3030/printed junctions after stair-mode testing
+------------------------------------------------------------
+6. TRACEABILITY AND PROCUREMENT
+------------------------------------------------------------
 
----------------------------------------
-END OF FILE
----------------------------------------
+All hardware lots shall include manufacturer certification per ISO 898‑1 and ISO 3506.  
+Lot numbers and quantities recorded under /10_Lifecycle/Hardware_Register.txt.  
+Substitutions require Engineering Change Request (Class B or higher).  
+
+------------------------------------------------------------
+7. DESIGN INTENT
+------------------------------------------------------------
+
+Provide a consistent fastener baseline for OBSIDIAN‑8 V3 hybrid structure ensuring:  
+- Uniform strength and vibration resistance across all metal and printed interfaces.  
+- Predictable torque‑to‑clamp relationships for FEA validation.  
+- Service‑safe assembly with repeatable load test performance.  
+- Full traceability for procurement and maintenance records under Configuration Management.  
+
+------------------------------------------------------------
+END OF FILE
+------------------------------------------------------------
