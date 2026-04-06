@@ -1,130 +1,126 @@
-OBSIDIAN-8 V3 – OPERATIONAL ENVELOPE
-Revision: V3.0
-Status: Baseline Locked
+OBSIDIAN-8 V3
+Operational_Envelope.txt
+Revision: V3.1
+Status: Baseline Locked
 
 ------------------------------------------------------------
-1. PLATFORM CLASSIFICATION
+1. PLATFORM CLASSIFICATION
 ------------------------------------------------------------
 
-Hybrid Indoor/Outdoor Autonomous Octopod Mobility Platform
+Hybrid Indoor / Outdoor Autonomous Octopod Mobility Platform  
 
-Primary Role:
-Persistent patrol and adaptive mobility in mixed terrain environments.
-
-------------------------------------------------------------
-2. PHYSICAL ENVELOPE
-------------------------------------------------------------
-
-Standing Height: 1143 mm (3.75 ft)
-Crouch Height: ~680 mm CG height
-Target Mass: ≤ 20 kg
-Stair Capability: 200 mm rise
-Footprint: Wide octagonal stance for stability
-
-Design Priority:
-Stability > Endurance > Speed
+Primary Role: Persistent patrol and adaptive mobility across mixed terrain environments.  
+Secondary Role: Command node for distributed swarm operations, providing navigation and energy coordination.
 
 ------------------------------------------------------------
-3. MISSION DURATION MODEL
+2. PHYSICAL ENVELOPE
 ------------------------------------------------------------
 
-Target Deployment Cycle:
-3+ hours (mixed-mode operation)
+Standing Height: 1143 mm (3.75 ft)  
+Crouch Height: ≈ 680 mm CG height  
+Target Mass: ≤ 20 kg  
+Stair Capability: 200 mm rise  
+Footprint: Octagonal stance for static stability and tripod redundancy  
 
-Mission Energy Profile:
-40% Active Locomotion
-40% Stationary Scanning / Sentry
-20% Low-Speed Adjustment / Repositioning
-
-Energy Reserve Rule:
-Minimum 15% projected reserve required to return to dock.
+Design Priority: **Stability > Endurance > Speed**
 
 ------------------------------------------------------------
-4. ENVIRONMENTAL CONDITIONS
+3. MISSION DURATION MODEL
 ------------------------------------------------------------
 
-Indoor Operation:
-- SLAM navigation
-- Stair traversal
-- Obstacle avoidance
-- Low-light operation via depth + RGB fusion
+Target Deployment Cycle: ≥ 3 hours (mixed‑mode operation)  
 
-Outdoor Operation:
-- RTK GPS (centimeter-level positioning)
-- Uneven terrain adaptation
-- Terrain classification
-- Perimeter patrol
+Typical Mission Energy Profile:  
+- 40 % Active Locomotion  
+- 40 % Stationary Scanning / Sentry Mode  
+- 20 % Low‑Speed Adjustment / Repositioning  
 
-Seamless indoor/outdoor transition required.
+Energy Reserve Rule: Maintain ≥ 15 % projected reserve for safe return to dock.  
+Reference: /03_Control_Architecture/Energy_Model.txt  
 
 ------------------------------------------------------------
-5. TERRAIN CAPABILITIES
+4. ENVIRONMENTAL CONDITIONS
 ------------------------------------------------------------
 
-Supported:
-- Concrete
-- Tile
-- Carpet
-- Grass
-- Packed dirt
-- Asphalt
-- Standard staircases (≤200 mm rise)
+Indoor Operation:  
+- SLAM with LiDAR + Depth Fusion  
+- Stair Traversal ≤ 200 mm rise  
+- Dynamic Obstacle Avoidance  
+- Low‑light navigation (RGB‑Depth fusion)  
 
-Crouch Mode:
-Activated automatically for low-clearance zones.
+Outdoor Operation:  
+- RTK‑GPS centimeter accuracy  
+- Uneven terrain adaptation and classification  
+- Perimeter and sector patrol  
+- Wind and light rain tolerant enclosure  
 
-------------------------------------------------------------
-6. PERFORMANCE MODES
-------------------------------------------------------------
+Seamless transition between indoor and outdoor domains is mandatory.
 
-Normal Mode:
-Balanced energy consumption and movement.
-
-Aggression Mode:
-Higher stride speed, increased lift height, higher power draw.
-
-Conservation Mode:
-Reduced stride frequency, limited stair usage.
-
-Thermal and voltage limits always enforced.
+Operational Temperature Range: −10 °C to +40 °C nominal.  
+Humidity: 0–90 % non‑condensing.  
+Reference: /10_Lifecycle/Environmental_Qualification_Plan.txt  
 
 ------------------------------------------------------------
-7. ENERGY ARCHITECTURE
+5. TERRAIN CAPABILITIES
 ------------------------------------------------------------
 
-Development:
-6S LiPo battery system.
+Supported Surfaces: Concrete, Tile, Carpet, Grass, Packed Dirt, Asphalt, Standard Stairs (≤ 200 mm rise)  
 
-Deployment:
-8S LiFePO4 with Smart BMS.
+Crouch Mode: Automatic for low‑clearance zones (< 700 mm headroom)  
 
-Autonomous Dock:
-- Visual alignment (AprilTag)
-- Contact verification
-- CC/CV charge profile
+Not Recommended: Loose gravel, mud, standing water > 25 mm.  
 
 ------------------------------------------------------------
-8. SAFETY DOMINANCE RULES
+6. PERFORMANCE MODES
 ------------------------------------------------------------
 
-Safety overrides all autonomy layers.
-Energy overrides mission intent.
-Remote control cannot override safety or energy rules.
+**Normal Mode** — Balanced stride frequency and energy consumption.  
+**Aggression Mode** — Increased stride height and velocity; higher power draw.  
+**Conservation Mode** — Reduced stride frequency; limited stair interaction.  
+
+Thermal and voltage thresholds enforced through: /03_Control_Architecture/Thermal_Model.txt  
+Mode transitions validated by Energy Model telemetry.  
 
 ------------------------------------------------------------
-9. DESIGN SIGNATURE
+7. ENERGY ARCHITECTURE
 ------------------------------------------------------------
 
-OBSIDIan-8 V3 is defined by:
+Development Configuration: 6 S LiPo system (21 – 25 V nominal).  
+Deployment Configuration: 8 S LiFePO₄ Smart BMS.  
 
-- Distributed compute authority
-- Deterministic motion isolation
-- Hardware watchdog dominance
-- Energy-aware autonomy
-- Persistent terrain memory
-- Swarm-capable coordination
-- Fail-safe posture default
+Autonomous Docking:  
+- AprilTag‑based visual alignment  
+- Contact verification sensors  
+- CC/CV charge management profile  
+- BMS telemetry handshake via CAN bus  
+
+All charging events are logged and verified for telemetry consistency.  
 
 ------------------------------------------------------------
-END OF OPERATIONAL ENVELOPE
+8. SAFETY DOMINANCE RULES
+------------------------------------------------------------
+
+Safety overrides all autonomy layers.  
+Energy availability overrides mission intent.  
+Remote control cannot override hardware kill‑line or energy reserve rules.  
+
+Authority chain: Hardware Kill → Reactive Core → Mission Control → Remote Governance.  
+Reference: /03_Control_Architecture/Authority_Model.txt  
+
+------------------------------------------------------------
+9. DESIGN SIGNATURE
+------------------------------------------------------------
+
+OBSIDIAN‑8 V3 embodies:  
+- Distributed compute authority  
+- Deterministic motion isolation  
+- Hardware watchdog dominance  
+- Energy‑aware autonomy  
+- Persistent terrain memory  
+- Swarm‑capable coordination  
+- Fail‑safe neutral posture default  
+- Documented and traceable system configuration  
+
+------------------------------------------------------------
+END OF OPERATIONAL ENVELOPE
 ------------------------------------------------------------
