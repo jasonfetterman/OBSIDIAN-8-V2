@@ -13,7 +13,105 @@ and center of gravity (CG) target zone
 for frame validation and stability control.
 
 ---------------------------------------
-STRUCTURAL MASS ESTIMATE
+STRUCTUROBSIDIAN-8 V3
+Mass_and_Center_of_Gravity_Model.txt
+Revision: V3.3
+Status: Mass Distribution Definition
+Units: Metric
+
+------------------------------------------------------------
+1. PURPOSE
+------------------------------------------------------------
+
+Define estimated mass distribution and target
+center‑of‑gravity (Cg) zone for frame validation,
+stability control, and kinematic simulation alignment.  
+Reference: /01_Mechanical/Frame_Architecture.txt  
+
+------------------------------------------------------------
+2. STRUCTURAL MASS ESTIMATE
+------------------------------------------------------------
+
+3030 Aluminum Extrusion — Total Length ≈ 10.7 m  
+Mass ≈ 1.8 – 2.0 kg/m → Primary structure ≈ 19 – 21 kg  
+
+2020 Aluminum Extrusion — Total Length ≈ 7 m  
+Mass ≈ 0.8 – 1.0 kg/m → Secondary structure ≈ 6 – 7 kg  
+
+Printed CF Nylon Components ≈ 2 – 3 kg  
+Fasteners + Hardware ≈ 2 kg  
+
+Frame‑Only Mass ≈ 29 – 33 kg  
+
+------------------------------------------------------------
+3. PROJECTED FULL SYSTEM MASS
+------------------------------------------------------------
+
+Additions: Propulsion / Actuation System + Electronics + Power System + Payload  
+Projected All‑Up Mass (AUM): 40 – 55 kg target  
+Structural Design Maximum: ≤ 60 kg  
+(Validated in /09_Testing/Load_Test_Plan.txt)  
+
+------------------------------------------------------------
+4. CENTER OF GRAVITY TARGET ZONE
+------------------------------------------------------------
+
+Horizontal Cg Offset ≤ ± 50 mm from geometric center.  
+Vertical Cg = 35 % – 55 % of Frame Height.  
+
+For FRAME_HEIGHT = 900 mm: Cg target 315 – 495 mm above base ring.  
+
+------------------------------------------------------------
+5. Cg CONTROL RULES
+------------------------------------------------------------
+
+- Mount dense components low when possible.  
+- Place battery packs below mid‑height.  
+- Promote symmetrical mass distribution about center plane.  
+- Avoid cantilevered loads beyond ring perimeter.  
+- Document any Cg shift when payloads exceed ± 5 % nominal mass.  
+
+------------------------------------------------------------
+6. STATIC STABILITY CONDITION
+------------------------------------------------------------
+
+Projected Cg shall remain inside primary ring under 10° tilt.  
+No tipping moment permitted under any static deployment.  
+Validation geometry stored in /01_Mechanical/Static_Stability_Model.step  
+
+------------------------------------------------------------
+7. Cg VALIDATION METHOD
+------------------------------------------------------------
+
+1. Assemble frame and install component simulators.  
+2. Suspend system from a single lift point.  
+3. Mark vertical path from suspension point.  
+4. Verify that path intersects central 100 mm diameter circle.  
+
+Recorded photometric evidence is archived under /09_Testing/Cg_Validation/.  
+
+------------------------------------------------------------
+8. DYNAMIC STABILITY CONSIDERATION
+------------------------------------------------------------
+
+Lower Cg improves: torsional resistance, landing stability, and vibration control.  
+Excessively low Cg increases landing shock on base structure.  
+Preferred vertical distribution maintains Cg at mid‑range for optimal response.  
+
+Dynamic validation uses /03_Control_Architecture/Stability_Enforcer.txt parameters.  
+
+------------------------------------------------------------
+9. DESIGN INTENT
+------------------------------------------------------------
+
+Balanced mass distribution enhances stability and energy efficiency.  
+The defined Cg zone supports predictable motion isolation and safe stance behavior.  
+All revisions to hardware or payload must update this model and associated simulations.  
+
+------------------------------------------------------------
+END OF FILE
+------------------------------------------------------------
+AL MASS ESTIMATE
 ---------------------------------------
 
 3030 Aluminum Total Length ≈ 10.7 m
