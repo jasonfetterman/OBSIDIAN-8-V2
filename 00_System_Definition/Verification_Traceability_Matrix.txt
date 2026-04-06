@@ -1,310 +1,121 @@
 OBSIDIAN-8 V3
 Verification_Traceability_Matrix.txt
-Revision: V3.2
+Revision: V3.3
 Status: Authoritative
 
 ------------------------------------------------------------
 1. PURPOSE
 ------------------------------------------------------------
 
-Provide traceability between:
+Provide end‑to‑end traceability between:
+- System Requirements (SRS)  
+- Architecture Documents  
+- Test Protocols  
+- Validation Evidence  
 
-- System Requirements (SRS)
-- Architecture Documents
-- Test Protocols
-- Validation Evidence
-
-Every REQ must map to:
-
-Design Reference
-Verification Method
-Test Reference
+Every requirement (REQ) maps to its Design Reference, Verification Method, and Test Reference.
+This matrix is updated whenever a requirement, design, or test document changes.
 
 ------------------------------------------------------------
-2. TRACEABILITY TABLE
+2. TRACEABILITY TABLE — PRIMARY MAPPINGS
 ------------------------------------------------------------
 
-REQ-MECH-001  
-Design: Frame_Architecture.txt  
-Verification: Static Load Test  
-Test Reference: Phase_1_Prototype_Validation – Mechanical Validation  
-
-REQ-MECH-002  
-Design: Frame_Architecture.txt  
-Verification: Torsional Deflection Test  
-Test Reference: Phase_1_Prototype_Validation  
-
-REQ-MECH-003  
-Design: Frame_Architecture.txt  
-Verification: Stability Polygon Analysis  
-Test Reference: Motion Validation Test  
-
-REQ-MECH-004  
-Design: Real_World_Terrain_Model.txt  
-Verification: Vibration Endurance Test  
-Test Reference: Testing Domain  
-
-REQ-MECH-005  
-Design: Phase_2_Industrialization.txt  
-Verification: Torque Audit  
-Test Reference: Production QC Checklist  
+REQ‑MECH‑001 → Frame_Architecture.txt → Static Load Test → Phase‑1 Mechanical Validation  
+REQ‑MECH‑002 → Frame_Architecture.txt → Torsional Deflection Test → Phase‑1 Prototype Validation  
+REQ‑MECH‑003 → Frame_Architecture.txt → Stability Polygon Analysis → Motion Validation Test  
+REQ‑MECH‑004 → Real_World_Terrain_Model.txt → Vibration Endurance Test → Mechanical Domain Validation  
+REQ‑MECH‑005 → Phase_2_Industrialization.txt → Torque Audit → Production QC Checklist  
 
 ------------------------------------------------------------
 
-REQ-ELEC-001  
-Design: Main_Power_System.txt  
-Verification: Electrical Inspection  
-Test Reference: Electrical Validation  
-
-REQ-ELEC-002  
-Design: Energy_Model_LiFePO4.txt / Energy_Model_LiPo.txt  
-Verification: Overcurrent Simulation  
-Test Reference: Electrical Validation  
-
-REQ-ELEC-003  
-Design: Energy_Model files  
-Verification: Undervoltage Shutdown Test  
-Test Reference: Low-SOC Shutdown Test  
-
-REQ-ELEC-004  
-Design: Safety_Architecture.txt  
-Verification: Kill-Line Latency Test  
-Test Reference: Safety Validation Suite  
-
-REQ-ELEC-005  
-Design: Main_Power_System.txt  
-Verification: Reverse Polarity Inspection  
-Test Reference: Electrical QC  
+REQ‑ELEC‑001 → Main_Power_System.txt → Electrical Inspection → Electrical Validation  
+REQ‑ELEC‑002 → Energy_Model_LiFePO4.txt / Energy_Model_LiPo.txt → Over‑Current Simulation → Electrical Validation  
+REQ‑ELEC‑003 → Energy_Model Files → Under‑Voltage Shutdown Test → Low‑SOC Shutdown Test  
+REQ‑ELEC‑004 → Safety_Architecture.txt → Kill‑Line Latency Test → Safety Validation Suite  
+REQ‑ELEC‑005 → Main_Power_System.txt → Reverse Polarity Inspection → Electrical QC  
+REQ‑ELEC‑006 → Duet3_Interface.txt → Servo Disable on Kill‑Line Test → Duet Hardware Validation  
 
 ------------------------------------------------------------
 
-REQ-CTRL-001  
-Design: System_Control_Authority_Model.txt  
-Verification: Authority Simulation  
-Test Reference: Authority Conflict Test  
-
-REQ-CTRL-002  
-Design: Reactive Layer Architecture  
-Verification: Motion Envelope Violation Test  
-Test Reference: Motion Validation  
-
-REQ-CTRL-003  
-Design: Heartbeat_Protocol.txt  
-Verification: Heartbeat Timeout Simulation  
-Test Reference: Watchdog Test  
-
-REQ-CTRL-004  
-Design: Message_Definitions.txt  
-Verification: Log Inspection  
-Test Reference: Fault Injection Test  
-
-REQ-CTRL-005  
-Design: Safety_Architecture.txt  
-Verification: Reactive Enable Test  
-Test Reference: Startup Validation  
+REQ‑CTRL‑001 → System_Control_Authority_Model.txt → Authority Simulation → Authority Conflict Test  
+REQ‑CTRL‑002 → Reactive_Layer_Architecture.txt → Motion Envelope Violation Test → Motion Validation  
+REQ‑CTRL‑003 → Heartbeat_Protocol.txt → Heartbeat Timeout Simulation → Watchdog Test  
+REQ‑CTRL‑004 → Message_Definitions.txt → Log Inspection → Fault Injection Test  
+REQ‑CTRL‑005 → Safety_Architecture.txt → Reactive Enable Test → Startup Validation  
+REQ‑CTRL‑006 → Duet3_Interface.txt → Bridge Heartbeat Verification → Duet Interface Test  
 
 ------------------------------------------------------------
 
-REQ-SAFE-001  
-Design: Safety_Architecture.txt  
-Verification: Hardware E-Stop Test  
-Test Reference: Safety Validation Suite  
-
-REQ-SAFE-002  
-Design: Pi_Watchdog_Service.txt  
-Verification: Watchdog Failure Simulation  
-Test Reference: Watchdog Test  
-
-REQ-SAFE-003  
-Design: Safety_Architecture.txt  
-Verification: Authority Ambiguity Simulation  
-Test Reference: Authority Conflict Test  
-
-REQ-SAFE-004  
-Design: Safety_Architecture.txt  
-Verification: Code Review  
-Test Reference: Safety Audit  
-
-REQ-SAFE-005  
-Design: Energy_Aware_Navigation_Model.txt  
-Verification: Low-SOC Termination Test  
-Test Reference: Energy Validation  
+REQ‑SAFE‑001 → Safety_Architecture.txt → Hardware E‑Stop Test → Safety Validation Suite  
+REQ‑SAFE‑002 → Pi_Watchdog_Service.txt → Watchdog Failure Simulation → Watchdog Test  
+REQ‑SAFE‑003 → Safety_Architecture.txt → Authority Ambiguity Simulation → Authority Conflict Test  
+REQ‑SAFE‑004 → Safety_Architecture.txt → Code Review → Safety Audit  
+REQ‑SAFE‑005 → Energy_Aware_Navigation_Model.txt → Low‑SOC Termination Test → Energy Validation  
+REQ‑SAFE‑006 → Duet3_Interface.txt → Kill‑Line Latency w/ Duet cutoff → Hardware Validation  
 
 ------------------------------------------------------------
 
-REQ-NAV-001  
-Design: Real_World_Terrain_Model.txt  
-Verification: Terrain Classification Test  
-Test Reference: Navigation Test Suite  
-
-REQ-NAV-002  
-Design: Deployment_Profile.txt  
-Verification: Hazard Refusal Test  
-Test Reference: Terrain Constraint Test  
-
-REQ-NAV-003  
-Design: Energy_Aware_Navigation_Model.txt  
-Verification: Energy-Constrained Path Test  
-Test Reference: Energy Validation  
-
-REQ-NAV-004  
-Design: Docking_Test_Protocol.txt  
-Verification: Docking Repeatability Test  
-Test Reference: Docking Test  
-
-REQ-NAV-005  
-Design: Deployment_Profile.txt  
-Verification: Slope Traversal Test  
-Test Reference: Navigation Validation  
+REQ‑NAV‑001 → Real_World_Terrain_Model.txt → Terrain Classification Test → Navigation Test Suite  
+REQ‑NAV‑002 → Deployment_Profile.txt → Hazard Refusal Test → Terrain Constraint Test  
+REQ‑NAV‑003 → Energy_Aware_Navigation_Model.txt → Energy‑Aware Path Test → Energy Validation  
+REQ‑NAV‑004 → Docking_Test_Protocol.txt → Docking Repeatability Test → Docking Validation  
+REQ‑NAV‑005 → Deployment_Profile.txt → Slope Traversal Test → Navigation Verification  
 
 ------------------------------------------------------------
 
-REQ-ENER-001  
-Design: Energy_Model files  
-Verification: Coulomb Counting Accuracy Test  
-Test Reference: Energy Calibration  
-
-REQ-ENER-002  
-Design: Energy_Aware_Navigation_Model.txt  
-Verification: Mission Abort Test  
-Test Reference: Low-SOC Simulation  
-
-REQ-ENER-003  
-Design: Safety_Architecture.txt  
-Verification: Pre-BMS Stop Test  
-Test Reference: Energy Validation  
-
-REQ-ENER-004  
-Design: Message_Definitions.txt  
-Verification: Log Review  
-Test Reference: Thermal Test  
-
-REQ-ENER-005  
-Design: Deployment_Configuration.txt  
-Verification: Charging Interlock Test  
-Test Reference: Operational Validation  
+REQ‑ENER‑001 → Energy_Model Files → Coulomb Counting Accuracy Test → Energy Calibration  
+REQ‑ENER‑002 → Energy_Aware_Navigation_Model.txt → Mission Abort at Threshold Test → Low‑SOC Simulation  
+REQ‑ENER‑003 → Safety_Architecture.txt → Pre‑BMS Stop Test → Energy Validation  
+REQ‑ENER‑004 → Message_Definitions.txt → Log Review → Thermal Validation Test  
+REQ‑ENER‑005 → Deployment_Configuration.txt → Charging Interlock Test → Operational Validation  
 
 ------------------------------------------------------------
 
-REQ-SW-001  
-Design: Message_Definitions.txt  
-Verification: Message Inspection  
-Test Reference: Serialization Test  
-
-REQ-SW-002  
-Design: Message_Definitions.txt  
-Verification: Timestamp Validation  
-Test Reference: Message Integrity Test  
-
-REQ-SW-003  
-Design: duet_io_interface.py  
-Verification: Stale Command Injection Test  
-Test Reference: Duet Validation  
-
-REQ-SW-004  
-Design: Message_Definitions.txt  
-Verification: Version Audit  
-Test Reference: Code Review  
-
-REQ-SW-005  
-Design: system_logger.py  
-Verification: Log Persistence Test  
-Test Reference: Watchdog Logging Test  
+REQ‑SW‑001 → Message_Definitions.txt → Message Inspection → Serialization Test  
+REQ‑SW‑002 → Message_Definitions.txt → Timestamp Validation → Message Integrity Test  
+REQ‑SW‑003 → duet_io_interface.py → Stale Command Injection Test → Duet Validation  
+REQ‑SW‑004 → Message_Definitions.txt → Version Audit → Code Review  
+REQ‑SW‑005 → system_logger.py → Log Persistence Test → Watchdog Logging Validation  
+REQ‑SW‑006 → duet_bridge node → Status Topic Frequency Test → Interface Audit  
 
 ------------------------------------------------------------
 
-REQ-COMM-001  
-Design: Remote_Mission_Control_System.txt  
-Verification: Encryption Audit  
-Test Reference: Security Test  
-
-REQ-COMM-002  
-Design: Remote_Mission_Control_System.txt  
-Verification: Unauthorized Access Simulation  
-Test Reference: Security Validation  
-
-REQ-COMM-003  
-Design: Remote_Mission_Control_System.txt  
-Verification: Link Loss Simulation  
-Test Reference: Communication Test  
-
-REQ-COMM-004  
-Design: Message_Definitions.txt  
-Verification: UI State Check  
-Test Reference: Operational Test  
-
-REQ-COMM-005  
-Design: Swarm & Network Architecture  
-Verification: Swarm Authority Test  
-Test Reference: Swarm Simulation  
+REQ‑COMM‑001 → Remote_Mission_Control_System.txt → Encryption Audit → Security Test  
+REQ‑COMM‑002 → Remote_Mission_Control_System.txt → Unauthorized Access Simulation → Security Validation  
+REQ‑COMM‑003 → Remote_Mission_Control_System.txt → Link Loss Simulation → Communication Test  
+REQ‑COMM‑004 → Message_Definitions.txt → UI State Check → Operational Test  
+REQ‑COMM‑005 → Swarm_and_Network_Architecture.txt → Swarm Authority Test → Swarm Simulation  
+REQ‑COMM‑006 → Duet3_Interface.txt → Checksum Integrity Test → Duet Communication Audit  
 
 ------------------------------------------------------------
 
-REQ-OPS-001  
-Design: Deployment_Profile.txt  
-Verification: Environmental Stress Test  
-Test Reference: Operational Validation  
-
-REQ-OPS-002  
-Design: Deployment_Configuration.txt  
-Verification: Checklist Audit  
-Test Reference: Pre-Deployment Audit  
-
-REQ-OPS-003  
-Design: system_logger.py  
-Verification: Log Inspection  
-Test Reference: Field Simulation  
-
-REQ-OPS-004  
-Design: Safety_Architecture.txt  
-Verification: Reset Procedure Test  
-Test Reference: E-Stop Validation  
-
-REQ-OPS-005  
-Design: Reliability_and_Maintenance_Model.txt  
-Verification: Maintenance Audit  
-Test Reference: Lifecycle Review  
+REQ‑OPS‑001 → Deployment_Profile.txt → Environmental Stress Test → Operational Validation  
+REQ‑OPS‑002 → Deployment_Configuration.txt → Checklist Audit → Pre‑Deployment Inspection  
+REQ‑OPS‑003 → system_logger.py → Log Inspection → Field Simulation  
+REQ‑OPS‑004 → Safety_Architecture.txt → Reset Procedure Test → E‑Stop Validation  
+REQ‑OPS‑005 → Reliability_and_Maintenance_Model.txt → Maintenance Audit → Lifecycle Review  
 
 ------------------------------------------------------------
 
-REQ-LIFE-001  
-Design: Phase_2_Industrialization.txt  
-Verification: Serialization Audit  
-Test Reference: Production Audit  
-
-REQ-LIFE-002  
-Design: Phase_2_Industrialization.txt  
-Verification: Change Control Audit  
-Test Reference: Engineering Review  
-
-REQ-LIFE-003  
-Design: Phase_2_Industrialization.txt  
-Verification: Calibration Record Inspection  
-Test Reference: Production QC  
-
-REQ-LIFE-004  
-Design: Phase_6_Decommissioning.txt  
-Verification: Fleet Registry Check  
-Test Reference: Lifecycle Audit  
-
-REQ-LIFE-005  
-Design: Lifecycle Domain  
-Verification: Version Control Audit  
-Test Reference: Documentation Review  
+REQ‑LIFE‑001 → Phase_2_Industrialization.txt → Serialization Audit → Production Audit  
+REQ‑LIFE‑002 → Phase_2_Industrialization.txt → Change Control Audit → Engineering Review  
+REQ‑LIFE‑003 → Phase_2_Industrialization.txt → Calibration Record Inspection → Production QC  
+REQ‑LIFE‑004 → Phase_6_Decommissioning.txt → Fleet Registry Check → Lifecycle Audit  
+REQ‑LIFE‑005 → Lifecycle Domain → Version Control Audit → Documentation Review  
 
 ------------------------------------------------------------
-3. DESIGN INTENT
+3. DESIGN INTENT
 ------------------------------------------------------------
 
-The Verification Traceability Matrix ensures:
+The Verification Traceability Matrix confirms that:
+- Every requirement is verifiable and linked to tests.  
+- Each design artifact carries clear validation evidence.  
+- No component exists without corresponding requirement justification.  
+- Duet 3 and Maestro interfaces are covered by electrical and software verification entries.  
+- No requirement progresses to production without validated test results.  
 
-- Every requirement is verifiable.
-- Every design element is accountable.
-- No architectural component exists without justification.
-- No requirement remains untested.
-
-Traceability is mandatory prior to scaled production.
+Traceability closure is mandatory before scaled manufacture.  
 
 ------------------------------------------------------------
-END OF FILE
+END OF FILE
 ------------------------------------------------------------
