@@ -1,6 +1,6 @@
 OBSIDIAN-8 V3
 Configuration_Management_Plan.txt
-Revision: V3.2
+Revision: V3.3
 Status: Authoritative
 
 ------------------------------------------------------------
@@ -9,20 +9,24 @@ Status: Authoritative
 
 Define configuration control, version management,
 change control procedures, and baseline governance
-for OBSIDIAN-8 V3.
+for OBSIDIAN‑8 V3.
 
 Configuration management ensures:
-
 - Traceability
 - Reproducibility
 - Controlled evolution
 - Audit readiness
 
+This plan operates in conjunction with the
+Quality_Management_Plan.txt and
+Verification_Traceability_Matrix.txt
+to preserve system integrity across the full lifecycle.
+
 ------------------------------------------------------------
 2. CONFIGURATION BASELINES
 ------------------------------------------------------------
 
-The following baselines are defined:
+The following configuration baselines are defined:
 
 2.1 System Baseline  
 Complete document set and architecture state.
@@ -35,7 +39,7 @@ BMS revision
 Power distribution revision  
 
 2.3 Software Baseline  
-ROS2 package versions  
+ROS 2 package versions  
 Message definitions version  
 Firmware versions  
 Launch configurations  
@@ -47,24 +51,26 @@ Calibration procedures
 
 No baseline may change without formal approval.
 
+Baseline repository map:
+
+| Baseline | Repository / Path | Record File |
+|-----------|------------------|--------------|
+| System    | /00_System_Definition/ | system_manifest.yaml |
+| Hardware  | /02_Electrical/, /01_Mechanical/ | hardware_baseline_v3.2.yaml |
+| Software  | /11_Codebase/obsidian_ws/ | software_manifest_v3.2.yaml |
+| Production| /12_STL_Production/00_Master_List/ | production_baseline.csv |
+
 ------------------------------------------------------------
 3. VERSION IDENTIFICATION
 ------------------------------------------------------------
 
-Version format:
+Version format:  V[Major].[Minor].[Revision]
 
-V[Major].[Minor].[Revision]
+Major — Architecture‑level change  
+Minor — Feature addition or improvement  
+Revision — Documentation correction or minor update  
 
-Major:
-Architecture-level change.
-
-Minor:
-Feature addition or improvement.
-
-Revision:
-Documentation correction or minor update.
-
-All files must display version identifier.
+All controlled files must display the version identifier.
 
 ------------------------------------------------------------
 4. CHANGE CONTROL PROCESS
@@ -73,132 +79,137 @@ All files must display version identifier.
 4.1 Change Request (CR)
 
 Any modification must begin with a documented CR including:
-
 - Description
 - Justification
 - Affected subsystems
 - Risk assessment
 - Impact analysis
 
+All CRs are logged under:
+  /10_Lifecycle/Change_Requests/
+and numbered sequentially as:
+  CR‑YYYY‑###  (e.g., CR‑2024‑012)
+
 4.2 Classification
 
-Class A – Safety or structural impact  
-Class B – Performance affecting  
-Class C – Documentation only  
+Class A – Safety or structural impact  
+Class B – Performance affecting  
+Class C – Documentation only  
 
-Class A requires full regression testing.
+Class A changes require full regression testing before approval.
 
 ------------------------------------------------------------
 5. APPROVAL AUTHORITY
 ------------------------------------------------------------
 
-Changes must be approved by:
+Required approvals by change class:
 
-- System Architect (authority)
-- Safety reviewer (for Class A)
-- Production manager (if production impacted)
+| Class | Approvers |
+|:------|:-----------|
+| A | System Architect + Safety Reviewer + Production Manager |
+| B | System Architect + Production Manager |
+| C | System Architect |
 
-No unilateral changes permitted.
+No unilateral changes are permitted.
 
 ------------------------------------------------------------
 6. CONFIGURATION RECORDS
 ------------------------------------------------------------
 
 Each production unit must record:
+- Serial number
+- Hardware revision
+- Software version
+- Calibration version
+- Battery configuration
+- Deployment profile
 
-- Serial number
-- Hardware revision
-- Software version
-- Calibration version
-- Battery configuration
-- Deployment profile
-
-Records must be retained ≥ 5 years.
+Records must be retained for no less than 5 years.
 
 ------------------------------------------------------------
 7. SOFTWARE CONTROL
 ------------------------------------------------------------
 
 Source code must be:
+- Version‑controlled (Git)
+- Tagged per release
+- Linked to SRS revision
+- Linked to test validation record
 
-- Version-controlled (Git)
-- Tagged per release
-- Linked to SRS revision
-- Linked to test validation record
-
-No production deployment from untagged commit.
+No production deployment may originate from an untagged commit.
 
 ------------------------------------------------------------
 8. DOCUMENT CONTROL
 ------------------------------------------------------------
 
 All engineering documents must:
+- Include revision number
+- Include status (Draft / Review / Authoritative)
+- Be archived on update
+- Maintain change history
 
-- Include revision number
-- Include status (Draft / Review / Authoritative)
-- Be archived on update
-- Maintain change history
-
-Uncontrolled copies prohibited.
+Uncontrolled copies are prohibited.
 
 ------------------------------------------------------------
 9. CONFIGURATION AUDITS
 ------------------------------------------------------------
 
 Periodic audits must verify:
+- Software version matches baseline
+- Hardware matches BOM revision
+- Calibration records complete
+- Safety architecture intact
 
-- Software version matches baseline
-- Hardware matches BOM revision
-- Calibration records complete
-- Safety architecture intact
-
-Audit required before:
-
-- Phase 2 exit
-- Scaled production
-- Field deployment
+Audit frequency: every 6 months or before:
+- Phase 2 exit
+- Scaled production release
+- Field deployment
 
 ------------------------------------------------------------
 10. FIELD CHANGE MANAGEMENT
 ------------------------------------------------------------
 
 Field modifications require:
+- Documented CR
+- Risk evaluation
+- Verification testing
+- Baseline update
+- Registry update
 
-- Documented CR
-- Risk evaluation
-- Verification testing
-- Baseline update
-- Registry update
-
-Unauthorized field modification prohibited.
-
-------------------------------------------------------------
-11. END-OF-LIFE CONTROL
-------------------------------------------------------------
-
-When unit decommissioned:
-
-- Configuration record archived
-- Serial marked inactive
-- Firmware version recorded
-
-No decommissioned unit may re-enter fleet
-without full requalification.
+Unauthorized field modification is prohibited.
 
 ------------------------------------------------------------
-12. DESIGN INTENT
+11. END‑OF‑LIFE CONTROL
 ------------------------------------------------------------
 
-Configuration Management ensures:
+When a unit is decommissioned:
+- Configuration record archived
+- Serial marked inactive
+- Firmware version recorded
 
-- Predictable system evolution
-- Safety preservation across revisions
-- Traceable engineering changes
-- Audit-ready documentation
-- Production consistency
-
-Control of change preserves system integrity.
+No decommissioned unit may re‑enter the fleet
+without complete requalification.
 
 ------------------------------------------------------------
-END OF FILE
+12. DESIGN INTENT
+------------------------------------------------------------
+
+Configuration management supports:
+- Predictable system evolution
+- Safety preservation across revisions
+- Traceable engineering changes
+- Audit‑ready documentation
+- Production consistency
+
+Controlled change preserves system integrity and safety.
+
+------------------------------------------------------------
+APPROVAL LOG
+------------------------------------------------------------
+
+Approved by: ____________________________     Date: ____________  
+Revision Authorized: V3.3  
+
+------------------------------------------------------------
+END OF FILE
 ------------------------------------------------------------
