@@ -1,71 +1,96 @@
-OBSIDIAN-8 V3
+OBSIDIAN‑8 V3  
+01_Mechanical/Structural_Load_Model.txt  
+Revision: V3.4  
+Status: Authoritative  
+Units: Metric (kg / mm / N)
 
-01_Mechanical/Structural_Load_Model.txt
-Revision: V3.3
-Status: Authoritative
+------------------------------------------------------------
+1. PURPOSE
+------------------------------------------------------------
 
-1. PURPOSE
+Define the mechanical load distribution and structural integrity model for OBSIDIAN‑8 V3.4 (hybrid 3030/2020 aluminum backbone with 3D‑printed modules and limbs).  
 
-Define mechanical load distribution and structural integrity for OBSIDIAN-8 V3.3  
-(hybrid 3030/2020 backbone + 3D printed limbs and modules).  
+This document ensures:
+- Frame and actuators sustain static, dynamic, and impact loads without structural failure.  
+- Serves as analysis reference for FEA, Configuration Management (CM), FMEA, and deployment validation.  
+- Supports normal terrain locomotion, stair traversal, and payload operations.  
 
-Ensures:
+Related References: /01_Mechanical/Frame_Architecture.txt  /01_Mechanical/Mass_and_CG_Model.txt  /01_Mechanical/Stair_Mode_Mechanics.txt  
 
-- Frame and actuators handle static, dynamic, and impact loads  
-- Reference for FEA, CM, FMEA, and deployment validation  
-- Supports stair traversal, payload handling, and normal locomotion
+------------------------------------------------------------
+2. LOAD TYPES
+------------------------------------------------------------
 
-2. LOAD TYPES
+| Load Type | Description | Notes |
+|:--|:--|:--|
+| Static Load | Weight of chassis, payload, battery, and armor at rest | Base design load ≈ 26 kg total |
+| Dynamic Load | Forces during walking and acceleration / deceleration | Up to 1.5 × static load |
+| Impact Load | Sudden terrain impact or obstacle collision | Safety Factor ≥ 2.0 |
+| Torsional Load | Twist of frame due to uneven support or tripod stance | Evaluated per actuator mount |
+| Bending Load | Beam bending in extrusions and limb mounts | Assessed via FEA (deflection ≤ limit)|
 
-Load Type | Description | Notes
---- | --- | ---
-Static Load | Weight of chassis, payload, battery, armor at rest | Base design load (~24.8 kg total)
-Dynamic Load | Forces during walking, stair traversal, acceleration/deceleration | Up to 1.5× static
-Impact Load | Sudden contact or collision | Safety factor ≥ 2.0
-Torsional Load | Twist forces on frame due to uneven terrain | Evaluated per actuator mount
-Bending Load | Beam bending on chassis and limb mounts | Monitored via FEA
+------------------------------------------------------------
+3. LOAD DISTRIBUTION
+------------------------------------------------------------
 
-3. LOAD DISTRIBUTION
+- **Legs:** Each leg supports ≈ 35‑40 % of static mass in neutral stance; printed gussets reduce localized stress.  
+- **Torso Modules:** Battery and compute payload distributed evenly along X‑axis to minimize torsion.  
+- **Armor Panels:** Light polycarbonate hybrids reduce lateral asymmetry in mass loading.  
+- **Actuators:** Torque monitoring limits ensure operation ≤ 90 % of rated continuous output.  
+- **Support Polygon:** Cg remains inside contact polygon under all expected motion states to avoid tipping.  
 
-- **Legs:** Each leg designed to support 35–40% of total static mass during neutral stance (reduced due to lighter 3D printed limbs)  
-- **Torso Modules:** Evenly distribute battery and mission payload along X-axis to minimize torsion  
-- **Armor Panels:** Lightweight printed + polycarbonate panels reduce uneven lateral loading  
-- **Actuators:** Torque limits enforce safe operation under dynamic loads  
-- **Support Polygon:** CG maintained within polygon defined by limb contact points to prevent tipping
+------------------------------------------------------------
+4. SAFETY FACTORS AND MARGINS
+------------------------------------------------------------
 
-4. SAFETY FACTORS AND MARGINS
+- **Material Factor of Safety (FoS):** ≥ 2.0 for all primary extrusion and bracket members.  
+- **Joint Stress Limit:** ≤ 80 % of material yield under maximum simulated load.  
+- **Deflection Limits:**  
+ • 3030 backbone deflection ≤ 1.5 mm under max static load.  
+ • Limb plates / brackets ≤ 2 mm under max dynamic load.  
+ • Printed brackets include reinforced gusset geometry validated in FEA mesh tests.  
 
-- **Material Factor of Safety:** ≥ 2.0 for all primary load-bearing elements  
-- **Joint Stress Limit:** 80% of yield strength under max expected load  
-- **Deflection Limits:**  
-  - Chassis backbone: ≤ 1.5 mm under max static load  
-  - Limb mounting plates/brackets: ≤ 2 mm under max dynamic load (3D printed gussets reinforced)  
+Quality metrics recorded under /09_Testing/Structural_Validation_Report.txt.  
 
-5. LOAD CASES
+------------------------------------------------------------
+5. LOAD CASES
+------------------------------------------------------------
 
-Case ID | Scenario | Max Load (kg) | Notes
---- | --- | --- | ---
-LC-001 | Neutral stance, static | 24.8 | Base CG (V3.3 mass)
-LC-002 | Forward motion, flat terrain | 38 | Includes dynamic torque
-LC-003 | Stair ascent, full payload | 42 | Step height 0.3 m
-LC-004 | Stair descent, full payload | 42 | Step height 0.3 m
-LC-005 | Sudden impact, frontal collision | 56 | Safety factor applied  
+| Case ID | Scenario | Max Load (kg) | Notes |
+|:--|:--|:--:|:--|
+| LC‑001 | Neutral stance (static) | 26 | Base Cg (V3.4 mass) |
+| LC‑002 | Forward motion (flat terrain) | 39 | Dynamic torque included |
+| LC‑003 | Stair ascent (full payload) | 42 | Step height 0.3 m; body pitch ≤ 10 ° |
+| LC‑004 | Stair descent (full payload) | 42 | Negative pitch; braking torque profile |
+| LC‑005 | Frontal collision (remedial impact) | 56 | Simulated impact force with FoS 2.0 |
+| LC‑006 | Tripod gait transition (uneven terrain) | 36 | Torsional frame twist evaluation |
 
-Notes: All cases analyzed via Finite Element Analysis (FEA) to confirm stress limits, deflection, and safety margins
+All cases analyzed using FEA (SolidWorks / Ansys) with 10 mm element mesh on main 3030 segments and printed mounts.  
 
-6. INTEGRATION WITH OTHER MODELS
+------------------------------------------------------------
+6. INTEGRATION WITH OTHER MODELS
+------------------------------------------------------------
 
-- Links to **Frame_Architecture.txt** for mounting points  
-- Compatible with **Mass_and_CG_Model.txt** for load calculations  
-- Supports **Neutral_Stance_Geometry.txt** for baseline stance and CG reference  
-- Provides inputs for **Stair_Mode_Mechanics.txt** to calculate dynamic load shifts  
-- FMEA references: FM-004 (servo overheating), FM-005 (structural crack), FM-009 (power distribution stress)
+- Mounting points and extrusion layout per **Frame_Architecture.txt**.  
+- Mass and load inputs derived from **Mass_and_CG_Model.txt**.  
+- Baseline stance geometry from **Neutral_Stance_Geometry.txt**.  
+- Dynamic load‑shift parameters shared with **Stair_Mode_Mechanics.txt**.  
+- Validation ties to FMEA records:  
+ FM‑004 (SERVO Overheating), FM‑005 (Structural Crack), FM‑009 (Power Stress).  
 
-7. DESIGN INTENT
+Data cross‑referenced to /09_Testing/Structural_FE_Results_v3.  
 
-- Maintain structural integrity across all operational scenarios  
-- Minimize deflection and stress on critical components  
-- Ensure actuator and limb safety under dynamic and impact loads  
-- Provide predictable mechanical behavior for control authority and reactive safety systems  
-- Fully traceable and CM-compliant for all load-bearing elements  
-- Supports hybrid frame and modular printed components for easy replacement and upgrade
+------------------------------------------------------------
+7. DESIGN INTENT
+------------------------------------------------------------
+
+- Preserve structural integrity across static, dynamic, and impact conditions.  
+- Maintain predictable elastic response for control and stability systems.  
+- Prevent component overload via actuator and joint torque limits.  
+- Enable accurate simulation inputs for Reactive Safety and Control Authority.  
+- Provide full traceability within CM and Design Change Records.  
+- Support serviceable hybrid frame architecture for rapid module replacement and upgrades.  
+
+------------------------------------------------------------
+END OF FILE
+------------------------------------------------------------
