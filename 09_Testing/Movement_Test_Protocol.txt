@@ -1,86 +1,228 @@
-OBSIDIAN-8 V3
+Movement Test Protocol — REV B (High-Torque Quadruped Validation)
 
-09_Testing/Movement_Test_Protocol.txt
-Revision: V3.2
-Status: Authoritative
+OVERVIEW
+This document defines the procedures for validating movement performance of OBSIDIAN-8 using 150KG-class servos. The goal is to verify stability, control accuracy, power behavior, and safety under real operating conditions.
 
-1. PURPOSE
+--------------------------------------------------
 
-Define the Movement Test Protocol (MTP) for OBSIDIAN-8 V3.
+TEST OBJECTIVES
 
-Validates robot locomotion accuracy, gait stability, and actuator performance
-Ensures reactive safety, energy-aware navigation, and control authority operate correctly
-Provides measurable acceptance criteria for deployment readiness
-2. TEST OBJECTIVES
-Verify nominal gait execution (tripod, stair, and neutral stance)
-Measure position and trajectory accuracy
-Validate actuator response and torque delivery
-Test reactive control under disturbances
-Evaluate energy usage during continuous movement
-Confirm integration with perception and navigation modules
-Capture logs for post-test analysis
-3. TEST SETUP
-Environment: controlled lab, flat test surface, or standard test course
-Deployment Profile: FIELD_STANDARD, PERFORMANCE_MODE, or ENERGY_SAVER
-Sensors & Monitoring: IMU, encoder feedback, force sensors, ROS2 topics
-Logging: all actuator telemetry, ROS2 command/feedback messages, and energy data
-4. TEST PROCEDURE
+- Verify stable standing and walking behavior
+- Validate motion control and smoothness
+- Measure power and thermal performance
+- Confirm safety systems function correctly
+- Identify mechanical or control weaknesses
 
-Step 1 – Initialization:
+--------------------------------------------------
 
-Power up system, confirm actuator readiness
-Verify deployment profile and baseline configuration
-Activate ROS2 logging
+TEST ENVIRONMENT
 
-Step 2 – Neutral Stance Test:
+Surface:
+- Flat, rigid surface (initial testing)
+- Non-slip material preferred
 
-Command neutral stance
-Record joint positions and stability metrics
-Verify center of gravity within ±2 mm of nominal
+Conditions:
+- Indoor environment
+- Controlled lighting and temperature
 
-Step 3 – Tripod Gait Test:
+Safety:
+- Clear area around robot
+- Emergency stop accessible at all times
 
-Execute forward and reverse tripod gait over 10 m course
-Measure positional deviation vs. commanded path
-Record joint torque and velocity profiles
+--------------------------------------------------
 
-Step 4 – Stair/Obstacle Test:
+PRE-TEST CHECKLIST
 
-Command stair-climbing or obstacle negotiation gait
-Measure lift, clearance, and joint synchronization
-Verify no collisions or unsafe actuator stress
+- All fasteners tightened
+- Wiring secured and inspected
+- Battery fully charged
+- Kill switch verified operational
+- Communication between Pi and Teensy confirmed
+- Servo calibration checked (neutral positions)
 
-Step 5 – Disturbance Injection:
+Do not proceed if any issue is found.
 
-Apply external force or push perturbations
-Verify reactive control maintains balance
-Record recovery time and trajectory correction
+--------------------------------------------------
 
-Step 6 – Energy Monitoring:
+TEST 1 — STATIC STABILITY
 
-Track SOC consumption and peak current
-Verify energy-aware navigation adjusts speed or torque as expected
+Procedure:
+- Power system ON
+- Command neutral stance (all legs grounded)
+- Observe for 60 seconds
 
-Step 7 – Continuous Loop Test:
+Pass Criteria:
+- No visible drift or movement
+- No jitter in servos
+- No resets or power instability
 
-Repeat gaits over extended distance (50–100 m)
-Monitor actuator temperature and ROS2 node stability
-Capture all telemetry for audit
-5. ACCEPTANCE CRITERIA
-Positional deviation ≤ 2% of path length
-Joint torque within ±5% of commanded limits
-Recovery from disturbance within 1 s, maintaining stability
-Energy consumption matches predicted deployment profile ±5%
-No actuator faults, node crashes, or kill-line activations
-All logs complete and verified
-6. FAILSAFE AND MONITORING
-Watchdog monitors system responsiveness and triggers kill-line if needed
-Reactive safety layer prevents tipping, overextension, or unsafe motion
-Continuous actuator and energy monitoring for threshold violations
-Emergency stop available at all times
-7. DESIGN INTENT
-Ensure accurate, safe, and reliable locomotion under all test scenarios
-Validate integration of mechanical, electrical, control, perception, and energy systems
-Provide measurable and auditable metrics for acceptance
-Confirm robustness of reactive safety and authority control
-Maintain traceable records for fleet deployment readiness
+Fail Conditions:
+- Servo oscillation
+- System reset
+- Audible strain or instability
+
+--------------------------------------------------
+
+TEST 2 — SINGLE LEG LOAD TEST
+
+Procedure:
+- Lift one leg slightly off ground (manual or controlled)
+- Maintain position for 10–15 seconds
+- Repeat for all legs
+
+Pass Criteria:
+- Remaining legs maintain stable support
+- No excessive tilt or collapse
+
+Fail Conditions:
+- Loss of balance
+- Servo overload or shutdown
+
+--------------------------------------------------
+
+TEST 3 — CONTROLLED MOTION (NO LOAD)
+
+Procedure:
+- Command slow joint movements (one servo at a time)
+- Sweep full range within limits
+
+Pass Criteria:
+- Smooth motion with no jerks
+- Accurate positioning
+- No abnormal noise
+
+Fail Conditions:
+- Sudden jumps
+- Missed positions
+- Mechanical binding
+
+--------------------------------------------------
+
+TEST 4 — GAIT VALIDATION (SLOW MODE)
+
+Procedure:
+- Enable gait engine (slow mode)
+- Run continuous walking cycle for 2 minutes
+
+Pass Criteria:
+- Stable alternating gait
+- No tipping or slipping
+- Smooth transitions between phases
+
+Fail Conditions:
+- Loss of balance
+- Uneven stepping
+- Excessive vibration
+
+--------------------------------------------------
+
+TEST 5 — POWER LOAD TEST
+
+Procedure:
+- Run walking cycle under moderate speed
+- Monitor voltage and current (if available)
+
+Pass Criteria:
+- No system resets
+- Stable operation throughout test
+
+Fail Conditions:
+- Brownouts
+- Controller reboot
+- Sudden shutdown
+
+--------------------------------------------------
+
+TEST 6 — THERMAL TEST
+
+Procedure:
+- Operate system continuously for 5–10 minutes
+- Monitor:
+  - Servo temperature
+  - Battery temperature
+  - Power components
+
+Pass Criteria:
+- Components remain within safe temperature range
+- No thermal shutdown
+
+Fail Conditions:
+- Overheating
+- Performance degradation
+
+--------------------------------------------------
+
+TEST 7 — EMERGENCY STOP VALIDATION
+
+Procedure:
+- While robot is moving, activate kill switch
+
+Expected Result:
+- Immediate cutoff of servo power
+- No continued motion
+
+Pass Criteria:
+- Response time < 50 ms
+- System enters safe state
+
+Fail Conditions:
+- Delayed response
+- Partial shutdown
+- Continued movement
+
+--------------------------------------------------
+
+TEST 8 — COMMUNICATION LOSS TEST
+
+Procedure:
+- Interrupt communication between Pi and Teensy
+
+Expected Behavior:
+- Servos hold position or enter safe state
+- No erratic movement
+
+Pass Criteria:
+- Stable behavior during signal loss
+
+Fail Conditions:
+- Sudden movement
+- Loss of control
+
+--------------------------------------------------
+
+DATA RECORDING
+
+For each test:
+- Record pass/fail
+- Note any anomalies
+- Capture video if possible
+- Log voltage/temperature if sensors available
+
+--------------------------------------------------
+
+TEST SEQUENCE
+
+Recommended order:
+1. Static Stability
+2. Single Leg Load
+3. Controlled Motion
+4. Gait (Slow)
+5. Power Load
+6. Thermal
+7. Emergency Stop
+8. Communication Loss
+
+Do not proceed to next test if current test fails.
+
+--------------------------------------------------
+
+ACCEPTANCE CRITERIA
+
+System is considered validated when:
+- All tests pass without critical failure
+- No repeated instability observed
+- No component damage occurs
+
+--------------------------------------------------
+
+STATUS: ACTIVE
