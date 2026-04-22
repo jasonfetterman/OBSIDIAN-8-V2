@@ -1,51 +1,167 @@
-OBSIDIAN-8 V3
+Cable Routing and Strain Control — REV B (High-Current Servo System)
 
-02_Electrical/Cable_Routing_and_Strain_Control.txt
-Revision: V3.2
-Status: Authoritative
+OVERVIEW
+This document defines cable routing, separation, and strain relief requirements for OBSIDIAN-8. The system must handle high-current servo wiring while protecting low-voltage signal integrity and preventing mechanical failure of connections.
 
-1. PURPOSE
+--------------------------------------------------
 
-Define cable routing, strain relief, and electrical harness management for OBSIDIAN-8 V3.
+DESIGN OBJECTIVES
 
-Ensures safe operation of actuators, sensors, and power distribution.
-Prevents mechanical wear, shorts, or signal interference.
-Provides reference for assembly, maintenance, and CM documentation.
-2. GENERAL GUIDELINES
-All cables must follow predefined routing paths within the frame to avoid moving joints.
-Maintain minimum bend radius per cable specification.
-Use strain relief brackets and clamps at high-stress points.
-Color-code cables for power, signal, and communication lines.
-Avoid routing along edges or sharp corners.
-Secure harnesses to maintain clearance from heat sources, actuators, and sensors.
-3. POWER DISTRIBUTION CABLES
-Cable Type	Routing Path	Strain Relief	Notes
-Main battery bus	Chassis backbone, protected channels	Clamp every 0.25 m	High-current, shielded
-Servo power lines	Embedded limb channels, away from moving joints	Cable loops at pivot points	Minimize torque stress
-Sensor power lines	Side channels, routed along support panels	Velcro/tie mounts	Avoid EMI from power lines
-4. SIGNAL AND COMMUNICATION CABLES
-Cable Type	Routing Path	Strain Relief	Notes
-ROS2 communication	Along frame edges, within conduits	Cable glands	Maintain signal integrity
-Swarm network lines	Routed along central backbone, isolated from high-current lines	Tie mounts	Prevent interference
-Maintenance/SSH lines	Accessible panels, short length	Loops with slack	Allow service without stress
-5. STRAIN RELIEF METHODS
-Cable Loops: Provide slack at joints to accommodate motion.
-Grommets: Protect cables passing through panels.
-Cable Clips/Brackets: Fixed at 0.25–0.3 m intervals.
-Spiral Wrap / Braided Sleeving: Protect against abrasion.
-Strain Relief at Connectors: Prevent pull on solder joints or connectors.
-6. DYNAMIC AND ENVIRONMENTAL CONSIDERATIONS
-Cables must tolerate continuous articulation of limbs and torso.
-Maintain flexibility under -20°C to 60°C operational range.
-Shielded cables used in high EMI zones (motors, power electronics).
-Routing avoids water ingress, dust accumulation, and pinch points.
-7. MAINTENANCE AND VERIFICATION
-Visual inspection of harness integrity at scheduled maintenance intervals.
-Verify strain relief attachment and bend radius compliance.
-Confirm correct routing after any module replacement or repair.
-Update Configuration Management records for any rerouted harness.
-8. DESIGN INTENT
-Ensure electrical reliability throughout lifecycle.
-Protect actuators, sensors, and communication from mechanical and electrical stress.
-Enable safe field maintenance without unintended damage.
-Fully integrated with Frame Architecture, Actuated Limbs, and Deployment Profiles.
+- Ensure reliable power delivery under high current load
+- Prevent electrical noise from affecting control signals
+- Eliminate cable strain at connectors and solder joints
+- Maintain serviceability and clean layout
+
+--------------------------------------------------
+
+CABLE CLASSIFICATION
+
+All wiring is divided into three categories:
+
+1. High-Current Power Cables
+   - Servo power distribution (7.4V)
+   - Battery leads
+
+2. Logic Power Cables
+   - Regulated 5V lines
+   - Low-current distribution
+
+3. Signal Cables
+   - PWM control lines
+   - Serial communication (UART/USB)
+   - Sensor data lines
+
+Each category must be routed separately.
+
+--------------------------------------------------
+
+ROUTING RULES
+
+Separation:
+- Maintain physical separation between power and signal cables
+- Minimum spacing: 20–30 mm where possible
+
+Crossing:
+- If cables must cross, do so at 90 degrees
+
+Bundling:
+- Do NOT bundle high-current cables with signal lines
+- Bundle signal lines separately using light cable management
+
+Path Planning:
+- Use fixed routing channels along the frame
+- Avoid moving joints unless necessary
+
+--------------------------------------------------
+
+HIGH-CURRENT CABLING
+
+Wire Gauge:
+- Main battery leads: 12 AWG
+- Servo distribution: 16–18 AWG
+
+Requirements:
+- Keep runs as short as possible
+- Avoid sharp bends
+- Use high-quality silicone-insulated wire
+
+Connectors:
+- XT60 or XT90 for battery connection
+- Secure all connectors against vibration
+
+--------------------------------------------------
+
+SIGNAL INTEGRITY
+
+PWM and Communication Lines:
+- Keep short and direct
+- Route away from servo power lines
+
+Noise Reduction:
+- Use twisted pair wiring for signal + ground where possible
+- Optional shielding for longer runs
+
+Ground Reference:
+- Ensure solid common ground between Teensy and servo power system
+
+--------------------------------------------------
+
+STRAIN RELIEF
+
+Critical Rule:
+- No connector or solder joint should تحمل mechanical load
+
+Implementation:
+- Anchor cables to frame near connection points
+- Use zip ties, clamps, or cable mounts
+- Provide slack loops near moving joints
+
+At Servos:
+- Secure cable before it enters the servo housing
+- Prevent pull force on connector pins
+
+--------------------------------------------------
+
+MOVING JOINTS
+
+For articulated limbs:
+
+- Use flexible, high-strand-count wire
+- Provide controlled slack for full range of motion
+- Route along joint axes where possible
+
+Protection:
+- Use braided sleeving or cable sheathing
+- Prevent abrasion against frame edges
+
+--------------------------------------------------
+
+ABRASION AND PROTECTION
+
+- Use grommets where cables pass through frame holes
+- Avoid contact with sharp edges
+- Add protective sleeving in high-risk areas
+
+--------------------------------------------------
+
+THERMAL CONSIDERATIONS
+
+- Keep cables away from heat sources (regulators, motors)
+- Ensure airflow around high-current wiring
+- Do not enclose tightly bundled high-current wires
+
+--------------------------------------------------
+
+FAILURE MODES
+
+Improper routing may cause:
+- Electrical noise and signal corruption
+- Intermittent connections
+- Wire fatigue and breakage
+- Connector failure under vibration
+
+--------------------------------------------------
+
+INSPECTION AND MAINTENANCE
+
+Regular Checks:
+- Inspect for worn insulation
+- Check connector tightness
+- Verify strain relief integrity
+
+After Movement Testing:
+- Re-check all moving joint cables
+- Look for pinch points or rubbing
+
+--------------------------------------------------
+
+DESIGN CONSTRAINTS
+
+- No exposed high-current conductors
+- All wiring must be secured and supported
+- Routing must allow easy access for maintenance
+- Maintain clear separation of power and signal systems
+
+--------------------------------------------------
+
+STATUS: ACTIVE
