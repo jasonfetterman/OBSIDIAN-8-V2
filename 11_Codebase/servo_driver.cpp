@@ -1,88 +1,140 @@
-//
-// servo_driver.cpp
-// OBSIDIAN-8 V3 — REV D
-// Converts leg target positions into servo angles and drives servos
-//
+// servo_driver.cpp — REV B (Teensy High-Torque Servo Control)
 
-#include <iostream>
-#include <vector>
-#include <cmath>
-#include <thread>
-#include <chrono>
+#include <Arduino.h>
 
-// Include your hardware interface here, e.g., serial or PWM lib
-#include "servo_interface.h"
+// ---------------- CONFIG ----------------
 
-struct LegCommand {
-    double x;     // meters
-    double y;     // meters
-    double z;     // meters
-    std::string phase;  // "swing" or "stance"
+#define SERVO_COUNT 8
+
+// PWM timing (microseconds)
+#define PWM_MIN 1000
+#define PWM_MAX 2000
+
+// Safety limits (adjust per joint later)
+#define ANGLE_MIN 0
+#define ANGLE_MAX 180
+
+// Watchdog timeout (ms)
+#define COMMAND_TIMEOUT 200
+
+// PWM pins (update to match your wiring)
+const int servoPins[SERVO_COUNT] = {2, 3, 4, 5, 6, 7, 8, 9};
+
+// ---------------- STATE ----------------
+
+struct ServoState {
+    float currentAngle;
+    float targetAngle;
+    float speed; // degrees per second
 };
 
-// Kinematic constants (example lengths in meters)
-const double COXA = 0.05;
-const double FEMUR = 0.15;
-const double TIBIA = 0.15;
+ServoState servos[SERVO_COUNT];
 
-// Forward declaration
-std::vector<double> inverse_kinematics(double x, double y, double z);
+unsigned long lastCommandTime = 0;
 
-// Send servo angles to hardware
-void send_servo_angles(const std::vector<double>& angles) {
-    // Replace with actual servo interface code
-    for (size_t i = 0; i < angles.size(); i++) {
-        ServoInterface::setAngle(i, angles[i]);
+// ---------------- UTIL ----------------
+
+int angleToPulse(float angle) {
+    angle = constrain(angle, ANGLE_MIN, ANGLE_MAX);
+    return map(angle, 0, 180, PWM_MIN, PWM_MAX);
+}
+
+void writeServo(int pin, int pulseWidth) {
+    digitalWrite(pin, HIGH);
+    delayMicroseconds(pulseWidth);
+    digitalWrite(pin, LOW);
+}
+
+// ---------------- INIT ----------------
+
+void initServos() {
+    for (int i = 0; i < SERVO_COUNT; i++) {
+        pinMode(servoPins[i], OUTPUT);
+        servos[i].currentAngle = 90;
+        servos[i].targetAngle = 90;
+        servos[i].speed = 60; // default deg/sec
     }
 }
 
-void drive_legs(const std::vector<LegCommand>& leg_commands) {
-    for (size_t i = 0; i < leg_commands.size(); i++) {
-        LegCommand cmd = leg_commands[i];
-        std::vector<double> angles = inverse_kinematics(cmd.x, cmd.y, cmd.z);
-        send_servo_angles(angles);
+// ---------------- COMMAND PARSER ----------------
+// Format: ID,ANGLE,SPEED\n
+// Example: 0,120,50
+
+void handleCommand(String cmd) {
+    int id, angle, speed;
+
+    if (sscanf(cmd.c_str(), "%d,%d,%d", &id, &angle, &speed) == 3) {
+        if (id >= 0 && id < SERVO_COUNT) {
+            servos[id].targetAngle = constrain(angle, ANGLE_MIN, ANGLE_MAX);
+            servos[id].speed = max(1, speed);
+            lastCommandTime = millis();
+        }
     }
 }
 
-// Simple inverse kinematics for 3-DOF leg (Coxa, Femur, Tibia)
-std::vector<double> inverse_kinematics(double x, double y, double z) {
-    std::vector<double> angles(3, 0.0);
+// ---------------- MOTION UPDATE ----------------
 
-    // Coxa rotation (horizontal)
-    angles[0] = atan2(y, x);
+void updateMotion(float deltaTime) {
+    for (int i = 0; i < SERVO_COUNT; i++) {
+        float diff = servos[i].targetAngle - servos[i].currentAngle;
+        float step = servos[i].speed * deltaTime;
 
-    // Distance in horizontal plane minus coxa
-    double r = sqrt(x*x + y*y) - COXA;
-    double s = z;
-
-    double D = (r*r + s*s - FEMUR*FEMUR - TIBIA*TIBIA) / (2 * FEMUR * TIBIA);
-    if (D > 1.0) D = 1.0;      // clamp
-    if (D < -1.0) D = -1.0;
-
-    // Knee angle (Tibia)
-    angles[2] = acos(D);
-
-    // Hip angle (Femur)
-    angles[1] = atan2(s, r) - atan2(TIBIA*sin(angles[2]), FEMUR + TIBIA*cos(angles[2]));
-
-    return angles;  // radians
+        if (abs(diff) <= step) {
+            servos[i].currentAngle = servos[i].targetAngle;
+        } else {
+            servos[i].currentAngle += (diff > 0 ? step : -step);
+        }
+    }
 }
 
-// -------------------- TEST LOOP --------------------
-int main() {
-    // Initialize servo interface
-    ServoInterface::init();
+// ---------------- OUTPUT ----------------
 
-    // Example: 8 legs
-    std::vector<LegCommand> test_legs(8);
-    for (int i = 0; i < 8; i++) {
-        test_legs[i] = {0.2, (i%2==0?0.15:-0.15), -0.2, "stance"};
+void updateServos() {
+    for (int i = 0; i < SERVO_COUNT; i++) {
+        int pulse = angleToPulse(servos[i].currentAngle);
+        writeServo(servoPins[i], pulse);
+    }
+}
+
+// ---------------- WATCHDOG ----------------
+
+void checkWatchdog() {
+    if (millis() - lastCommandTime > COMMAND_TIMEOUT) {
+        // Hold position (no sudden drop)
+        for (int i = 0; i < SERVO_COUNT; i++) {
+            servos[i].targetAngle = servos[i].currentAngle;
+        }
+    }
+}
+
+// ---------------- MAIN LOOP ----------------
+
+String inputBuffer = "";
+unsigned long lastUpdate = 0;
+
+void setup() {
+    Serial.begin(115200);
+    initServos();
+    lastCommandTime = millis();
+}
+
+void loop() {
+    unsigned long now = millis();
+    float deltaTime = (now - lastUpdate) / 1000.0;
+    lastUpdate = now;
+
+    // Read serial input
+    while (Serial.available()) {
+        char c = Serial.read();
+        if (c == '\n') {
+            handleCommand(inputBuffer);
+            inputBuffer = "";
+        } else {
+            inputBuffer += c;
+        }
     }
 
-    while (true) {
-        drive_legs(test_legs);
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));  // 50 Hz
-    }
-
-    return 0;
+    checkWatchdog();
+    updateMotion(deltaTime);
+    updateServos();
 }
