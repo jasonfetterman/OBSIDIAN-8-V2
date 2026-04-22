@@ -1,69 +1,101 @@
-# motion_scheduler.py
-# OBSIDIAN-8 V3 — REV D
-# Schedules gait cycles and coordinates leg motion
+# motion_scheduler.py — REV B (Stable Gait Scheduling for High-Torque System)
 
 import time
-import numpy as np
-from path_planner import PathPlanner
-from motion_planner import MotionPlanner
 
-# -------------------- CONFIG --------------------
-CONTROL_RATE_HZ = 200  # Low-level update rate
-NUM_LEGS = 8
+# ---------------- CONFIG ----------------
 
-# -------------------- INITIALIZE --------------------
-path_planner = PathPlanner()
-motion_planner = MotionPlanner()
+UPDATE_HZ = 50
+DT = 1.0 / UPDATE_HZ
 
-# Tracks phase of each leg
-leg_phases = [0.0 for _ in range(NUM_LEGS)]
+# Leg grouping (Quadruped)
+# Index mapping (example):
+# 0,1 = Front Left (hip, knee)
+# 2,3 = Front Right
+# 4,5 = Rear Left
+# 6,7 = Rear Right
 
-# Gait timing configuration
-GAIT_CYCLE_TIME = 1.0  # seconds
-PHASE_OFFSETS = [0.0, 0.5, 0.0, 0.5, 0.0, 0.5, 0.0, 0.5]  # stagger tripod gait
+TRIPOD_GROUP_A = [0, 1, 6, 7]  # Front Left + Rear Right
+TRIPOD_GROUP_B = [2, 3, 4, 5]  # Front Right + Rear Left
 
-# -------------------- FUNCTIONS --------------------
-def update_leg_phases(delta_time):
-    """
-    Increment the phase of each leg and wrap around the gait cycle
-    """
-    global leg_phases
-    for i in range(NUM_LEGS):
-        leg_phases[i] += delta_time / GAIT_CYCLE_TIME
-        if leg_phases[i] > 1.0:
-            leg_phases[i] -= 1.0
+STEP_DURATION = 0.5  # seconds per phase
 
-def schedule_motion(robot_state):
-    """
-    Compute next joint targets for all legs based on gait timing
-    """
-    foot_targets = path_planner.plan(robot_state)
-    joint_commands = motion_planner.generate(foot_targets, robot_state)
-    return joint_commands
+# Lift parameters
+LIFT_ANGLE_OFFSET = -20  # degrees (knee bend for lift)
+FORWARD_OFFSET = 15      # hip movement
 
-# -------------------- MAIN LOOP --------------------
+# ---------------- STATE ----------------
+
+phase = 0
+phase_time = 0.0
+
+# ---------------- INTERFACE ----------------
+
+def apply_offsets(base_pose, indices, hip_offset=0, knee_offset=0):
+    pose = base_pose.copy()
+    for i in indices:
+        if i % 2 == 0:
+            pose[i] += hip_offset
+        else:
+            pose[i] += knee_offset
+    return pose
+
+# ---------------- GAIT ENGINE ----------------
+
+def generate_tripod_pose(base_pose):
+    global phase
+
+    if phase == 0:
+        # Group A moves, Group B supports
+        pose = apply_offsets(base_pose, TRIPOD_GROUP_A,
+                             hip_offset=FORWARD_OFFSET,
+                             knee_offset=LIFT_ANGLE_OFFSET)
+    else:
+        # Group B moves, Group A supports
+        pose = apply_offsets(base_pose, TRIPOD_GROUP_B,
+                             hip_offset=FORWARD_OFFSET,
+                             knee_offset=LIFT_ANGLE_OFFSET)
+
+    return pose
+
+# ---------------- SCHEDULER LOOP ----------------
+
+def run_scheduler(get_base_pose, send_pose_callback):
+    global phase, phase_time
+
+    while True:
+        start = time.time()
+
+        base_pose = get_base_pose()
+
+        # Generate gait pose
+        pose = generate_tripod_pose(base_pose)
+
+        # Send to motion planner
+        send_pose_callback(pose)
+
+        # Phase timing
+        phase_time += DT
+        if phase_time >= STEP_DURATION:
+            phase = 1 - phase
+            phase_time = 0.0
+
+        elapsed = time.time() - start
+        time.sleep(max(0, DT - elapsed))
+
+# ---------------- SAFETY ----------------
+
+def reset_gait():
+    global phase, phase_time
+    phase = 0
+    phase_time = 0.0
+
+# ---------------- EXAMPLE ----------------
+
 if __name__ == "__main__":
-    print("[MotionScheduler] Starting motion scheduling loop...")
-    loop_delay = 1.0 / CONTROL_RATE_HZ
-    robot_state = {'velocity': np.array([0.0, 0.0, 0.0]), 'orientation': np.array([0.0, 0.0, 0.0])}
+    def mock_base_pose():
+        return [90.0] * 8
 
-    try:
-        while True:
-            start_time = time.time()
+    def debug_send(pose):
+        print(["{:.1f}".format(p) for p in pose])
 
-            # Update leg phases
-            update_leg_phases(loop_delay)
-
-            # Generate joint commands
-            joint_commands = schedule_motion(robot_state)
-
-            # TODO: send joint_commands to servo driver
-            # Example: servo_driver.send(joint_commands)
-
-            elapsed = time.time() - start_time
-            sleep_time = max(0, loop_delay - elapsed)
-            time.sleep(sleep_time)
-
-    except KeyboardInterrupt:
-        print("[MotionScheduler] Exiting scheduler loop...")
-        motion_planner.halt_motion()
+    run_scheduler(mock_base_pose, debug_send)
