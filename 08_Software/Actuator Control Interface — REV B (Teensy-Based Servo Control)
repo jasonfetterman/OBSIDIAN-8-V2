@@ -1,0 +1,160 @@
+Actuator Control Interface — REV B (Teensy-Based Servo Control)
+
+OVERVIEW
+This document defines the control interface between the main compute system (Raspberry Pi) and the actuator layer using a Teensy microcontroller. The Teensy replaces external servo controllers and is responsible for generating precise, stable PWM signals for all servos.
+
+--------------------------------------------------
+
+SYSTEM ARCHITECTURE
+
+Control Flow:
+Raspberry Pi (High-Level Control)
+   → Serial Communication (USB or UART)
+   → Teensy Microcontroller
+   → Direct PWM Output
+   → Servo Bank
+
+The Teensy acts as a real-time actuator controller.
+
+--------------------------------------------------
+
+TEENSY ROLE
+
+Primary Responsibilities:
+- Generate stable PWM signals for all servos
+- Execute motion commands from the Pi
+- Enforce safety limits (angle, speed, acceleration)
+- Maintain last safe state if communication is lost
+
+Timing Requirements:
+- Deterministic signal generation
+- No interruption from high-level processing
+
+--------------------------------------------------
+
+SERVO CONTROL SIGNALS
+
+Signal Type:
+- PWM (Pulse Width Modulation)
+
+Typical Range:
+- 1000µs to 2000µs pulse width
+
+Frequency:
+- 50Hz standard (up to 300Hz if supported by servo)
+
+Resolution:
+- Minimum 12-bit equivalent precision recommended
+
+--------------------------------------------------
+
+CHANNEL CONFIGURATION
+
+System Example:
+- 8 primary servos (hip + knee joints)
+
+Teensy must support:
+- Minimum 8 independent PWM outputs
+- Prefer hardware timers over software PWM
+
+Pin Assignment:
+- Fixed and documented in firmware
+- Avoid dynamic reassignment
+
+--------------------------------------------------
+
+COMMUNICATION PROTOCOL
+
+Interface:
+- USB Serial (preferred) or UART
+
+Command Structure (Example):
+<START><ID><POSITION><SPEED><CHECKSUM><END>
+
+Requirements:
+- Compact and deterministic messages
+- Error detection (checksum or CRC)
+- Acknowledgment for critical commands
+
+Update Rate:
+- 50–100 Hz command updates from Pi
+
+--------------------------------------------------
+
+MOTION CONTROL
+
+Handled on Teensy:
+
+- Position interpolation
+- Speed limiting
+- Acceleration ramping
+
+Critical Rule:
+- Do NOT send raw position jumps from Pi
+- All movement must be smoothed on the Teensy
+
+--------------------------------------------------
+
+SAFETY FEATURES
+
+Required:
+
+1. Watchdog Timeout
+   - If no command received within defined window:
+     → Hold position OR move to safe state
+
+2. Motion Limits
+   - Per-servo angle constraints
+   - Prevent mechanical overextension
+
+3. Rate Limiting
+   - Limit max speed and acceleration
+   - Prevent current spikes and gear damage
+
+--------------------------------------------------
+
+POWER ISOLATION
+
+- Teensy powered from logic rail (5V regulated)
+- Servo power is completely separate (7.4V rail)
+- Shared ground is required for signal reference
+
+--------------------------------------------------
+
+FAILURE MODES
+
+Potential Issues:
+- Lost communication with Pi
+- PWM jitter due to poor timing
+- Electrical noise from servo power system
+
+Mitigation:
+- Hardware timers for PWM
+- Shielded or short signal lines
+- Watchdog reset behavior
+
+--------------------------------------------------
+
+FIRMWARE REQUIREMENTS
+
+- Real-time loop for PWM updates
+- Non-blocking serial communication
+- State machine for command parsing
+- Fault detection and handling
+
+Recommended Structure:
+- Input handler
+- Motion planner
+- Output driver
+
+--------------------------------------------------
+
+SYSTEM CONSTRAINTS
+
+- Teensy must never be overloaded with high-level logic
+- Keep firmware focused on real-time control only
+- All AI, navigation, and planning stay on the Pi
+
+--------------------------------------------------
+
+STATUS: ACTIVE
