@@ -1,77 +1,179 @@
-OBSIDIAN-8 V3
+Watchdog Kill Line Design — REV B (High-Torque Safety Integration)
 
-02_Electrical/Watchdog_Kill_Line_Design.txt
-Revision: V3.2
-Status: Authoritative
+OVERVIEW
+This document defines the emergency shutdown and watchdog system for OBSIDIAN-8. The system is designed to immediately disable actuator power in the event of control failure, software crash, or unsafe operating conditions.
 
-1. PURPOSE
+--------------------------------------------------
 
-Define the design, integration, and operation of the Watchdog Kill Line for OBSIDIAN-8 V3.
+SYSTEM PURPOSE
 
-Provides hardware-level safety override for all subsystems
-Ensures deterministic shutdown in case of software, communication, or power faults
-Integrates with reactive safety, control authority, and FMEA
-2. SYSTEM OVERVIEW
+The kill system must:
+- Instantly cut power to all servos
+- Preserve power to control electronics when possible
+- Operate independently of high-level software
+- Default to a safe state on failure
 
-The Watchdog Kill Line is a hardware supervisory path that can immediately cut power or disable motion commands:
+--------------------------------------------------
 
-Monitors Mission Compute, actuator controllers, and BMS signals
-Directly connected to actuator power enable lines and main bus relays
-Independent of software control to ensure fail-safe operation
-3. HARDWARE DESIGN
-Circuit Components:
-Solid-state relay (SSR) or mechanical relay rated for actuator bus current
-Redundant watchdog timer ICs for fault tolerance
-Status LEDs for visual confirmation
-Pull-up / pull-down resistors for stable logic states
-Connectivity:
-Watchdog output connected to:
-Servo bank power enable lines
-Main power relay for critical systems
-Input monitoring lines from:
-Mission Compute heartbeat
-BMS critical alerts
-Remote kill-line trigger
-Fail-Safe Configuration:
-Default state = power cutoff
-Only asserted when all monitored systems healthy
-4. SIGNAL MONITORING
-Heartbeat Inputs:
-Mission Compute emits periodic pulse
-Watchdog timer resets with each valid pulse
-Fault Detection:
-Missing heartbeat → trigger kill line
-Critical BMS alert → trigger kill line
-Manual remote kill → trigger kill line
-Timing Parameters:
-Watchdog timeout: configurable, e.g., 200 ms–500 ms
-Pulse validation window ensures no false triggers
-5. CONTROL AUTHORITY INTEGRATION
-Overrides all software commands:
-Hardware asserts kill → actuators enter safe-stop
-Cannot be overridden by Mission Compute or Reactive Controller
-Integrates with Reactive Safety Layer and Control Authority Model
-Field modifications or bypassing hardware kill line are strictly prohibited
-6. REDUNDANCY AND RELIABILITY
-Dual watchdog timers for redundancy
-Separate physical path for critical actuator banks
-Verification:
-Pull high/low line tests
-Simulation of software failure
-Thermal and vibration testing
-Mean Time Between Failures (MTBF) designed to exceed operational lifespan
-7. TESTING AND VALIDATION
-Functional tests:
-Simulate missing heartbeat → kill line assertion
-Simulate BMS critical fault → kill line assertion
-Manual activation → verify all actuators stop
-Environmental testing:
-Thermal cycling
-Vibration and shock testing
-Voltage fluctuations
-Documentation retained per Configuration Management Plan
-8. DESIGN INTENT
-Ensure deterministic, hardware-enforced shutdown for all motion and power-critical functions
-Protect against software failures, communication faults, and electrical anomalies
-Maintain safety-first hierarchy over all other control functions
-Fully integrate with FMEA, Main Power System, Servo Bank Architecture, and BMS
+ARCHITECTURE SUMMARY
+
+The system consists of two layers:
+
+1. Software Watchdog (Teensy + Raspberry Pi)
+2. Hardware Kill Line (Physical power cutoff)
+
+Both systems operate together but independently.
+
+--------------------------------------------------
+
+LAYER 1 — SOFTWARE WATCHDOG
+
+Raspberry Pi:
+- Sends continuous heartbeat signal to Teensy (50–100 Hz)
+
+Teensy:
+- Monitors heartbeat timing
+- If heartbeat is lost:
+  → Stops sending PWM updates
+  → Holds or neutralizes servo positions
+
+Timeout:
+- 100–200 ms maximum before fail-safe triggers
+
+--------------------------------------------------
+
+LAYER 2 — HARDWARE KILL LINE
+
+Primary Function:
+- Physically disconnect servo power rail
+
+Implementation Options:
+
+Option A (Recommended):
+- High-current relay or solid-state relay (SSR)
+
+Option B:
+- MOSFET-based high-side switch rated for full system current
+
+Control Input:
+- Driven by Teensy watchdog output pin
+
+Default State:
+- OFF (no servo power) unless actively enabled
+
+--------------------------------------------------
+
+CONTROL LOGIC
+
+Normal Operation:
+- Teensy receives valid commands
+- Watchdog signal remains active
+- Kill line remains CLOSED (power enabled)
+
+Failure Conditions:
+- Loss of communication from Pi
+- Teensy firmware crash or reset
+- Detected fault condition
+
+Result:
+- Kill signal deactivates
+- Relay/MOSFET opens
+- Servo power is immediately cut
+
+--------------------------------------------------
+
+POWER ISOLATION
+
+- Kill line affects ONLY servo power rail (7.4V)
+- Logic power (5V) remains active to allow recovery and diagnostics
+
+--------------------------------------------------
+
+MANUAL EMERGENCY STOP
+
+Required:
+- Physical emergency stop button
+
+Behavior:
+- Immediately interrupts kill line control signal
+- Forces servo power OFF regardless of software state
+
+Placement:
+- Easily accessible on robot exterior
+
+--------------------------------------------------
+
+FAIL-SAFE DESIGN
+
+System must default to SAFE (power OFF) if:
+- Control signal wire is disconnected
+- Teensy loses power
+- System resets unexpectedly
+
+This requires:
+- Active-high enable logic (power ON only when signal is present)
+
+--------------------------------------------------
+
+RESPONSE TIME
+
+Target:
+- <50 ms from fault detection to power cutoff
+
+Rationale:
+- Prevent damage from runaway motion or control instability
+
+--------------------------------------------------
+
+COMPONENT REQUIREMENTS
+
+Switching Device:
+- Must support 80A peak current minimum
+
+Relay Option:
+- Automotive high-current relay (fast switching preferred)
+
+MOSFET Option:
+- Logic-level gate
+- Proper heat sinking required
+- Low Rds(on)
+
+--------------------------------------------------
+
+FAILURE MODES
+
+Without kill system:
+- Runaway servos
+- Mechanical damage
+- Electrical overload
+- Safety hazard
+
+With kill system:
+- Controlled shutdown
+- Power isolation
+- System remains recoverable
+
+--------------------------------------------------
+
+TESTING REQUIREMENTS
+
+Must validate:
+
+1. Communication loss test
+2. Teensy reset test
+3. Manual E-stop activation
+4. High-load shutdown behavior
+
+System must cut servo power reliably in all cases
+
+--------------------------------------------------
+
+SYSTEM CONSTRAINTS
+
+- Kill system must not depend on Raspberry Pi
+- Must function even during partial system failure
+- Must handle full current without overheating
+
+--------------------------------------------------
+
+STATUS: ACTIVE
