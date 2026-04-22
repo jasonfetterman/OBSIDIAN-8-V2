@@ -1,267 +1,160 @@
-OBSIDIAN-8 V3
-System_Requirements_Specification.txt
-Revision: V3.2
-Status: Authoritative
+System Requirements Specification — REV C (Octopod Platform)
 
-------------------------------------------------------------
-1. PURPOSE
-------------------------------------------------------------
+OVERVIEW
+This document defines the functional, performance, and safety requirements for OBSIDIAN-8 as an eight-legged (octopod) robotic platform. All subsystems must comply with these requirements.
 
-Define formal, testable system-level requirements for OBSIDIAN-8 V3.
+--------------------------------------------------
 
-All architectural documents, test protocols, and validation
-activities must trace back to these requirements.
+SYSTEM DESCRIPTION
 
-Each requirement is uniquely identified.
+OBSIDIAN-8 is an octopod robotic platform designed for high stability, load distribution, and controlled locomotion. The system uses high-torque servo actuation, distributed control, and onboard computation.
 
+--------------------------------------------------
 
-------------------------------------------------------------
-2. REQUIREMENT IDENTIFICATION FORMAT
-------------------------------------------------------------
+FUNCTIONAL REQUIREMENTS
 
-Format:
+FR-1: Locomotion
+- The system shall perform stable walking using an 8-leg configuration.
 
-REQ-[CATEGORY]-[NUMBER]
+FR-2: Actuation Control
+- The system shall control a minimum of 16 servo channels (2 DOF per leg: hip and knee).
 
-Categories:
+FR-3: Command Interface
+- The system shall accept motion commands from a high-level controller.
 
-MECH  – Mechanical
-ELEC  – Electrical
-CTRL  – Control
-SAFE  – Safety
-NAV   – Navigation
-ENER  – Energy
-SW    – Software
-COMM  – Communication
-OPS   – Operational
-LIFE  – Lifecycle
+FR-4: Gait Execution
+- The system shall execute coordinated multi-leg gait patterns.
 
+FR-5: Emergency Shutdown
+- The system shall provide immediate actuator shutdown via hardware kill switch.
 
-------------------------------------------------------------
-3. MECHANICAL REQUIREMENTS
-------------------------------------------------------------
+--------------------------------------------------
 
-REQ-MECH-001  
-System shall maintain structural integrity under defined deployment load.
+PERFORMANCE REQUIREMENTS
 
-REQ-MECH-002  
-System shall withstand torsional loading within stability envelope.
+PR-1: Load Capacity
+- The system shall support a total mass of 8–15 kg.
 
-REQ-MECH-003  
-Center of gravity shall remain within defined stability polygon during stance.
+PR-2: Stability
+- The system shall maintain stability with a minimum of 4 legs in contact during motion.
 
-REQ-MECH-004  
-Frame shall tolerate vibration profile defined in Testing domain.
+PR-3: Response Time
+- Actuator response shall occur within 50 ms.
 
-REQ-MECH-005  
-All load-bearing fasteners shall be torque-specified and documented.
+PR-4: Motion Smoothness
+- The system shall limit acceleration and velocity to prevent shock loading.
 
+PR-5: Runtime
+- The system shall operate for a minimum of 15 minutes under normal load.
 
-------------------------------------------------------------
-4. ELECTRICAL REQUIREMENTS
-------------------------------------------------------------
+--------------------------------------------------
 
-REQ-ELEC-001  
-System shall segment servo and compute power rails.
+ELECTRICAL REQUIREMENTS
 
-REQ-ELEC-002  
-Battery Management System shall enforce overcurrent protection.
+ER-1: Power Architecture
+- Separate servo and logic power rails are required.
 
-REQ-ELEC-003  
-Battery Management System shall enforce undervoltage protection.
+ER-2: Current Handling
+- The system shall support peak currents exceeding 120A due to increased servo count.
 
-REQ-ELEC-004  
-Kill-line shall disable servo rail within defined latency threshold.
+ER-3: Voltage Stability
+- Logic power must remain stable under all servo load conditions.
 
-REQ-ELEC-005  
-System shall prevent reverse polarity connection.
+ER-4: Protection
+- The system shall include fused distribution and overcurrent protection.
 
+--------------------------------------------------
 
-------------------------------------------------------------
-5. CONTROL REQUIREMENTS
-------------------------------------------------------------
+MECHANICAL REQUIREMENTS
 
-REQ-CTRL-001  
-System shall implement layered control authority model.
+MR-1: Structural Integrity
+- The frame shall withstand combined torque from all actuators without deformation.
 
-REQ-CTRL-002  
-Reactive layer shall override mission commands when safety violated.
+MR-2: Joint Support
+- All rotating joints shall be supported with bearings.
 
-REQ-CTRL-003  
-Heartbeat timeout shall result in deterministic fallback state.
+MR-3: Load Distribution
+- The frame shall distribute load across multiple legs to reduce per-joint stress.
 
-REQ-CTRL-004  
-System shall log authority transitions.
+MR-4: Material Selection
+- Load-bearing components shall use aluminum or steel.
 
-REQ-CTRL-005  
-No motion shall occur without validated reactive authority.
+--------------------------------------------------
 
+CONTROL SYSTEM REQUIREMENTS
 
-------------------------------------------------------------
-6. SAFETY REQUIREMENTS
-------------------------------------------------------------
+CR-1: Distributed Control
+- A microcontroller (Teensy) shall handle real-time actuator control.
 
-REQ-SAFE-001  
-Hardware emergency stop shall directly disable servo rail.
+CR-2: Communication
+- Reliable communication between compute layers is required.
 
-REQ-SAFE-002  
-Watchdog shall independently monitor reactive and mission heartbeats.
+CR-3: Motion Planning
+- The system shall enforce velocity and acceleration limits.
 
-REQ-SAFE-003  
-System shall default to STOP upon authority ambiguity.
+CR-4: Gait Coordination
+- The system shall coordinate leg groups to maintain stability.
 
-REQ-SAFE-004  
-Software shall not override hardware kill-line.
+CR-5: Watchdog
+- The system shall detect and respond to control signal loss.
 
-REQ-SAFE-005  
-System shall prevent operation below defined energy critical threshold.
+--------------------------------------------------
 
+GAIT REQUIREMENTS
 
-------------------------------------------------------------
-7. NAVIGATION REQUIREMENTS
-------------------------------------------------------------
+GR-1: Multi-Leg Coordination
+- The system shall use staggered leg movement to maintain continuous support.
 
-REQ-NAV-001  
-System shall classify terrain before traversal.
+GR-2: Stability Margin
+- At least 50% of legs shall remain in contact during normal walking.
 
-REQ-NAV-002  
-System shall refuse traversal of hazardous terrain class.
+GR-3: Load Balancing
+- Load shall be distributed across multiple legs to reduce peak torque.
 
-REQ-NAV-003  
-Navigation shall incorporate energy-aware constraints.
+--------------------------------------------------
 
-REQ-NAV-004  
-System shall perform controlled docking within tolerance.
+SAFETY REQUIREMENTS
 
-REQ-NAV-005  
-System shall maintain slope traversal limits defined in Deployment Profile.
+SR-1: Kill Switch
+- A hardware emergency stop shall immediately disable servo power.
 
+SR-2: Fail-Safe State
+- The system shall default to a safe state on failure.
 
-------------------------------------------------------------
-8. ENERGY REQUIREMENTS
-------------------------------------------------------------
+SR-3: Power Isolation
+- Servo and logic systems shall be independently controlled.
 
-REQ-ENER-001  
-System shall estimate state-of-charge using coulomb counting.
+SR-4: Fault Handling
+- The system shall prevent uncontrolled motion during faults.
 
-REQ-ENER-002  
-System shall initiate mission termination at defined SOC threshold.
+--------------------------------------------------
 
-REQ-ENER-003  
-System shall avoid BMS hard cutoff during active motion.
+ENVIRONMENTAL REQUIREMENTS
 
-REQ-ENER-004  
-System shall log battery temperature excursions.
+EN-1: Operating Conditions
+- Indoor operation under controlled conditions.
 
-REQ-ENER-005  
-Charging shall not occur during active mission state.
+EN-2: Thermal Limits
+- All components shall operate within safe temperature ranges.
 
+--------------------------------------------------
 
-------------------------------------------------------------
-9. SOFTWARE REQUIREMENTS
-------------------------------------------------------------
+TESTING REQUIREMENTS
 
-REQ-SW-001  
-All motion commands shall include sequence identifier.
+TR-1: Validation
+- The system shall pass all defined movement and safety tests.
 
-REQ-SW-002  
-All safety-critical messages shall include timestamp.
+TR-2: Repeatability
+- The system shall perform consistently across multiple cycles.
 
-REQ-SW-003  
-System shall reject stale or malformed motion commands.
+--------------------------------------------------
 
-REQ-SW-004  
-Message definitions shall be version-controlled.
+DESIGN CONSTRAINTS
 
-REQ-SW-005  
-System shall log critical faults persistently.
+- The system shall not exceed actuator torque limits during operation.
+- High-current and signal wiring must remain isolated.
+- Stability shall be prioritized over speed in default configuration.
 
+--------------------------------------------------
 
-------------------------------------------------------------
-10. COMMUNICATION REQUIREMENTS
-------------------------------------------------------------
-
-REQ-COMM-001  
-Remote control channel shall be encrypted.
-
-REQ-COMM-002  
-Unauthorized command attempts shall be rejected and logged.
-
-REQ-COMM-003  
-Loss of remote link shall trigger defined fallback behavior.
-
-REQ-COMM-004  
-System shall display current authority layer externally.
-
-REQ-COMM-005  
-Swarm commands shall not override local safety authority.
-
-
-------------------------------------------------------------
-11. OPERATIONAL REQUIREMENTS
-------------------------------------------------------------
-
-REQ-OPS-001  
-System shall operate within defined environmental envelope.
-
-REQ-OPS-002  
-System shall require pre-deployment checklist validation.
-
-REQ-OPS-003  
-System shall log mission duration and fault events.
-
-REQ-OPS-004  
-System shall require manual reset after emergency stop.
-
-REQ-OPS-005  
-Maintenance intervals shall be defined and enforced.
-
-
-------------------------------------------------------------
-12. LIFECYCLE REQUIREMENTS
-------------------------------------------------------------
-
-REQ-LIFE-001  
-All production units shall be serialized.
-
-REQ-LIFE-002  
-Engineering changes shall require documented impact analysis.
-
-REQ-LIFE-003  
-Calibration results shall be stored per unit.
-
-REQ-LIFE-004  
-Decommissioned units shall be marked in fleet registry.
-
-REQ-LIFE-005  
-System documentation shall be version-controlled.
-
-
-------------------------------------------------------------
-13. VERIFICATION TRACEABILITY
-------------------------------------------------------------
-
-Each requirement must map to:
-
-- Design document
-- Test protocol
-- Validation result
-
-No requirement shall remain unverified prior to Phase 2 exit.
-
-
-------------------------------------------------------------
-14. DESIGN INTENT
-------------------------------------------------------------
-
-This specification establishes measurable, testable,
-and enforceable system-level requirements.
-
-Architecture, code, testing, and lifecycle processes
-must remain traceable to these requirements.
-
-Safety and deterministic behavior are mandatory.
-
-------------------------------------------------------------
-END OF FILE
-------------------------------------------------------------
+STATUS: ACTIVE
