@@ -1,180 +1,169 @@
-OBSIDIAN-8 V3 – POWER TREE ARCHITECTURE
-Revision: V3.0
-Status: Baseline Locked
+Power Tree Architecture — REV B (150KG Servo Integration)
 
-------------------------------------------------------------
-1. ENERGY BACKBONE
-------------------------------------------------------------
+OVERVIEW
+This document defines the structured distribution of electrical power throughout OBSIDIAN-8. It ensures stable delivery to high-current servo systems and regulated supply to sensitive control electronics.
 
-Deployment Configuration:
-8S LiFePO4 battery pack
-Nominal Voltage: ~25.6V
-Charged Voltage: ~29.2V
-Integrated Smart BMS required.
+--------------------------------------------------
 
-Development Configuration:
-6S LiPo
-Nominal Voltage: ~22.2V
+ARCHITECTURE SUMMARY
 
-Battery must provide:
-Sustained locomotion + compute + sensors for 3+ hour mixed-mode mission.
+The system uses a hierarchical power distribution model with two isolated rails:
 
-------------------------------------------------------------
-2. PRIMARY POWER FLOW
-------------------------------------------------------------
+1. High-Current Servo Rail (7.4V)
+2. Regulated Logic Rail (5V)
 
+Both rails originate from a single battery source and share a common ground.
+
+--------------------------------------------------
+
+LEVEL 0 — POWER SOURCE
+
+Component:
+- 2S LiPo Battery (7.4V nominal)
+
+Output Path:
 Battery
-   ↓
-Main Fuse (ANL type, appropriately rated)
-   ↓
-Physical Kill Switch
-   ↓
-Primary Distribution Node (Bus Bar)
-   ↓
-   ├── Servo Power Rail
-   ├── Logic Power Rail
-   └── Dock Charge Interface
+ → Master Power Switch
+ → Main Fuse (60A–80A)
+ → Central Power Distribution Block
 
-All grounds converge at single star-ground reference.
+This is the root of the power tree.
 
-------------------------------------------------------------
-3. SERVO POWER RAIL
-------------------------------------------------------------
+--------------------------------------------------
 
-Source:
-High-current BEC system (dual redundant recommended)
+LEVEL 1 — PRIMARY DISTRIBUTION
 
-Target Output:
-7.4V (HV servo compatible)
+From the central distribution block, power splits into:
 
-Supply:
-24 × JX PDI-HV2060MG servos
+A. Servo Power Bus (Unregulated 7.4V)
+B. Logic Power Converter Input (to 5V regulator)
 
-Peak Expected Current:
-60–70A bursts during aggressive gait
-Stair mode peak must remain below safe threshold.
+Each branch is electrically independent except for shared ground.
 
-Servo rail protected by:
+--------------------------------------------------
 
-- MOSFET high-side switching
-- Pi-controlled hardware kill-line
-- Current sensing (Hall-effect)
+LEVEL 2A — SERVO POWER DISTRIBUTION
 
-Maestro draws signal only.
-Servo current never flows through logic rail.
+Servo Bus Characteristics:
+- High current
+- Unregulated voltage
+- Noise-generating load
 
-------------------------------------------------------------
-4. LOGIC POWER RAIL
-------------------------------------------------------------
+Distribution Method:
+- Star topology from central block
 
-Source:
-High-efficiency DC-DC buck converter
+Segmentation:
+- Divide servos into clusters of 2–4 units
+
+Per-Cluster Design:
+- Inline fuse (15A typical)
+- Bulk capacitor (2200µF–4700µF)
+- Dedicated power leads (16–18 AWG)
+
+Wiring:
+- Main feed: 12 AWG
+- Keep all paths short and direct
+
+Constraints:
+- No daisy-chaining between servos
+- Each cluster returns directly to distribution block
+
+--------------------------------------------------
+
+LEVEL 2B — LOGIC POWER DISTRIBUTION
+
+Input:
+- 7.4V from main distribution block
+
+Conversion:
+- High-efficiency buck converter
 
 Output:
-5V @ ≥10A minimum capacity
+- 5V regulated rail
+
+Capacity:
+- Minimum 5A continuous
 
 Supplies:
+- Main compute unit (Raspberry Pi or equivalent)
+- Sensors
+- Communications hardware
 
-- Jetson Orin Nano
-- Raspberry Pi
-- Duet 3 6HC
-- RTK module
-- Cameras
-- Network radios
-- IMU
+Design Requirements:
+- Electrically isolated from servo noise
+- Stable under all load conditions
 
-Logic rail isolated from servo rail noise.
+--------------------------------------------------
 
-------------------------------------------------------------
-5. WATCHDOG KILL-LINE ARCHITECTURE
-------------------------------------------------------------
+LEVEL 3 — FINAL DISTRIBUTION
 
-Raspberry Pi has authority to:
+Servo Nodes:
+- Individual servos connected to cluster outputs
 
-- Disable servo rail MOSFET
-- Force CROUCH prior to power cut
-- Log fault state
+Logic Nodes:
+- Distributed via regulated 5V rail
+- Can use secondary distribution board if needed
 
-Kill-line must be:
+Grounding:
+- All grounds return to central distribution point
 
-Physical hardware line
-NOT software-only command.
+--------------------------------------------------
 
-This guarantees motion shutdown even if Jetson locks.
+GROUNDING MODEL
 
-------------------------------------------------------------
-6. CURRENT SENSING
-------------------------------------------------------------
+- Single-point ground reference at distribution block
+- All subsystems must share this ground
+- Avoid multiple return paths to prevent noise and instability
 
-Per Bank Monitoring:
+--------------------------------------------------
 
-- Hall-effect current sensors (≥100A rated)
-- Continuous logging to Pi
-- Overcurrent threshold triggers CROUCH
+NOISE AND INTERFERENCE CONTROL
 
-Data used for:
+Servo systems introduce electrical noise.
 
-- Servo degradation detection
-- Stair stress monitoring
-- Energy consumption modeling
+Mitigation:
+- Use bulk capacitors at each servo cluster
+- Keep signal lines separate from power lines
+- Use twisted pair or shielded cables for control signals where possible
 
-------------------------------------------------------------
-7. THERMAL MONITORING
-------------------------------------------------------------
+--------------------------------------------------
 
-Sensors required at:
+PROTECTION STRATEGY
 
-- Jetson heatsink
-- BEC units
-- Servo distribution node
-- Battery pack
+Primary Protection:
+- Main fuse at battery output
 
-Thermal escalation:
+Secondary Protection:
+- Per-cluster servo fuses
+- Regulator protection for logic rail
 
-Normal → Aggression reduction → Crouch → Shutdown
+Recommended:
+- Transient voltage suppression (TVS diodes) on main bus
+- Reverse polarity protection at battery input
 
-Thermal safety never bypassed.
+--------------------------------------------------
 
-------------------------------------------------------------
-8. DOCKING POWER INTERFACE
-------------------------------------------------------------
+FAILURE ISOLATION
 
-Dock provides:
+Design Goal:
+- A failure in one branch must not bring down the entire system
 
-CC/CV charging profile
-Matched to LiFePO4 pack (29.2V)
+Implementation:
+- Independent fused servo clusters
+- Isolated logic regulator path
 
-Dock Interface Includes:
+Example:
+- If one servo cluster fails, remaining clusters and logic system continue operating
 
-- Visual alignment marker
-- Physical alignment rails
-- Contact detection
-- Charge enable handshake
+--------------------------------------------------
 
-Robot must verify:
+DESIGN CONSTRAINTS
 
-Correct voltage before charge enable.
+- Design for peak current, not average load
+- Maintain at least 30% current headroom
+- Use only connectors rated for expected load
+- Keep high-current paths as short as possible
 
-------------------------------------------------------------
-9. ENERGY DOMINANCE RULE
-------------------------------------------------------------
+--------------------------------------------------
 
-If projected energy < return-to-dock + 15% reserve:
-
-Mission layer forced to RETURN_TO_DOCK.
-
-Remote cannot override.
-
-------------------------------------------------------------
-10. DESIGN PRIORITIES
-------------------------------------------------------------
-
-1. Safety isolation
-2. Electrical noise isolation
-3. Deterministic servo supply
-4. Hardware-level override
-5. Clear serviceability
-
-------------------------------------------------------------
-END OF POWER TREE ARCHITECTURE
-------------------------------------------------------------
+STATUS: ACTIVE
