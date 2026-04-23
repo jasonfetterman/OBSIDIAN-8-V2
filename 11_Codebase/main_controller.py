@@ -1,4 +1,4 @@
-# main_controller.py — REV B (Full System Integration Controller)
+# main_controller.py — REV C (Thermal Latch-Aware Integration)
 
 import time
 import threading
@@ -13,56 +13,52 @@ SERIAL_PORT = "COM3"   # UPDATE if needed
 BAUD_RATE = 115200
 
 HEARTBEAT_INTERVAL = 0.02  # 50 Hz
-THERMAL_POLL_INTERVAL = 0.1
 
-# Default neutral pose (16 servos)
 BASE_POSE = [90.0] * 16
 
 # ---------------- STATE ----------------
 
 running = True
-thermal_state = "NORMAL"   # NORMAL / WARNING / SHUTDOWN
-
-# ---------------- SERIAL ----------------
+thermal_state = "NORMAL"   # NORMAL / WARNING / LATCHED
 
 ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=0.01)
 
-def send_servo_command(servo_id, angle):
-    # Format: ID,ANGLE,SPEED
-    cmd = f"{servo_id},{angle:.2f},80\n"
+# ---------------- SERIAL ----------------
+
+def send_servo_command(servo_id, angle, speed):
+    cmd = f"{servo_id},{angle:.2f},{speed}\n"
     ser.write(cmd.encode())
 
-def send_pose(pose):
+def send_pose(pose, speed):
     for i, angle in enumerate(pose):
-        send_servo_command(i, angle)
+        send_servo_command(i, angle, speed)
 
 # ---------------- THERMAL HANDLING ----------------
 
 def handle_thermal_message(msg):
-    global thermal_state, running
+    global thermal_state
 
     if "THERMAL_WARNING" in msg:
         if thermal_state != "WARNING":
-            print("[THERMAL] WARNING — reducing motion")
+            print("[THERMAL] WARNING — throttling")
         thermal_state = "WARNING"
 
-    elif "THERMAL_SHUTDOWN" in msg:
-        print("[THERMAL] CRITICAL — shutting down")
-        thermal_state = "SHUTDOWN"
-        emergency_stop()
+    elif "THERMAL_SHUTDOWN_LATCHED" in msg:
+        print("[THERMAL] CRITICAL — LATCHED SHUTDOWN")
+        thermal_state = "LATCHED"
+        emergency_stop(latched=True)
 
-    elif "THERMAL_RECOVERY" in msg:
-        print("[THERMAL] RECOVERED")
+    elif "THERMAL_MANUAL_RESET" in msg:
+        print("[THERMAL] MANUAL RESET — awaiting operator restart")
         thermal_state = "NORMAL"
 
 # ---------------- SERIAL LISTENER ----------------
 
 def serial_listener():
     global running
-
     while running:
         try:
-            line = ser.readline().decode().strip()
+            line = ser.readline().decode(errors="ignore").strip()
             if line:
                 handle_thermal_message(line)
         except:
@@ -72,19 +68,24 @@ def serial_listener():
 
 def heartbeat_loop():
     while running:
-        ser.write(b"HB\n")
+        try:
+            ser.write(b"HB\n")
+        except:
+            pass
         time.sleep(HEARTBEAT_INTERVAL)
 
 # ---------------- MOTION CALLBACK ----------------
 
 def motion_send_callback(servo_id, angle):
-    # Reduce speed if thermal warning
+    # Block all motion if latched
+    if thermal_state == "LATCHED":
+        return
+
     speed = 80
     if thermal_state == "WARNING":
         speed = 40
 
-    cmd = f"{servo_id},{angle:.2f},{speed}\n"
-    ser.write(cmd.encode())
+    send_servo_command(servo_id, angle, speed)
 
 # ---------------- BASE POSE ----------------
 
@@ -93,19 +94,21 @@ def get_base_pose():
 
 # ---------------- SAFETY ----------------
 
-def emergency_stop():
+def emergency_stop(latched=False):
     global running
-    print("[SYSTEM] Emergency stop triggered")
 
-    # Stop motion planner immediately
+    print("[SYSTEM] Emergency stop")
+
+    # Freeze motion immediately
     set_pose(BASE_POSE)
-
-    # Stop scheduler loop
     reset_gait()
 
-    running = False
+    # If latched, we halt everything until manual restart (new process run)
+    if latched:
+        print("[SYSTEM] Latched state — restart required")
+        running = False
 
-# ---------------- THREADS ----------------
+# ---------------- THREAD CONTROL ----------------
 
 def start_threads():
     threading.Thread(target=serial_listener, daemon=True).start()
@@ -124,6 +127,8 @@ def start_threads():
 # ---------------- MAIN ----------------
 
 def main():
+    global running
+
     print("=== OBSIDIAN-8 CONTROL START ===")
 
     start_threads()
