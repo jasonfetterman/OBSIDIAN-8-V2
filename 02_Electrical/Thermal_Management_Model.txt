@@ -1,103 +1,186 @@
-OBSIDIAN-8 V3
+Thermal Management Model — REV B (16-Servo High-Current System)
 
-02_Electrical/Thermal_Management_Model.txt
-Revision: V3.2
-Status: Authoritative
+OVERVIEW
+This document defines thermal behavior, limits, and cooling strategy for OBSIDIAN-8 operating with 16 high-torque servos and peak currents exceeding 120A.
 
-1. PURPOSE
+--------------------------------------------------
 
-Define thermal behavior, heat sources, dissipation methods, and protection mechanisms for OBSIDIAN-8 V3.
+THERMAL SOURCES
 
-Ensures safe operating temperatures across all subsystems
-Prevents thermal-induced failures and degradation
-Integrates with power system, actuation, and control authority
-Supports validation, FMEA, and deployment readiness
-2. HEAT SOURCES
-Component	Heat Source Description	Relative Load
-Servo Actuators	Motor current and friction	High
-DC-DC Regulators	Conversion losses	Medium
-Battery Modules	Internal resistance during load	Medium
-BMS	Monitoring circuitry	Low
-Mission Compute Unit	CPU/GPU processing	Medium
-Peak thermal load occurs during simultaneous actuator motion + high compute usage.
-3. TEMPERATURE LIMITS
-Component	Max Operating Temp	Critical Shutdown
-Servo Actuators	70°C	80°C
-LiFePO4 Battery	60°C	70°C
-LiPo Battery	60°C	65°C
-DC-DC Regulators	80°C	90°C
-Compute Unit	75°C	85°C
-Exceeding critical thresholds triggers reactive safety shutdown.
-4. THERMAL DISTRIBUTION MODEL
-Heat concentrated in:
-Actuator joints
-Power distribution zones
-Compute enclosure
-Frame acts as passive heat sink, distributing heat across structure.
-Thermal gradients minimized by:
-Centralized battery placement
-Distributed actuator loads
-Ventilated regulator mounting
-5. COOLING STRATEGIES
+Primary Heat Generators:
 
-Passive Cooling:
+1. Servos (16x)
+   - Internal motor + driver losses
+   - Estimated heat under load: 10–25W per active servo
 
-Aluminum chassis for heat conduction
-Ventilated panels for airflow
-Heat sinks on regulators and compute modules
+2. Power Distribution
+   - Wiring resistive losses (I²R)
+   - Connectors (XT90, terminals)
 
-Active Cooling (if installed):
+3. Voltage Regulation
+   - Buck converter (7.4V → 5V)
+   - Estimated loss: 5–10W
 
-Low-profile fans in compute and power zones
-Temperature-triggered activation
+--------------------------------------------------
 
-Thermal Isolation:
+TOTAL THERMAL LOAD
 
-Separation of battery and high-heat components
-Insulating mounts where required
-6. SENSOR AND MONITORING INTEGRATION
-Temperature sensors located at:
-Battery modules
-Servo banks (if supported)
-Power distribution board
-Compute unit
-Data integrated into:
-Mission Compute telemetry
-Reactive Safety Layer
-Sampling rate sufficient for real-time protection decisions
-7. CONTROL INTEGRATION
-Mission Compute:
-Adjusts workload and actuator usage based on thermal conditions
-Reduces motion intensity under elevated temperatures
-Reactive Safety Layer:
-Initiates safe-stop when thermal limits exceeded
-Overrides mission commands if necessary
-BMS Integration:
-Enforces battery thermal limits and shutdown
-System Control Authority:
-Hardware shutdown takes precedence over all software control
-8. FAILURE MODES AND MITIGATION
-Failure Mode	Cause	Mitigation
-Servo overheating	High torque load	Torque limiting, duty cycling
-Battery overheating	Overcurrent / ambient	BMS shutdown, load reduction
-Regulator overheating	Inefficiency / load	Heat sinks, airflow
-Compute thermal throttling	High processing load	Active cooling, load balancing
-FMEA references: FM-004 (servo overheating), FM-003 (battery undervoltage via thermal stress).
-9. VALIDATION AND TESTING
-Thermal profiling under:
-Idle conditions
-Continuous motion
-Peak load scenarios
-Environmental testing:
--20°C to 60°C ambient range
-Verification includes:
-Sensor accuracy
-Cooling effectiveness
-Shutdown response timing
-All results documented per Configuration Management Plan
-10. DESIGN INTENT
-Maintain safe operating temperatures across all subsystems
-Prevent thermal-induced failures and performance degradation
-Enable predictive and reactive thermal control
-Integrate fully with power, actuation, and safety systems
-Ensure deterministic and safe response to overheating conditions
+Worst Case (high activity):
+- Servos: 16 × 15W ≈ 240W
+- Wiring + connectors: ~10–20W
+- Buck converter: ~8W
+
+Total System Heat:
+- ~250–270W
+
+This heat must be dissipated to prevent failure.
+
+--------------------------------------------------
+
+CRITICAL TEMPERATURE LIMITS
+
+Servos:
+- Safe operating: < 70°C case temperature
+- Warning threshold: 60°C
+
+Battery (LiPo):
+- Safe: < 60°C
+- Ideal: < 45°C
+
+Wiring/Connectors:
+- Must remain < 80°C
+
+Buck Converter:
+- < 85°C (with airflow)
+
+--------------------------------------------------
+
+COOLING STRATEGY
+
+PASSIVE COOLING (BASELINE)
+
+Frame Design:
+- Open structure (no enclosed compartments)
+- Air gaps around servo bodies
+
+Mounting:
+- Avoid trapping heat between servos and frame
+- Allow airflow around all sides
+
+Material:
+- Aluminum frame acts as heat spreader
+
+--------------------------------------------------
+
+ACTIVE COOLING (REQUIRED)
+
+Cooling Fans:
+
+Quantity:
+- 2 × 40mm or 60mm fans minimum
+
+Placement:
+1. Power distribution area (battery + wiring hub)
+2. Central electronics deck (Pi + buck converter)
+
+Specs:
+- 5V or 7.4V fans
+- Minimum 10 CFM each
+
+Airflow Direction:
+- Front-to-back or bottom-to-top
+- Must create continuous airflow path
+
+--------------------------------------------------
+
+SERVO HEAT MANAGEMENT
+
+Mounting:
+- Do NOT fully enclose servos
+- Allow direct exposure to airflow
+
+Spacing:
+- Minimum 5–10mm gap between adjacent servos
+
+Optional:
+- Aluminum mounting brackets for heat conduction
+
+--------------------------------------------------
+
+WIRING THERMAL CONTROL
+
+High-current paths:
+- Use 10–12 AWG (main)
+- Use 14–16 AWG (distribution)
+
+Rules:
+- Avoid tight bundles of high-current wires
+- Spread load paths where possible
+
+Connectors:
+- XT90 required (no XT60 at this load level)
+
+--------------------------------------------------
+
+BUCK CONVERTER COOLING
+
+Requirements:
+- Must include heatsink
+- Must be placed in airflow path
+
+Mounting:
+- Elevated from surface (air gap underneath)
+
+--------------------------------------------------
+
+THERMAL MONITORING (IMPLEMENTED)
+
+Use:
+- thermal_monitor.cpp
+
+Sensors (recommended):
+- 1x near servo cluster
+- 1x near battery
+- 1x near buck converter
+
+Trigger Thresholds:
+- 60°C → reduce activity
+- 70°C → initiate shutdown sequence
+
+--------------------------------------------------
+
+FAILURE MODES
+
+Overheating causes:
+
+- Servo torque loss
+- Internal servo shutdown or failure
+- Battery degradation or swelling
+- Connector softening or failure
+
+--------------------------------------------------
+
+THERMAL TEST REQUIREMENTS
+
+Must validate:
+
+1. 5-minute continuous walk test
+2. Peak load burst test
+3. Idle heat soak test
+
+Pass Criteria:
+- No component exceeds defined limits
+- No thermal shutdown occurs
+
+--------------------------------------------------
+
+DESIGN CONSTRAINTS
+
+- System must dissipate up to 270W heat
+- Active airflow is REQUIRED (not optional)
+- No sealed enclosures allowed
+- All critical components must be in airflow path
+
+--------------------------------------------------
+
+STATUS: ACTIVE
