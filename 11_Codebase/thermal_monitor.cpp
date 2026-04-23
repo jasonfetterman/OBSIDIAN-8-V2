@@ -1,21 +1,23 @@
-// thermal_monitor.cpp — REV C (Thermal → Hardware Kill Integration)
+// thermal_monitor.cpp — REV D (Manual Reset Required After Thermal Shutdown)
 
 #include <Arduino.h>
 
 // ---------------- CONFIG ----------------
 
-// Analog temp sensors (LM35 or equivalent)
+// Temp sensors (LM35 or equivalent)
 #define TEMP_SERVO_PIN A0
 #define TEMP_BATTERY_PIN A1
 #define TEMP_BUCK_PIN A2
 
-// Kill line output pin (wired to relay / MOSFET control)
+// Kill control
 #define KILL_PIN 22
+
+// Manual reset button (physical)
+#define RESET_BUTTON_PIN 23  // pull-down or pull-up depending on wiring
 
 // Thresholds (°C)
 #define TEMP_WARNING 60.0
 #define TEMP_CRITICAL 70.0
-#define TEMP_RESET 55.0   // hysteresis reset point
 
 // Filtering
 #define FILTER_ALPHA 0.2
@@ -29,14 +31,14 @@ float filteredServo = 25.0;
 float filteredBattery = 25.0;
 float filteredBuck = 25.0;
 
-bool thermalShutdownActive = false;
+bool thermalShutdownLatched = false;
 
 // ---------------- UTIL ----------------
 
 float readTemperature(int pin) {
     int raw = analogRead(pin);
     float voltage = (raw / 1023.0) * 3.3;
-    return voltage * 100.0; // LM35
+    return voltage * 100.0;
 }
 
 float filterTemp(float prev, float current) {
@@ -46,24 +48,37 @@ float filterTemp(float prev, float current) {
 // ---------------- KILL CONTROL ----------------
 
 void enableServos() {
-    digitalWrite(KILL_PIN, HIGH);  // ACTIVE HIGH = power ON
+    digitalWrite(KILL_PIN, HIGH);  // ACTIVE HIGH = ON
 }
 
 void disableServos() {
-    digitalWrite(KILL_PIN, LOW);   // cut power
+    digitalWrite(KILL_PIN, LOW);   // OFF
 }
 
 // ---------------- ACTIONS ----------------
 
 void thermalThrottle() {
-    // Signal to Pi via serial (you already have comms)
     Serial.println("THERMAL_WARNING");
 }
 
-void thermalShutdown() {
-    disableServos();  // HARD CUT
-    thermalShutdownActive = true;
-    Serial.println("THERMAL_SHUTDOWN");
+void triggerThermalShutdown() {
+    disableServos();
+    thermalShutdownLatched = true;
+    Serial.println("THERMAL_SHUTDOWN_LATCHED");
+}
+
+// ---------------- RESET HANDLING ----------------
+
+void checkManualReset() {
+    if (thermalShutdownLatched) {
+        // Button press = HIGH (adjust if using pull-up)
+        if (digitalRead(RESET_BUTTON_PIN) == HIGH) {
+            thermalShutdownLatched = false;
+            enableServos();
+            Serial.println("THERMAL_MANUAL_RESET");
+            delay(500); // debounce + prevent rapid re-trigger
+        }
+    }
 }
 
 // ---------------- CORE ----------------
@@ -81,23 +96,20 @@ void updateThermal() {
     if (filteredBattery > maxTemp) maxTemp = filteredBattery;
     if (filteredBuck > maxTemp) maxTemp = filteredBuck;
 
-    // --- CRITICAL SHUTDOWN ---
-    if (maxTemp >= TEMP_CRITICAL) {
-        if (!thermalShutdownActive) {
-            thermalShutdown();
-        }
+    // If already latched, do nothing except wait for reset
+    if (thermalShutdownLatched) {
+        checkManualReset();
         return;
     }
 
-    // --- HYSTERESIS RESET ---
-    if (thermalShutdownActive && maxTemp < TEMP_RESET) {
-        thermalShutdownActive = false;
-        enableServos();
-        Serial.println("THERMAL_RECOVERY");
+    // Critical shutdown (latching)
+    if (maxTemp >= TEMP_CRITICAL) {
+        triggerThermalShutdown();
+        return;
     }
 
-    // --- WARNING ---
-    if (maxTemp >= TEMP_WARNING && !thermalShutdownActive) {
+    // Warning
+    if (maxTemp >= TEMP_WARNING) {
         thermalThrottle();
     }
 
@@ -118,8 +130,9 @@ void setupThermal() {
     analogReadResolution(10);
 
     pinMode(KILL_PIN, OUTPUT);
+    pinMode(RESET_BUTTON_PIN, INPUT);
 
-    // Default SAFE behavior
+    // SAFE DEFAULT
     disableServos();
 }
 
