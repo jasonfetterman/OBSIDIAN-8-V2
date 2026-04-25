@@ -31,7 +31,7 @@ swarm.add_drone("drone1", "udp:127.0.0.1:14550")
 
 # ---------------- MISSION ----------------
 
-mission = MissionCoordinator(swarm)
+mission = MissionCoordinator(swarm, set_pose)
 
 # Test coordinate (ArduPilot default area)
 MISSION_LAT = -35.363261
