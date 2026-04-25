@@ -1,0 +1,214 @@
+OBSIDIAN-8 Field Test Checklist — REV A (Safe Bring-Up Procedure)
+
+OVERVIEW
+This checklist defines the required step-by-step process for safely bringing OBSIDIAN-8 online for real-world testing. Do NOT skip steps. Each phase validates a subsystem before full integration.
+
+--------------------------------------------------
+
+PHASE 0 — PRE-POWER INSPECTION (NO POWER)
+
+[ ] Verify all wiring matches schematics
+[ ] Check polarity on main power input
+[ ] Inspect for exposed conductors / shorts
+[ ] Confirm secure mounting of:
+    - Battery
+    - BMS
+    - Buck converters
+    - Teensy
+    - Raspberry Pi
+[ ] Verify cooling paths are unobstructed
+[ ] Ensure kill line wiring is correct (ACTIVE HIGH = ON)
+
+PASS CONDITION:
+- No visible faults or loose connections
+
+--------------------------------------------------
+
+PHASE 1 — LOW POWER LOGIC TEST (NO SERVOS)
+
+[ ] Disconnect servo power rail
+[ ] Power only logic (Pi + Teensy)
+[ ] Connect USB + serial
+
+Run:
+> python main_controller.py
+
+[ ] Confirm:
+    - No crashes
+    - Serial connection stable
+    - Logs are being created
+    - TEMP data streaming
+
+PASS CONDITION:
+- Stable operation for 2+ minutes
+
+--------------------------------------------------
+
+PHASE 2 — THERMAL SYSTEM VALIDATION
+
+[ ] Observe live logs
+[ ] Confirm TEMP entries updating (~10Hz)
+
+Simulate heat:
+- Warm sensor gently (hand or controlled source)
+
+[ ] Verify:
+    - THERMAL_WARNING triggers ~60°C
+    - THERMAL_SHUTDOWN_LATCHED triggers ~70°C
+    - System enters latched state
+
+[ ] Press reset button
+
+[ ] Confirm:
+    - THERMAL_MANUAL_RESET logged
+    - System allows re-enable
+
+PASS CONDITION:
+- Thermal system behaves exactly as designed
+
+--------------------------------------------------
+
+PHASE 3 — SERVO POWER DRY TEST (NO LOAD)
+
+[ ] Reconnect servo power
+[ ] Elevate robot so legs DO NOT touch ground
+
+Power on system
+
+[ ] Observe:
+    - No sudden movements
+    - No jitter
+    - No brownout/reset
+
+[ ] Monitor:
+    - Temperature logs
+    - System stability
+
+PASS CONDITION:
+- Stable idle for 2+ minutes
+
+--------------------------------------------------
+
+PHASE 4 — CONTROLLED MOTION TEST (ELEVATED)
+
+[ ] Enable motion system
+[ ] Observe gait cycle
+
+[ ] Verify:
+    - Only ONE leg moves at a time (wave gait)
+    - Motion is smooth
+    - No snapping or oscillation
+
+[ ] Monitor logs:
+    - Motion entries
+    - Temperature rise
+
+PASS CONDITION:
+- Controlled, predictable motion
+
+--------------------------------------------------
+
+PHASE 5 — GROUND CONTACT TEST (LIMITED)
+
+[ ] Place robot on ground
+[ ] Ensure clear space
+
+Run at LOW speed mode only
+
+[ ] Observe:
+    - Stability
+    - No tipping
+    - Even load distribution
+
+[ ] Watch for:
+    - Current spikes (indirect via behavior)
+    - Rapid temp increase
+
+PASS CONDITION:
+- Stable walking for 1–2 minutes
+
+--------------------------------------------------
+
+PHASE 6 — THERMAL UNDER LOAD
+
+[ ] Continue walking for extended period
+
+[ ] Monitor:
+    - Servo temp trend
+    - Battery temp
+    - Buck temp
+
+[ ] Confirm:
+    - Warning triggers before critical
+    - System throttles (visible slower motion)
+
+OPTIONAL:
+- Allow system to hit shutdown ONCE (controlled)
+
+PASS CONDITION:
+- Thermal system protects hardware
+
+--------------------------------------------------
+
+PHASE 7 — DRONE INTEGRATION (SITL ONLY)
+
+[ ] Run drone simulation (SITL)
+[ ] Connect via MAVLink
+
+[ ] Execute:
+    - Takeoff
+    - Hover
+    - Land
+
+[ ] Confirm:
+    - Commands execute correctly
+    - No interference with robot control
+
+PASS CONDITION:
+- Stable dual-system operation
+
+--------------------------------------------------
+
+PHASE 8 — REAL DRONE (ONLY AFTER SITL)
+
+[ ] Open outdoor test area
+[ ] Fully charged batteries
+[ ] GPS lock confirmed
+
+[ ] Test:
+    - Arm
+    - Takeoff (low altitude)
+    - Land immediately
+
+[ ] Verify emergency stop:
+    - Robot stops
+    - Drone lands
+
+PASS CONDITION:
+- Safe, predictable behavior
+
+--------------------------------------------------
+
+FAILURE CONDITIONS (STOP IMMEDIATELY)
+
+- Smoke, heat smell, or discoloration
+- Sudden resets / power drops
+- Uncontrolled movement
+- Rapid temperature spike (>5°C/sec)
+- Communication loss with controller
+
+ACTION:
+- Cut main power immediately
+
+--------------------------------------------------
+
+FINAL NOTE
+
+Do NOT:
+- Skip phases
+- Jump to full-speed testing
+- Test drone + full motion on first run
+
+This system operates at high current and can cause hardware damage if misused.
+
+STATUS: REQUIRED FOR ALL FIRST RUNS
