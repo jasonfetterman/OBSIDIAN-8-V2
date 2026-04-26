@@ -47,7 +47,7 @@ swarm.add_drone("drone1", "udp:127.0.0.1:14550")
 
 # ---------------- MISSION ----------------
 
-mission = MissionCoordinator(swarm, set_pose)
+mission = MissionCoordinator(swarm, set_pose, imu)
 
 # ---------------- LOW LEVEL CONTROL ----------------
 
