@@ -1,267 +1,124 @@
-<p align="center">
-  <img src="assets/obsidian-8-v3-hero.png" width="100%">
-</p>
+# 🕷 Obsidian-8 Platform Definition
 
-<h1 align="center">🕷 OBSIDIAN-8 V3</h1>
+OBSIDIAN-8 is a **4-foot-class autonomous octopod** engineered as a:
 
-<p align="center">
-<b>Autonomous Octopod Robotics Platform</b><br>
-Intelligence by Architecture • Safety by Design • Swarm by Default • Energy-Aware
-</p>
+> **Mobile Command and Control Node for Multi-Unit Robotic Systems**
 
-<p align="center">
+It is not a single-purpose robot.
 
-![Architecture](https://img.shields.io/badge/Architecture-V3%20Locked-00ff88?style=for-the-badge)
-![Framework](https://img.shields.io/badge/Framework-ROS2-2233ff?style=for-the-badge)
-![Swarm](https://img.shields.io/badge/Swarm-Ready-ff8800?style=for-the-badge)
-![Morphology](https://img.shields.io/badge/Morphology-8--Legged-8A2BE2?style=for-the-badge)
-![Energy](https://img.shields.io/badge/Energy-Aware-00ccff?style=for-the-badge)
-![Safety](https://img.shields.io/badge/Safety-Governed-red?style=for-the-badge)
-![Lifecycle](https://img.shields.io/badge/Lifecycle-Engineered-ffaa00?style=for-the-badge)
-
-</p>
+It is the **central coordination platform** for a heterogeneous robotic ecosystem.
 
 ---
 
-<p align="center">
-<b>Survivability Through Architecture.</b>
-</p>
+## 📏 Physical Characteristics
+
+- 🕷 8-legged octopod platform  
+- 📐 ~4 ft class footprint  
+- ⚖ Designed for stability under load and terrain stress  
+- 🔋 High-capacity onboard power system  
+- 🧠 Integrated compute stack for real-time coordination  
+
+Its size is intentional:
+- Supports payload capacity (compute, comms, sensors)
+- Maintains stability during command operations
+- Acts as a persistent field node, not a disposable unit  
 
 ---
 
-# 🚀 Executive Overview
+## 🧠 System Role
 
-OBSIDIAN-8 V3 is a fully systems-engineered 8-legged autonomous spider platform designed for:
+OBSIDIAN-8 functions as:
 
-- 🌄 Extreme terrain traversal  
-- 🧗 Stair ascent and descent  
-- 🔄 Load redistribution under actuator loss  
-- 🌐 Distributed swarm coordination  
-- 🔋 Energy-aware mission planning  
-- 🛡 Layered fault containment  
-- 🏭 Persistent industrial deployment  
+- 🧭 Mission coordinator  
+- 📡 Communications hub  
+- 🧠 Distributed decision node  
+- 🔋 Energy-aware controller  
+- 🕸 Swarm orchestrator  
 
-This repository represents a structured robotics architecture baseline — not a prototype experiment.
-
-Architecture is frozen at V3.  
-Execution depth now expands from that foundation.
+It issues **objectives**, not raw motor commands.
 
 ---
 
-# 🕷 Why Eight Legs?
+## 🤖 Controlled Unit Classes
 
-Quadrupeds balance.  
-Hexapods adapt.  
-**Octopods endure.**
+OBSIDIAN-8 manages a **heterogeneous fleet**, not identical replicas.
 
-The 8-leg configuration enables:
+### 🕷 Ground Units (Multiple Types)
+Examples:
 
-- ✔ Tripod gait redundancy  
-- ✔ Passive stability during partial failure  
-- ✔ Dynamic center-of-gravity redistribution  
-- ✔ Stable neutral stance under load  
-- ✔ Enhanced stair & obstacle negotiation  
-- ✔ Mechanical survivability in real terrain  
+- Scout units (fast, lightweight)
+- Heavy units (payload / transport)
+- Inspection units (sensor-focused)
+- Support units (power, relay, repair)
 
-Resilience is engineered into morphology.
-
----
-
-# 🧠 What Makes OBSIDIAN-8 Different
-
-Most robotics repositories demonstrate motion.
-
-OBSIDIAN-8 demonstrates:
-
-- Architecture  
-- Governance  
-- Survivability  
-- Lifecycle strategy  
-- Swarm scalability  
+Each class:
+- Has different capabilities
+- Executes different roles
+- Operates semi-autonomously
 
 ---
 
-# 📐 Systems Engineering Baseline
+### 🚁 Air Units (Multiple Types)
 
-Included in this repository:
-
-- 📘 System Requirements Specification  
-- 📊 Verification Traceability Matrix  
-- ⚠ Formal Risk Register  
-- 🔎 Failure Modes & Effects Analysis (FMEA)  
-- 🛡 Safety Architecture  
-- 🔐 Cybersecurity Threat Model  
-- 🌡 Environmental Qualification Plan  
-- 🧾 Configuration Management Plan  
-- 📈 Lifecycle Phase Planning  
-
-This mirrors aerospace and industrial robotics programs — not hobby builds.
+- Recon drones (forward scouting)
+- Mapping drones (SLAM / terrain modeling)
+- Relay drones (communications extension)
+- Specialized payload drones (inspection / sensing)
 
 ---
 
-# 🛡 Distributed Control Authority Model
+## 🔗 Command Relationship
 
-OBSIDIAN-8 does not rely on a fragile centralized controller.
+- Obsidian-8 = **primary command node**
+- Units = **task-executing agents**
 
-It implements:
+But critically:
 
-- 🧠 Compute role separation  
-- ❤️ Heartbeat supervision protocol  
-- 🚨 Authority escalation model  
-- 🔌 Watchdog kill-line architecture  
-- 🧯 Fault containment boundaries  
-- ⚡ Reactive core isolation  
-
-Failures are contained.  
-Authority is hierarchical.  
-Safety is dominant.
+- Units maintain **local autonomy**
+- System supports **graceful degradation**
+- Control can be **distributed if needed**
 
 ---
 
-# 🔋 Energy-Aware Autonomy
+## 🕸 Operational Model
 
-Energy is treated as a first-class mission variable.
+OBSIDIAN-8:
 
-Modeled components include:
+- Assigns mission goals  
+- Allocates units by capability  
+- Adjusts plans based on incoming data  
+- Uses drone feedback to refine ground movement  
+- Maintains global system awareness  
 
-- 🔋 LiFePO4 & LiPo discharge modeling  
-- 📊 Power budget analysis  
-- 🌡 Thermal envelope modeling  
-- 🔌 Smart BMS integration strategy  
-- 🏠 Autonomous charging logic  
-- 🧭 Energy-aware navigation model  
+Sub-units:
 
-The spider plans around power before movement decisions are made.
-
----
-
-# 🌐 Swarm-Ready Architecture
-
-OBSIDIAN-8 V3 includes a formal swarm coordination framework:
-
-- 📡 Secure communications model  
-- 🧭 Weighted Voronoi sector partitioning  
-- 🛰 Shared positional awareness  
-- 🔄 Dynamic sector rebalancing  
-- 🕸 Advisory coordination layer  
-
-Multiple units can:
-
-- Share terrain maps  
-- Partition patrol regions  
-- Avoid overlap  
-- Coordinate objectives  
-- Operate without centralized micromanagement  
-
-Swarm capability is built into architecture — not bolted on later.
+- Execute tasks independently  
+- Report state and telemetry  
+- Adapt locally to environment  
 
 ---
 
-# 🤖 Core Technical Capabilities
+## ⚙ Example Multi-Unit Operation
 
-Architected to support:
-
-- 🗺 Hybrid GPS + SLAM navigation  
-- 👁 Multi-sensor perception modeling  
-- 🧠 Reactive obstacle handling  
-- 🏃 Multi-mode gait engine  
-- 🔋 Energy-aware path planning  
-- 🌐 Swarm sector coordination  
-- 🛡 Fault-tolerant operation  
-- 📡 Remote mission governance  
-- 🔄 Autonomous charging & recovery  
+1. Obsidian-8 enters unknown terrain  
+2. Deploys recon drone  
+3. Drone maps terrain from above  
+4. Obsidian-8 assigns:
+   - Scout unit → forward path validation  
+   - Heavy unit → alternate route  
+5. System rebalances based on real-time feedback  
 
 ---
 
-# ⚙ Software Architecture
+## 🧬 Design Intent
 
-Built around:
+This is not a swarm of identical robots.
 
-- ⚙ ROS2 node graph  
-- 🧠 Reactive core engine  
-- 🎯 Mission governance layer  
-- 🛡 Pi watchdog supervision  
-- 🔌 Hardware interface bridges  
-- 📦 Modular package structure  
+This is a **coordinated robotic ecosystem** built around:
 
-### Status
+- Role specialization  
+- Hierarchical intelligence  
+- Cross-domain sensing  
+- Mission-level coordination  
 
-- 🟢 V3 Architecture Baseline — Locked  
-- 🔵 Implementation Alignment — Active  
-- 🧪 Hardware Validation — Expanding  
-
-No architectural churn.  
-Only deepening and validation.
-
----
-
-# 🧩 Lifecycle Engineering
-
-OBSIDIAN-8 includes:
-
-- 🧪 Prototype validation framework  
-- 🏭 Industrialization planning  
-- 📦 Scaled production strategy  
-- 🛠 Field operations modeling  
-- 🔄 Upgrade & modernization roadmap  
-- ♻ Decommissioning strategy  
-- 📈 Reliability & maintenance modeling  
-- 🔧 Spare parts strategy  
-
-This platform is engineered to evolve — not expire.
-
----
-
-# 🌍 Target Deployment Domains
-
-- 🏭 Industrial inspection  
-- 🛰 Distributed perimeter systems  
-- 🌄 Terrain reconnaissance  
-- 🕸 Coordinated robotic swarms  
-- 🔋 Long-duration autonomous deployment  
-
----
-
-# 🤝 Collaboration
-
-Active areas of deepening:
-
-- 🔧 ROS2 interface formalization  
-- 📡 QoS profile specification  
-- 📊 Telemetry calibration vs. power model  
-- 🌡 Thermal margin validation  
-- 🧠 Swarm message security hardening  
-- 📈 Reliability growth modeling  
-
-Engineers interested in distributed robotics, fault-tolerant control, or swarm systems are encouraged to engage.
-
----
-
-# 🧬 Design Philosophy
-
-> Survivability through architecture.
-
-Redundancy in mechanics.  
-Containment in control.  
-Energy intelligence in autonomy.  
-Scalability in networking.  
-Lifecycle planning from inception.
-
-Movement is easy.  
-Sustained autonomous operation is not.
-
----
-
-# 🔥 Long-Term Vision
-
-To develop a scalable family of resilient 8-legged autonomous platforms capable of:
-
-- Persistent deployment  
-- Coordinated swarm operation  
-- Field survivability  
-- Industrial-grade governance  
-- Long-duration missions  
-
-Architecture first.  
-Execution next.  
-Scale deliberately.
+OBSIDIAN-8 is the anchor node that makes that possible.
