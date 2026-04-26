@@ -17,6 +17,7 @@ from system_logger import (
 
 from swarm_comms import SwarmController
 from mission_coordinator import MissionCoordinator
+from imu_interface import IMUInterface
 
 # ---------------- CONFIG ----------------
 
